@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "29765040223",
+    "project_id": "remin-dere",
+    "storage_bucket": "remin-dere.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:29765040223:android:c99253eb12040654f003ea",
+        "android_client_info": {
+          "package_name": "com.example.remindere"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "29765040223-rit6h8l0rerl3u5urauf1bbc8caovrds.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.remindere",
+            "certificate_hash": "e1e54d389b81d7393025c2cc9455bf71d7bef7d7"
+          }
+        },
+        {
+          "client_id": "29765040223-6l663hg7vs8ue1d76v7amgrv3udv4ojq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiGCdk1rWor1uqDxZEKwcDQRSM2I5_i6g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "29765040223-6l663hg7vs8ue1d76v7amgrv3udv4ojq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "29765040223-8pvc0rsqnec58djticjdkksagog3825l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.remindere"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
