@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:remindere/features/authentication/controllers/login/login_controller.dart';
 import 'package:remindere/features/authentication/screens/signup/signup.dart';
-import 'package:remindere/navigation_menu.dart';
 import 'package:remindere/utils/constants/sizes.dart';
 import 'package:remindere/utils/constants/text_strings.dart';
 import 'package:remindere/utils/validators/validation.dart';
