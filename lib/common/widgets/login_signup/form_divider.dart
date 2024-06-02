@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:remindere/utils/constants/colors.dart';
-import 'package:remindere/utils/constants/text_strings.dart';
 
 class RFormDivider extends StatelessWidget {
   const RFormDivider({
