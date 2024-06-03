@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart';
 import 'package:remindere/features/authentication/screens/login/login.dart';
 
 class SettingScreen extends StatelessWidget {
@@ -9,7 +8,7 @@ class SettingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _auth = FirebaseAuth.instance;
+    final auth = FirebaseAuth.instance;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -21,7 +20,7 @@ class SettingScreen extends StatelessWidget {
               width: double.infinity,
               child: OutlinedButton(
                   onPressed: () {
-                    _auth.signOut();
+                    auth.signOut();
                     Get.offAll(const LoginScreen());
                   },
                   child: const Text('Logout')),

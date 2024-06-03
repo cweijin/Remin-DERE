@@ -22,7 +22,7 @@ class RLoginForm extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: RSizes.spaceBtwSections),
         child: Column(
           children: [
-            //Email
+            // Email
             TextFormField(
               controller: controller.email,
               validator: (value) => RValidator.validateEmail(value),
@@ -34,7 +34,7 @@ class RLoginForm extends StatelessWidget {
 
             const SizedBox(height: RSizes.spaceBtwInputFields),
 
-            //Password
+            // Password
             Obx(
               () => TextFormField(
                 controller: controller.password,
