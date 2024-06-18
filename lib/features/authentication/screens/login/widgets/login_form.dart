@@ -26,6 +26,7 @@ class RLoginForm extends StatelessWidget {
             TextFormField(
               controller: controller.email,
               validator: (value) => RValidator.validateEmail(value),
+              autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: const InputDecoration(
                 prefixIcon: Icon(Iconsax.direct_right),
                 labelText: RTexts.email,

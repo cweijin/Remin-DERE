@@ -13,33 +13,36 @@ class SignupScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isDark = RHelperFunctions.isDarkMode(context);
 
-    return Scaffold(
-      appBar: AppBar(),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(RSizes.defaultSpace),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              //Title
-              Text(RTexts.signupTitle,
-                  style: Theme.of(context).textTheme.headlineMedium),
-              const SizedBox(height: RSizes.spaceBtwSections),
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        appBar: AppBar(),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(RSizes.defaultSpace),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                //Title
+                Text(RTexts.signupTitle,
+                    style: Theme.of(context).textTheme.headlineMedium),
+                const SizedBox(height: RSizes.spaceBtwSections),
 
-              //Form
-              RSignUpForm(isDark: isDark),
-              const SizedBox(height: RSizes.spaceBtwSections),
+                //Form
+                RSignUpForm(isDark: isDark),
+                const SizedBox(height: RSizes.spaceBtwSections),
 
-              // Divider
-              RFormDivider(
-                isDark: isDark,
-                dividerText: RTexts.orSignUpWith,
-              ),
-              const SizedBox(height: RSizes.spaceBtwSections),
+                // Divider
+                RFormDivider(
+                  isDark: isDark,
+                  dividerText: RTexts.orSignUpWith,
+                ),
+                const SizedBox(height: RSizes.spaceBtwSections),
 
-              // Social Media Buttons
-              const RSocialMediaButtons(),
-            ],
+                // Social Media Buttons
+                const RSocialMediaButtons(),
+              ],
+            ),
           ),
         ),
       ),
