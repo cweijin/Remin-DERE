@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:remindere/common/styles/spacing_styles.dart';
+import 'package:remindere/features/taskallocation/controllers/task_allocation_controller.dart';
 
 class ManualAllocation extends StatelessWidget {
   const ManualAllocation({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(TaskAllocationController());
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -34,11 +39,20 @@ class ManualAllocation extends StatelessWidget {
                         labelText: 'Asignee',
                       ),
                     ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Due Date',
+                    
+                    // due date picker
+                      TextField(
+                        controller: controller.date,
+                        decoration:  InputDecoration(
+                          labelText: 'Select a Date',
+                        ),
+                        readOnly: true,
+                        onTap: () {
+                          controller.selectDate(context);
+
+                        },
                       ),
-                    ),
+
                     TextFormField(
                       decoration: const InputDecoration(
                         labelText: 'Attachment',
