@@ -35,7 +35,4 @@ class RTexts {
   static const String loginTitle = "Welcome back,";
   static const String loginSubTitle = "Use your credentials to log in.";
   static const String signupTitle = "Create account";
-
-  // -- Calendar Events
-  static const String addEvent = "Add Event";
 }
