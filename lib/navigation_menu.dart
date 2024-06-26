@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:remindere/features/body/screens/calendar/calendar.dart';
-import 'package:remindere/features/body/screens/chat/chat.dart';
-import 'package:remindere/features/body/screens/home/home.dart';
-import 'package:remindere/features/body/screens/notification/notification.dart';
+import 'package:remindere/features/calendar/screens/calendar.dart';
+import 'package:remindere/features/development/screens/chat/chat.dart';
+import 'package:remindere/features/development/screens/home/home.dart';
 import 'package:remindere/features/personalization/screens/profile/profile.dart';
+import 'package:remindere/features/taskallocation/screens/manual_allocation/manual_allocation.dart';
 import 'package:remindere/utils/constants/colors.dart';
 import 'package:remindere/utils/helpers/helper_functions.dart';
 
@@ -42,16 +42,16 @@ class NavigationMenu extends StatelessWidget {
               label: 'Calendar',
             ),
 
+            // Notification
+            NavigationDestination(
+              icon: Icon(Iconsax.add),
+              label: 'Create',
+            ),
+
             // Chat
             NavigationDestination(
               icon: Icon(Iconsax.message),
               label: 'Inbox',
-            ),
-
-            // Notification
-            NavigationDestination(
-              icon: Icon(Iconsax.notification),
-              label: 'Notification',
             ),
 
             // Profile
@@ -73,8 +73,8 @@ class NavigationController extends GetxController {
   final screens = [
     const HomeScreen(),
     const CalendarScreen(),
+    const ManualAllocation(),
     const ChatScreen(),
-    const NotificationScreen(),
     const ProfileScreen(),
   ];
 }

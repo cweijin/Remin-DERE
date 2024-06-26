@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:remindere/common/styles/spacing_styles.dart';
 import 'package:remindere/features/authentication/screens/login/login.dart';
 import 'package:remindere/utils/constants/image_strings.dart';
@@ -21,20 +22,28 @@ class ProfileScreen extends StatelessWidget {
             Stack(
               //alignment: Alignment.center,
               children: [
-                const SizedBox(height: 360),
+                const SizedBox(height: 380),
                 Image.asset(
                   RImages.background1,
                   width: double.infinity,
                 ),
                 Positioned(
-                  top: 200,
-                  left: width - 180,
-                  child: const CircleAvatar(
-                    radius: 80,
+                    top: 200,
+                    left: width - 180,
+                    child: const CircleAvatar(
+                      radius: 80,
+                      backgroundImage: AssetImage(RImages.profile1),
+                    )),
+                Positioned(
+                  top: 310,
+                  left: width - 60,
+                  child: IconButton(
+                    icon: const Icon(Iconsax.edit),
+                    onPressed: () {},
                   ),
                 ),
                 Positioned(
-                  top: 300,
+                  top: 320,
                   child: Padding(
                     padding: const EdgeInsets.only(
                       left: 20,

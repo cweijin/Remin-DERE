@@ -15,4 +15,7 @@ class RImages {
 
   // -- Background Photos
   static const String background1 = "assets/images/background.jpg";
+
+  // -- Profile Photos
+  static const String profile1 = "assets/images/profile.jpg";
 }

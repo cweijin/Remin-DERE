@@ -4,23 +4,20 @@ import 'package:remindere/common/styles/spacing_styles.dart';
 import 'package:remindere/utils/constants/sizes.dart';
 import 'package:remindere/utils/constants/colors.dart';
 
-
 class CalendarScreen extends StatelessWidget {
   const CalendarScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Calendar'),
-        centerTitle: true,
-      ),
-      backgroundColor: Colors.orange,
-      body: RCalendar()
-    );
+        appBar: AppBar(
+          title: Text('Calendar'),
+          centerTitle: true,
+        ),
+        backgroundColor: Colors.orange,
+        body: RCalendar());
   }
 }
-
 
 // actual calendar
 class RCalendar extends StatefulWidget {
@@ -55,13 +52,12 @@ class _RCalendarState extends State<RCalendar> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: 
-      Scaffold(
-        // no appBar
-        body: Column(
-          children: [
+        child: Scaffold(
+      // no appBar
+      body: Column(
+        children: [
           //To Show Current Date
-            Container(
+          Container(
               height: RSizes.md,
               margin: RSpacingStyle.paddingWithAppBarHeight,
               alignment: Alignment.centerLeft,
@@ -78,14 +74,15 @@ class _RCalendarState extends State<RCalendar> {
               )),
 
           const SizedBox(height: RSizes.spaceBtwSections),
-          
+
           //To show Calendar Widget
           Container(
-              height: 100,  // need new RSizes
+              height: 100, // need new RSizes
               child: Container(
                   child: ListView.separated(
                 separatorBuilder: (BuildContext context, int index) {
-                  return SizedBox(width: RSizes.md);  // seperation of scrollables
+                  return SizedBox(
+                      width: RSizes.md); // seperation of scrollables
                 },
                 itemCount: 365,
                 controller: scrollController,
@@ -108,9 +105,9 @@ class _RCalendarState extends State<RCalendar> {
                           // boxshadow does not work
                           boxShadow: [
                             BoxShadow(
-                              color: (RColors.darkGrey),
-                              offset: Offset(2, 2),
-                              blurRadius: 3)
+                                color: (RColors.darkGrey),
+                                offset: Offset(2, 2),
+                                blurRadius: 3)
                           ],
                           color: currentDateSelectedIndex == index
                               ? RColors.buttonSecondary
@@ -133,7 +130,7 @@ class _RCalendarState extends State<RCalendar> {
                           ),
 
                           const SizedBox(height: RSizes.spaceBtwItems),
-                          
+
                           // day
                           Text(
                             DateTime.now()
@@ -170,71 +167,69 @@ class _RCalendarState extends State<RCalendar> {
                 },
               ))),
 
-              // to show assigned tasks
-              
-              Expanded(
-                child: ListView(
-                  padding: RSpacingStyle.paddingWithAppBarHeight,
-                  children: <Widget>[
-                    Container(
-                      height: 50,
-                      color: Colors.amber[600],
-                      child: const Center(child: Text('Entry A')),
-    ),
-    Container(
-      height: 50,
-      color: Colors.amber[500],
-      child: const Center(child: Text('Entry B')),
-    ),
-    Container(
-      height: 50,
-      color: Colors.amber[100],
-      child: const Center(child: Text('Entry C')),
-    ),
-    Container(
-      height: 50,
-      color: Colors.amber[100],
-      child: const Center(child: Text('Entry C')),
-    ),
-    Container(
-      height: 50,
-      color: Colors.amber[100],
-      child: const Center(child: Text('Entry C')),
-    ),
-    Container(
-      height: 50,
-      color: Colors.amber[100],
-      child: const Center(child: Text('Entry C')),
-    ),
-    Container(
-      height: 50,
-      color: Colors.amber[100],
-      child: const Center(child: Text('Entry C')),
-    ),
-    Container(
-      height: 50,
-      color: Colors.amber[100],
-      child: const Center(child: Text('Entry C')),
-    ),
-    Container(
-      height: 50,
-      color: Colors.amber[100],
-      child: const Center(child: Text('Entry C')),
-    ),
-    Container(
-      height: 50,
-      color: Colors.amber[100],
-      child: const Center(child: Text('Entry C')),
-    ),
-    Container(
-      height: 50,
-      color: Colors.amber[100],
-      child: const Center(child: Text('Entry C')),
-    ),
+          // to show assigned tasks
 
-  ],
-)
-              )
+          Expanded(
+              child: ListView(
+            padding: RSpacingStyle.paddingWithAppBarHeight,
+            children: <Widget>[
+              Container(
+                height: 50,
+                color: Colors.amber[600],
+                child: const Center(child: Text('Entry A')),
+              ),
+              Container(
+                height: 50,
+                color: Colors.amber[500],
+                child: const Center(child: Text('Entry B')),
+              ),
+              Container(
+                height: 50,
+                color: Colors.amber[100],
+                child: const Center(child: Text('Entry C')),
+              ),
+              Container(
+                height: 50,
+                color: Colors.amber[100],
+                child: const Center(child: Text('Entry C')),
+              ),
+              Container(
+                height: 50,
+                color: Colors.amber[100],
+                child: const Center(child: Text('Entry C')),
+              ),
+              Container(
+                height: 50,
+                color: Colors.amber[100],
+                child: const Center(child: Text('Entry C')),
+              ),
+              Container(
+                height: 50,
+                color: Colors.amber[100],
+                child: const Center(child: Text('Entry C')),
+              ),
+              Container(
+                height: 50,
+                color: Colors.amber[100],
+                child: const Center(child: Text('Entry C')),
+              ),
+              Container(
+                height: 50,
+                color: Colors.amber[100],
+                child: const Center(child: Text('Entry C')),
+              ),
+              Container(
+                height: 50,
+                color: Colors.amber[100],
+                child: const Center(child: Text('Entry C')),
+              ),
+              Container(
+                height: 50,
+                color: Colors.amber[100],
+                child: const Center(child: Text('Entry C')),
+              ),
+            ],
+          ))
         ],
       ),
     ));
