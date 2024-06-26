@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:remindere/common/styles/spacing_styles.dart';
 import 'package:remindere/utils/constants/sizes.dart';
 import 'package:remindere/utils/constants/colors.dart';
@@ -76,10 +77,11 @@ class _RCalendarState extends State<RCalendar> {
                     color: RColors.primary),
               )),
 
-
+          const SizedBox(height: RSizes.spaceBtwSections),
+          
           //To show Calendar Widget
           Container(
-              height: 81,  // need new RSizes
+              height: 100,  // need new RSizes
               child: Container(
                   child: ListView.separated(
                 separatorBuilder: (BuildContext context, int index) {
@@ -129,6 +131,8 @@ class _RCalendarState extends State<RCalendar> {
                                     ? Colors.white
                                     : Colors.grey),
                           ),
+
+                          const SizedBox(height: RSizes.spaceBtwItems),
                           
                           // day
                           Text(
@@ -143,7 +147,9 @@ class _RCalendarState extends State<RCalendar> {
                                     ? RColors.textWhite
                                     : RColors.textSecondary),
                           ),
-                          
+
+                          const SizedBox(height: RSizes.spaceBtwItems),
+
                           // weekday
                           Text(
                             listOfDays[DateTime.now()
@@ -165,10 +171,69 @@ class _RCalendarState extends State<RCalendar> {
               ))),
 
               // to show assigned tasks
-              Container(
-                margin: RSpacingStyle.paddingWithAppBarHeight,
-                height: 200, // arbitrary height for displaying tasks
-                child: Text('Task list not implemented')
+              
+              Expanded(
+                child: ListView(
+                  padding: RSpacingStyle.paddingWithAppBarHeight,
+                  children: <Widget>[
+                    Container(
+                      height: 50,
+                      color: Colors.amber[600],
+                      child: const Center(child: Text('Entry A')),
+    ),
+    Container(
+      height: 50,
+      color: Colors.amber[500],
+      child: const Center(child: Text('Entry B')),
+    ),
+    Container(
+      height: 50,
+      color: Colors.amber[100],
+      child: const Center(child: Text('Entry C')),
+    ),
+    Container(
+      height: 50,
+      color: Colors.amber[100],
+      child: const Center(child: Text('Entry C')),
+    ),
+    Container(
+      height: 50,
+      color: Colors.amber[100],
+      child: const Center(child: Text('Entry C')),
+    ),
+    Container(
+      height: 50,
+      color: Colors.amber[100],
+      child: const Center(child: Text('Entry C')),
+    ),
+    Container(
+      height: 50,
+      color: Colors.amber[100],
+      child: const Center(child: Text('Entry C')),
+    ),
+    Container(
+      height: 50,
+      color: Colors.amber[100],
+      child: const Center(child: Text('Entry C')),
+    ),
+    Container(
+      height: 50,
+      color: Colors.amber[100],
+      child: const Center(child: Text('Entry C')),
+    ),
+    Container(
+      height: 50,
+      color: Colors.amber[100],
+      child: const Center(child: Text('Entry C')),
+    ),
+    Container(
+      height: 50,
+      color: Colors.amber[100],
+      child: const Center(child: Text('Entry C')),
+    ),
+
+  ],
+)
               )
         ],
       ),
