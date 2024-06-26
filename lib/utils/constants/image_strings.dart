@@ -12,4 +12,7 @@ class RImages {
   static const String google = "assets/logos/google.png";
   static const String facebook = "assets/logos/facebook.png";
   static const String twitter = "assets/logos/twitter.png";
+
+  // -- Background Photos
+  static const String background1 = "assets/images/background.jpg";
 }

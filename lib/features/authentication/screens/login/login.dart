@@ -15,29 +15,32 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isDark = RHelperFunctions.isDarkMode(context);
 
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: RSpacingStyle.paddingWithAppBarHeight,
-          child: Column(
-            children: [
-              // Logo, Title & Sub-Title
-              RLoginHeader(isDark: isDark),
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: RSpacingStyle.paddingWithAppBarHeight,
+            child: Column(
+              children: [
+                // Logo, Title & Sub-Title
+                RLoginHeader(isDark: isDark),
 
-              //Form
-              const RLoginForm(),
+                //Form
+                const RLoginForm(),
 
-              //Divider
-              RFormDivider(
-                isDark: isDark,
-                dividerText: RTexts.orSignInWith,
-              ),
+                //Divider
+                RFormDivider(
+                  isDark: isDark,
+                  dividerText: RTexts.orSignInWith,
+                ),
 
-              const SizedBox(height: RSizes.spaceBtwSections),
+                const SizedBox(height: RSizes.spaceBtwSections),
 
-              //Footer
-              const RSocialMediaButtons(),
-            ],
+                //Footer
+                const RSocialMediaButtons(),
+              ],
+            ),
           ),
         ),
       ),

@@ -10,20 +10,21 @@ class RFullScreenLoader {
       barrierDismissible: false,
       builder: (value) => PopScope(
         child: Container(
-            color: RHelperFunctions.isDarkMode(Get.context!)
-                ? RColors.dark
-                : RColors.white,
-            width: double.infinity,
-            height: double.infinity,
-            child: Scaffold(
-              body: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(width: double.infinity),
-                  Text(text),
-                ],
-              ),
-            )),
+          color: RHelperFunctions.isDarkMode(Get.context!)
+              ? RColors.dark
+              : RColors.white,
+          width: double.infinity,
+          height: double.infinity,
+          child: Scaffold(
+            body: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(width: double.infinity),
+                Text(text),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

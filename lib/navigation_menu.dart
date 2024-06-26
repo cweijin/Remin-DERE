@@ -5,7 +5,7 @@ import 'package:remindere/features/body/screens/calendar/calendar.dart';
 import 'package:remindere/features/body/screens/chat/chat.dart';
 import 'package:remindere/features/body/screens/home/home.dart';
 import 'package:remindere/features/body/screens/notification/notification.dart';
-import 'package:remindere/features/personalization/screens/settings/settings.dart';
+import 'package:remindere/features/personalization/screens/profile/profile.dart';
 import 'package:remindere/utils/constants/colors.dart';
 import 'package:remindere/utils/helpers/helper_functions.dart';
 
@@ -45,7 +45,7 @@ class NavigationMenu extends StatelessWidget {
             // Chat
             NavigationDestination(
               icon: Icon(Iconsax.message),
-              label: 'Chat',
+              label: 'Inbox',
             ),
 
             // Notification
@@ -75,6 +75,6 @@ class NavigationController extends GetxController {
     const CalendarScreen(),
     const ChatScreen(),
     const NotificationScreen(),
-    const SettingScreen(),
+    const ProfileScreen(),
   ];
 }

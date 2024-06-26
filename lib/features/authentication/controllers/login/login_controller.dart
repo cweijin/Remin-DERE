@@ -34,15 +34,17 @@ class LoginController extends GetxController {
         return;
       }
 
-      // Form Validation
+      // Form Validation (email is hadled through autovalidation, this is just to ensure password field is not empty)
       if (!loginFormKey.currentState!.validate()) {
         RFullScreenLoader.stopLoading();
         return;
       }
 
-      // Save Local Data if Remember Me is selected
+      // Save Local Data if Remember Me is selected or remove local data if remember me is not selected
       if (rememberMe.value) {
         localStorage.write('rememberEmail', email.text.trim());
+      } else {
+        localStorage.remove('rememberEmail');
       }
 
       await AuthenticationRepository.instance

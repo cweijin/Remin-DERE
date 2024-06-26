@@ -30,6 +30,7 @@ class RSignUpForm extends StatelessWidget {
                   controller: controller.firstName,
                   validator: (value) =>
                       RValidator.validateEmptyText(RTexts.firstName, value),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   expands: false,
                   decoration: const InputDecoration(
                     labelText: RTexts.firstName,
@@ -43,6 +44,7 @@ class RSignUpForm extends StatelessWidget {
                   controller: controller.lastName,
                   validator: (value) =>
                       RValidator.validateEmptyText(RTexts.lastName, value),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   expands: false,
                   decoration: const InputDecoration(
                     labelText: RTexts.lastName,
@@ -60,6 +62,7 @@ class RSignUpForm extends StatelessWidget {
             controller: controller.username,
             validator: (value) =>
                 RValidator.validateEmptyText(RTexts.username, value),
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             decoration: const InputDecoration(
               labelText: RTexts.username,
               prefixIcon: Icon(Iconsax.user_edit),
@@ -72,6 +75,7 @@ class RSignUpForm extends StatelessWidget {
           TextFormField(
             controller: controller.email,
             validator: (value) => RValidator.validateEmail(value),
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             decoration: const InputDecoration(
               labelText: RTexts.email,
               prefixIcon: Icon(Iconsax.direct),
@@ -84,6 +88,7 @@ class RSignUpForm extends StatelessWidget {
           TextFormField(
             controller: controller.phoneNumber,
             validator: (value) => RValidator.validatePhoneNumber(value),
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             decoration: const InputDecoration(
               labelText: RTexts.phoneNo,
               prefixIcon: Icon(Iconsax.call),
@@ -97,6 +102,7 @@ class RSignUpForm extends StatelessWidget {
             () => TextFormField(
               controller: controller.password,
               validator: (value) => RValidator.validatePassword(value),
+              autovalidateMode: AutovalidateMode.onUserInteraction,
               obscureText: controller.hidePassword.value,
               decoration: InputDecoration(
                 labelText: RTexts.password,
