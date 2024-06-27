@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:remindere/common/styles/spacing_styles.dart';
 import 'package:remindere/features/taskallocation/controllers/task_allocation_controller.dart';
-import 'package:remindere/data/repositories/calendar_event_repository/calendar_event_repository.dart';
 import 'package:remindere/features/taskallocation/models/task_model.dart';
 
 class ManualAllocation extends StatelessWidget {
@@ -11,12 +10,6 @@ class ManualAllocation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(TaskAllocationController());
-    final taskDB = Get.put(CalendarEventRepository());  // database for calendar
-
-    final taskName = TextEditingController();   // to store details
-    final taskDescription = TextEditingController();
-    final taskAssignees = TextEditingController();
-
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -32,39 +25,38 @@ class ManualAllocation extends StatelessWidget {
                 child: Column(
                   children: [
                     TextFormField(
-                      controller: taskName,
+                      controller: controller.taskName,
                       decoration: const InputDecoration(
                         labelText: 'Task Name',
                       ),
                       // validator: need validator
                     ),
                     TextFormField(
-                      controller: taskDescription,
+                      controller: controller.taskDescription,
                       decoration: const InputDecoration(
                         labelText: 'Description',
                       ),
                       // validator: need validator
                     ),
                     TextFormField(
-                      controller: taskAssignees,
+                      controller: controller.taskAssignees,
                       decoration: const InputDecoration(
                         labelText: 'Asignee',
                       ),
                       // validator: need validator
                     ),
-                    
-                    // due date picker
-                      TextField(
-                        controller: controller.date,
-                        decoration:  InputDecoration(
-                          labelText: 'Select a Date',
-                        ),
-                        readOnly: true,
-                        onTap: () {
-                          controller.selectDate(context);
 
-                        },
+                    // due date picker
+                    TextField(
+                      controller: controller.dueDate,
+                      decoration: const InputDecoration(
+                        labelText: 'Select a Date',
                       ),
+                      readOnly: true,
+                      onTap: () {
+                        controller.selectDate(context);
+                      },
+                    ),
 
                     TextFormField(
                       decoration: const InputDecoration(
@@ -76,19 +68,13 @@ class ManualAllocation extends StatelessWidget {
               ),
 
               // save event to database
-              ElevatedButton(
-                onPressed: () { // create a task instance first
-                  TaskModel task = TaskModel(
-                    taskName: taskName.text, 
-                    taskDescription: taskDescription.text, 
-                    asignees: [taskAssignees.text], 
-                    dueDate: controller.pickedDate(), 
-                    attachments: [] // empty
-                  );
-
-                  taskDB.saveTaskDetails(task); // then save it to firebase
-                },
-                child: Text("Assign Task"))
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                    onPressed: () =>
+                        controller.createTask(), // Save to Firestore Database
+                    child: const Text("Assign Task")),
+              )
             ],
           ),
         ),
