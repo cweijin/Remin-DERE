@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:remindere/features/personalization/models/user_model.dart';
 import 'package:remindere/features/taskallocation/models/task_model.dart';
 import 'package:remindere/utils/exceptions/firebase_auth_exceptions.dart';
 import 'package:remindere/utils/exceptions/firebase_exceptions.dart';
@@ -22,7 +21,7 @@ class CalendarEventRepository extends GetxController {
           .collection("Users")
           .doc(user!.uid)
           .collection("Tasks")
-          .doc('vsdshertgew')
+          .doc('helloFirstEvent!!')
           .set(task.toJSON()); // Find a way for the auto doc id!!!
     } on FirebaseAuthException catch (e) {
       throw RFirebaseAuthException(e.code).message;
