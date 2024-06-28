@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:remindere/common/styles/spacing_styles.dart';
 import 'package:remindere/features/taskallocation/controllers/task_allocation_controller.dart';
-import 'package:remindere/features/taskallocation/models/task_model.dart';
 
 class ManualAllocation extends StatelessWidget {
   const ManualAllocation({super.key});

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:remindere/common/styles/spacing_styles.dart';
 import 'package:remindere/utils/constants/sizes.dart';
 import 'package:remindere/utils/constants/colors.dart';
@@ -11,7 +10,7 @@ class CalendarScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Calendar'),
+          title: const Text('Calendar'),
           centerTitle: true,
         ),
         backgroundColor: Colors.orange,
