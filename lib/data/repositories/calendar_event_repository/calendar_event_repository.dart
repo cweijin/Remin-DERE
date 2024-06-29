@@ -34,4 +34,24 @@ class CalendarEventRepository extends GetxController {
       throw 'Unknown error. Please try again.';
     }
   }
+
+  // modeled after team_repository.dart
+  Future<List<TaskModel>> fetchTaskList() async {
+    try {
+      final user = _auth.currentUser;
+      final result = await _db
+                        .collection("Users")
+                        .doc(user!.uid)
+                        .collection("Tasks")
+                        .get();
+      // return this
+      return result.docs
+          .map((docSnapshot) => TaskModel.fromSnapshot(docSnapshot))
+          .toList();
+          
+    } catch (e) {
+      throw 'Something went wrong while fetching task list. Please try again later.';
+    }
+  }
+
 }

@@ -56,7 +56,7 @@ class TaskAllocationController extends GetxController {
       final newTask = TaskModel(
         taskName: taskName.text.trim(),
         taskDescription: taskDescription.text.trim(),
-        asignees: [taskAssignees.text.trim()],
+        assignees: [taskAssignees.text.trim()],
         dueDate: DateTime.parse(dueDate.text.trim()),
         attachments: [],
       );

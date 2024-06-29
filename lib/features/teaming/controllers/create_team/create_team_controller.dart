@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:remindere/data/repositories/team/team_repository.dart';
-import 'package:remindere/features/personalization/screens/profile/profile.dart';
 import 'package:remindere/features/teaming/models/team_model.dart';
 import 'package:remindere/utils/helpers/network_manager.dart';
 import 'package:remindere/utils/popups/full_screen_loader.dart';

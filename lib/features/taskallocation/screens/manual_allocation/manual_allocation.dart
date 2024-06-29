@@ -40,7 +40,7 @@ class ManualAllocation extends StatelessWidget {
                     TextFormField(
                       controller: controller.taskAssignees,
                       decoration: const InputDecoration(
-                        labelText: 'Asignee',
+                        labelText: 'Assignee',
                       ),
                       // validator: need validator
                     ),
