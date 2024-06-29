@@ -29,7 +29,9 @@ class RAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: AppBar(
         automaticallyImplyLeading: false,
         leading: showBackArrow
-            ? IconButton(onPressed: () {}, icon: const Icon(Iconsax.arrow_left))
+            ? IconButton(
+                onPressed: leadingOnPressed,
+                icon: const Icon(Iconsax.arrow_left))
             : leadingIcon == null
                 ? null
                 : IconButton(

@@ -3,24 +3,34 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:remindere/common/styles/spacing_styles.dart';
+import 'package:remindere/common/widgets/shimmer/shimmer.dart';
 import 'package:remindere/features/authentication/screens/login/login.dart';
+import 'package:remindere/features/personalization/controllers/team_controller.dart';
+import 'package:remindere/features/personalization/controllers/user_controller.dart';
+import 'package:remindere/features/personalization/screens/profile/widgets/team_card.dart';
+import 'package:remindere/features/teaming/controllers/create_team/create_team_controller.dart';
+import 'package:remindere/features/teaming/screens/join_team/join_team.dart';
 import 'package:remindere/utils/constants/image_strings.dart';
 import 'package:remindere/utils/constants/sizes.dart';
+import 'package:remindere/utils/device/device_utility.dart';
+import 'package:remindere/utils/helpers/cloud_helper_functions.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final userController = UserController.instance;
+    final teamController = Get.put(TeamController());
+    final createTeamController = Get.put(CreateTeamController());
     final auth = FirebaseAuth.instance;
-    final width = MediaQuery.of(context).size.width;
+    final width = RDeviceUtils.getScreenWidth(context);
 
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
             Stack(
-              //alignment: Alignment.center,
               children: [
                 const SizedBox(height: 380),
                 Image.asset(
@@ -52,10 +62,16 @@ class ProfileScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Kaiya Morrow",
-                          style: Theme.of(context).textTheme.headlineMedium,
-                        ),
+                        Obx(() {
+                          if (userController.profileLoading.value) {
+                            return const RShimmerEffect(width: 100, height: 15);
+                          } else {
+                            return Text(
+                              userController.user.value.fullName,
+                              style: Theme.of(context).textTheme.headlineMedium,
+                            );
+                          }
+                        }),
                         Text("Software Engineer",
                             style: Theme.of(context).textTheme.bodyMedium),
                       ],
@@ -69,50 +85,41 @@ class ProfileScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Your teams",
-                      style: Theme.of(context).textTheme.headlineSmall),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Your teams",
+                          style: Theme.of(context).textTheme.headlineSmall),
+                      TextButton(
+                          onPressed: () => Get.to(() => const JoinTeamScreen()),
+                          child: const Text('Join or create a team')),
+                    ],
+                  ),
                   const SizedBox(height: RSizes.spaceBtwItems),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        InkWell(
-                          splashColor: Colors.grey,
-                          onTap: () {},
-                          child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.blue,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              height: 200,
-                              width: 200),
-                        ),
-                        const SizedBox(width: 10, height: 200),
-                        InkWell(
-                          splashColor: Colors.grey,
-                          onTap: () {},
-                          child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.blue,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              height: 200,
-                              width: 200),
-                        ),
-                        const SizedBox(width: 10, height: 200),
-                        InkWell(
-                          splashColor: Colors.grey,
-                          onTap: () {},
-                          child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.blue,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              height: 200,
-                              width: 200),
-                        ),
-                      ],
-                    ),
+                  SizedBox(
+                    height: 200,
+                    child: Obx(() => FutureBuilder(
+                          // Use key to trigger refresh
+                          key: Key(createTeamController.refreshData.value
+                              .toString()),
+                          future: teamController.getAllUserTeams(),
+                          builder: (context, snapshot) {
+                            // Helper function to handle loader, no record, or error message
+                            final response =
+                                RCloudHelperFunctions.checkMultiRecordState(
+                                    snapshot: snapshot);
+                            if (response != null) return response;
+
+                            final teams = snapshot.data!;
+
+                            return ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: teams.length,
+                              itemBuilder: (_, index) =>
+                                  TeamCard(name: teams[index].teamName),
+                            );
+                          },
+                        )),
                   ),
                   const SizedBox(height: RSizes.spaceBtwSections),
                   SizedBox(
@@ -155,115 +162,5 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
     );
-    // return Scaffold(
-    //   backgroundColor: Colors.white,
-    //   body: SafeArea(
-    //     child: Padding(
-    //       padding: const EdgeInsets.all(16.0),
-    //       child: Column(
-    //         crossAxisAlignment: CrossAxisAlignment.center,
-    //         children: [
-    //           const CircleAvatar(
-    //             radius: 50,
-    //             backgroundImage:
-    //                 AssetImage(''), // Replace with your image asset
-    //           ),
-    //           const SizedBox(height: 16),
-    //           const Text(
-    //             'Kaiya Morrow',
-    //             style: TextStyle(
-    //               fontSize: 24,
-    //               fontWeight: FontWeight.bold,
-    //             ),
-    //           ),
-    //           const Text(
-    //             'Software Engineer',
-    //             style: TextStyle(
-    //               fontSize: 16,
-    //               color: Colors.grey,
-    //             ),
-    //           ),
-    //           const SizedBox(height: 16),
-    //           Text(
-    //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sem sapien, mattis a cursus vel, tristique in nulla. Ut eu sem lorem.',
-    //             textAlign: TextAlign.center,
-    //             style: TextStyle(
-    //               fontSize: 14,
-    //               color: Colors.grey[700],
-    //             ),
-    //           ),
-    //           const SizedBox(height: 24),
-    //           const Text(
-    //             'Your teams',
-    //             style: TextStyle(
-    //               fontSize: 18,
-    //               fontWeight: FontWeight.bold,
-    //             ),
-    //           ),
-    //           const SizedBox(height: 16),
-    //           Row(
-    //             mainAxisAlignment: MainAxisAlignment.center,
-    //             children: [
-    //               Container(
-    //                 width: 100,
-    //                 height: 100,
-    //                 color: Colors.grey[300],
-    //               ),
-    //               const SizedBox(width: 16),
-    //               Container(
-    //                 width: 100,
-    //                 height: 100,
-    //                 color: Colors.grey[300],
-    //               ),
-    //             ],
-    //           ),
-    //           const SizedBox(height: 24),
-    //           ElevatedButton(
-    //             onPressed: () {},
-    //             style: ElevatedButton.styleFrom(
-    //               side: const BorderSide(color: Colors.grey),
-    //               shape: RoundedRectangleBorder(
-    //                 borderRadius: BorderRadius.circular(8),
-    //               ),
-    //             ),
-    //             child: const Text('Personal Details'),
-    //           ),
-    //           const SizedBox(height: 8),
-    //           ElevatedButton(
-    //             onPressed: () {},
-    //             style: ElevatedButton.styleFrom(
-    //               side: const BorderSide(color: Colors.grey),
-    //               shape: RoundedRectangleBorder(
-    //                 borderRadius: BorderRadius.circular(8),
-    //               ),
-    //             ),
-    //             child: const Text('Account Security'),
-    //           ),
-    //           const SizedBox(height: 8),
-    //           ElevatedButton(
-    //             onPressed: () {},
-    //             child: const Text('App Setting'),
-    //             style: ElevatedButton.styleFrom(
-    //               side: const BorderSide(color: Colors.grey),
-    //               shape: RoundedRectangleBorder(
-    //                 borderRadius: BorderRadius.circular(8),
-    //               ),
-    //             ),
-    //           ),
-    //           const Spacer(),
-    //           ElevatedButton(
-    //             onPressed: () {},
-    //             child: const Text('Logout'),
-    //             style: ElevatedButton.styleFrom(
-    //               shape: RoundedRectangleBorder(
-    //                 borderRadius: BorderRadius.circular(8),
-    //               ),
-    //             ),
-    //           ),
-    //         ],
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 }

@@ -39,6 +39,7 @@ dependencies:
   connectivity_plus: ^5.0.2
   flutter_native_splash: ^2.4.0
   image_picker: ^1.1.2
+  shimmer: ^3.0.0
 
   # Firebase
   firebase_core: ^2.32.0

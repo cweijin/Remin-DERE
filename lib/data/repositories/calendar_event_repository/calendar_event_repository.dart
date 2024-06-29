@@ -21,8 +21,7 @@ class CalendarEventRepository extends GetxController {
           .collection("Users")
           .doc(user!.uid)
           .collection("Tasks")
-          .doc('helloFirstEvent!!')
-          .set(task.toJSON()); // Find a way for the auto doc id!!!
+          .add(task.toJSON()); // Find a way for the auto doc id!!!
     } on FirebaseAuthException catch (e) {
       throw RFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
