@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:remindere/data/repositories/authentication_repository/authentication_repository.dart';
 import 'package:remindere/features/teaming/models/team_model.dart';
 import 'package:remindere/utils/exceptions/firebase_auth_exceptions.dart';
