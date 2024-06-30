@@ -43,7 +43,8 @@ class CreateTeamController extends GetxController {
           message: '${name.text.trim()} has been created!');
 
       // Refresh Teams Data
-      refreshData.toggle();
+      refreshData
+          .toggle(); // When refreshData is toggled, Obx will observe and rebuild the TeamCards
 
       // Reset fields
       resetFormField();

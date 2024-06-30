@@ -1,45 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:remindere/utils/constants/sizes.dart';
-import 'package:remindere/utils/device/device_utility.dart';
 import 'package:remindere/features/taskallocation/models/task_model.dart';
 
-class RTaskTile extends StatelessWidget {
+class RTaskCard extends StatelessWidget {
   final TaskModel task;
-  // final String? task;
 
-  const RTaskTile({
+  const RTaskCard({
     super.key,
     required this.task,
   });
 
   @override
   Widget build(BuildContext context) {
-    final width = RDeviceUtils.getScreenWidth(context);
-
-    return Column(children: [
+    return Row(children: [
       InkWell(
         splashColor: Colors.grey,
         onTap: () {
           _showEventDetails(context);
         },
-        child: Container(
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: Colors.blue,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          height: 100,
-          width: width,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Text(task ?? ''),
-              Text(task.taskName),
-            ],
-          ),
+        child: Row(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              height: 200,
+              width: 200,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [Text(task.taskName)],
+              ),
+            ),
+          ],
         ),
       ),
-      const SizedBox(height: RSizes.spaceBtwItems),
+      const SizedBox(width: RSizes.spaceBtwItems),
     ]);
   }
 

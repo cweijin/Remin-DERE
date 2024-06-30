@@ -9,7 +9,7 @@ class RAppBarTheme {
     elevation: 0,
     centerTitle: false,
     scrolledUnderElevation: 0,
-    backgroundColor: Colors.transparent,
+    backgroundColor: RColors.primary,
     surfaceTintColor: Colors.transparent,
     iconTheme: IconThemeData(color: RColors.black, size: RSizes.iconMd),
     actionsIconTheme: IconThemeData(color: RColors.black, size: RSizes.iconMd),

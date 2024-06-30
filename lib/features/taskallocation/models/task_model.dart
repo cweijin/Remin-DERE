@@ -1,6 +1,4 @@
 import 'dart:io';
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TaskModel {
@@ -25,7 +23,6 @@ class TaskModel {
         dueDate: DateTime(1000),
         attachments: [],
       );
-      
 
   // Whatever function needed.
 
@@ -46,15 +43,14 @@ class TaskModel {
       final data = document.data()!;
 
       return TaskModel(
-        taskName: data['TaskName'] ?? ' ',
-        taskDescription: data['TaskDescription'] ?? ' ',
-        assignees: List<String>.from(data['Assignees']),    // workaround
-        dueDate: data['DueDate'].toDate(),
-        attachments: List<File>.from(data['Attachments'])   // workaround
-      );
+          taskName: data['TaskName'] ?? ' ',
+          taskDescription: data['TaskDescription'] ?? ' ',
+          assignees: List<String>.from(data['Assignees']), // workaround
+          dueDate: data['DueDate'].toDate(),
+          attachments: List<File>.from(data['Attachments']) // workaround
+          );
     } else {
       return TaskModel.empty();
     }
   }
-
 }

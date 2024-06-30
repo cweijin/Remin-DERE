@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:remindere/data/repositories/authentication_repository/authentication_repository.dart';
 import 'package:remindere/features/taskallocation/models/task_model.dart';
 import 'package:remindere/utils/exceptions/firebase_auth_exceptions.dart';
 import 'package:remindere/utils/exceptions/firebase_exceptions.dart';
@@ -10,16 +11,14 @@ import 'package:remindere/utils/exceptions/platform_exceptions.dart';
 
 class CalendarEventRepository extends GetxController {
   static CalendarEventRepository get instance => Get.find();
-  final _auth = FirebaseAuth.instance;
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   Future<void> saveTaskDetails(TaskModel task) async {
     try {
-      final user = _auth.currentUser;
       await _db
           .collection("Users")
-          .doc(user!.uid)
+          .doc(AuthenticationRepository.instance.authUser!.uid)
           .collection("Tasks")
           .add(task.toJSON()); // Find a way for the auto doc id!!!
     } on FirebaseAuthException catch (e) {
@@ -38,20 +37,17 @@ class CalendarEventRepository extends GetxController {
   // modeled after team_repository.dart
   Future<List<TaskModel>> fetchTaskList() async {
     try {
-      final user = _auth.currentUser;
       final result = await _db
-                        .collection("Users")
-                        .doc(user!.uid)
-                        .collection("Tasks")
-                        .get();
+          .collection("Users")
+          .doc(AuthenticationRepository.instance.authUser!.uid)
+          .collection("Tasks")
+          .get();
       // return this
       return result.docs
           .map((docSnapshot) => TaskModel.fromSnapshot(docSnapshot))
           .toList();
-          
     } catch (e) {
       throw 'Something went wrong while fetching task list. Please try again later.';
     }
   }
-
 }
