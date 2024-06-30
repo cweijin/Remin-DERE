@@ -8,7 +8,6 @@ import 'package:remindere/utils/constants/sizes.dart';
 import 'package:remindere/utils/constants/colors.dart';
 
 
-
 class RTaskView extends StatelessWidget {
   const RTaskView({super.key});
 

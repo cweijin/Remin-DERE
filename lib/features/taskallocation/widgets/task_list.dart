@@ -8,7 +8,7 @@ class TaskList extends StatelessWidget {
   // this helps build the changeable list of events. based on a to-do list.
   final List<TaskModel> tasks;
 
-  TaskList({required this.tasks});
+  const TaskList({super.key, required this.tasks});
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +21,7 @@ class TaskList extends StatelessWidget {
 
   // fetch from repo
   List<Widget> getChildrenTasks() {
+    tasks.sort(((taskA, taskB) => taskA.dueDate.compareTo(taskB.dueDate)));   // arrange based on dueDate
     return tasks.map((todo) => TaskListItem(task: todo)).toList();
   }
 }
