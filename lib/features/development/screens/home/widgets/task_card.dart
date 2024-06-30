@@ -71,7 +71,7 @@ class RTaskCard extends StatelessWidget {
 
                     // to display dueDate
                     Text(
-                      "Due Date: ${task.dueDate.toString()}",
+                      "Due Date: ${task.dueDate.day}-${task.dueDate.month}-${task.dueDate.year}",
                       style: const TextStyle(fontSize: RSizes.md),
                     ),
 

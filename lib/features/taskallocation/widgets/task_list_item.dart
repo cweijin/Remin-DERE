@@ -28,7 +28,7 @@ class TaskListItem extends StatelessWidget {
                 child: Row(children: [
                   // duedate on the left
                   Text(
-                    task.dueDate.toString(),
+                    "${task.dueDate.day}-${task.dueDate.month}-${task.dueDate.year}",
                     style: const TextStyle(
                       color: RColors.textPrimary
                     ),
@@ -86,7 +86,7 @@ class TaskListItem extends StatelessWidget {
 
               // to display dueDate
               Text(
-                "Due Date: ${task.dueDate.toString()}",
+                "Due Date: ${task.dueDate.day}-${task.dueDate.month}-${task.dueDate.year}",
                 style: const TextStyle(
                   fontSize: RSizes.md
                 ),
