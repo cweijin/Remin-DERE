@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:remindere/utils/helpers/cloud_helper_functions.dart';
 import 'package:remindere/features/calendar/controllers/calendar_task_controller.dart';
-import 'package:remindere/common/styles/spacing_styles.dart';
 import 'package:remindere/features/taskallocation/widgets/task_list.dart';
-import 'package:remindere/utils/constants/sizes.dart';
-import 'package:remindere/utils/constants/colors.dart';
 
 
 class RTaskView extends StatelessWidget {

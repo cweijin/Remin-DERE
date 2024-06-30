@@ -82,9 +82,9 @@ class RTaskBlock extends StatelessWidget {
               ),
 
               // to display list of attachments
-              Text(
+              const Text(
                 "Attachments: not implemented yet",
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: RSizes.md
                 ),
               ),

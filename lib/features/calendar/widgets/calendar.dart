@@ -36,9 +36,6 @@ class _RCalendarState extends State<RCalendar> {
 
   @override
   Widget build(BuildContext context) {
-    // final calendarController
-    // final calendarTaskController
-
     return Column(
           children: [
             //To Show Current Date
@@ -47,12 +44,8 @@ class _RCalendarState extends State<RCalendar> {
               margin: RSpacingStyle.paddingWithAppBarHeight,
               alignment: Alignment.centerLeft,
               child: Text(
-                selectedDate.day.toString() +
-                    ' ' +
-                    listOfMonths[selectedDate.month - 1] +
-                    ', ' +
-                    selectedDate.year.toString(),
-                style: TextStyle(
+                '${selectedDate.day} ${listOfMonths[selectedDate.month - 1]}, ${selectedDate.year}',
+                style: const TextStyle(
                     fontSize: RSizes.fontSizesm,
                     fontWeight: FontWeight.w800,
                     color: RColors.primary),
@@ -63,10 +56,9 @@ class _RCalendarState extends State<RCalendar> {
           //To show Calendar Widget
             Container(
               height: 100, // need new RSizes
-              child: Container(
                 child: ListView.separated(
                   separatorBuilder: (BuildContext context, int index) {
-                    return SizedBox(
+                    return const SizedBox(
                       width: RSizes.md); // seperation of scrollables
                   },
                   itemCount: 365,
@@ -88,7 +80,7 @@ class _RCalendarState extends State<RCalendar> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           // boxshadow does not work
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(
                                 color: (RColors.darkGrey),
                                 offset: Offset(2, 2),
@@ -150,7 +142,7 @@ class _RCalendarState extends State<RCalendar> {
                     ),
                   );
                 },
-              ))),
+              )),
         ]
       );
   }

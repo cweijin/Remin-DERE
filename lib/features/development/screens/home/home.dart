@@ -9,7 +9,6 @@ import 'package:remindere/utils/helpers/cloud_helper_functions.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-  // static const tasks = ["Task 1", "Task 2", "Task 3", "Task 4", "Task 5", "Task 6"];
 
   @override
   Widget build(BuildContext context) {
@@ -59,13 +58,6 @@ class HomeScreen extends StatelessWidget {
                             );
                           },
                         )),
-                  // child: ListView.builder(
-                  //   itemCount: tasks.length,
-                  //   scrollDirection: Axis.horizontal,
-                  //   itemBuilder: (context, index) {
-                  //     return RTaskBlock(task: tasks[index]);
-                  //   },
-                  // ),
                 ),
                 const SizedBox(height: RSizes.spaceBtwSections),
                 Text('Task List',
@@ -107,14 +99,6 @@ class HomeScreen extends StatelessWidget {
                         )),
             )]
             )
-            // sliver: SliverList.builder(
-            //   itemCount: tasks.length,
-            //   itemBuilder: (context, index) {
-            //     return Container (
-            //       child: RTaskTile(task: tasks[index])
-            //     );
-            //   },
-            // ),
           ),
         ],
       ),

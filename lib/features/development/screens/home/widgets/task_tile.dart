@@ -1,4 +1,3 @@
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:remindere/utils/constants/sizes.dart';
 import 'package:remindere/utils/device/device_utility.dart';
@@ -7,8 +6,6 @@ import 'package:remindere/features/taskallocation/models/task_model.dart';
 
 class RTaskTile extends StatelessWidget {
   final TaskModel task;
-  // final String? task;
-
 
   const RTaskTile({
     super.key,
@@ -36,7 +33,6 @@ class RTaskTile extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Text(task ?? ''),
               Text(task.taskName),
             ],
           ),
@@ -91,9 +87,9 @@ class RTaskTile extends StatelessWidget {
               ),
 
               // to display list of attachments
-              Text(
+              const Text(
                 "Attachments: not implemented yet",
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: RSizes.md
                 ),
               ),

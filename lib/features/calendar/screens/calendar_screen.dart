@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'package:remindere/utils/device/device_utility.dart';
-import 'package:remindere/features/calendar/widgets/RCalendar.dart';
-import 'package:remindere/features/calendar/widgets/RTaskView.dart';
+import 'package:remindere/features/calendar/widgets/calendar.dart';
+import 'package:remindere/features/calendar/widgets/task_view.dart';
 
 class CalendarScreen extends StatelessWidget {
   const CalendarScreen({super.key});
