@@ -1,39 +1,108 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:remindere/utils/constants/colors.dart';
+import 'package:remindere/utils/constants/sizes.dart';
 import 'package:remindere/features/taskallocation/models/task_model.dart';
 
 class TaskListItem extends StatelessWidget {
   final TaskModel task;
 
-  TaskListItem({required this.task});
+  const TaskListItem({super.key, required this.task});
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return  SizedBox(
               height: 50,
-              color: Colors.amber[600],
-              child: Column(
-                children: [
-                  Center(child: Text(task.taskName)),
-                  Text(task.taskDescription)
-                ],
-              )
-    );
+              child: ElevatedButton(
+                onPressed: () {
+                  _showEventDetails(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: RColors.lightOrange,
+                  padding: const EdgeInsets.all(RSizes.borderRadiusLg),
+                  side: const BorderSide(
+                    color: RColors.lightestOrange,
+                  ),                  
+                ),
+                child: Row(children: [
+                  // duedate on the left
+                  Text(
+                    task.dueDate.toString(),
+                    style: const TextStyle(
+                      color: RColors.textPrimary
+                    ),
+                    textAlign: TextAlign.center,
+                    softWrap: true                    
+                  ),
+                  Expanded(child:
+                    Column(
+                      children: [
+                        // task name
+                        Center(child: Text(task.taskName))
+                      ]
+                    )
+                )
+              ])            
+      )
+    );  
+  }
+
+  // display a pop up with event details
+  void _showEventDetails(BuildContext context) {
+    showModalBottomSheet(context: context, builder: (BuildContext bc) {
+      return Container(
+        height: MediaQuery.of(context).size.height*.60,    // Task detail popup-box size
+        child: Padding(
+          padding: const EdgeInsets.all(RSizes.borderRadiusMd),
+          child: Column(         
+            children: [
+              const Text(
+                'Task Details',
+                style: TextStyle(
+                  fontSize: RSizes.lg
+                ),
+              ),
+              Text(
+                "Task name: ${task.taskName}",
+                style: const TextStyle(
+                  fontSize: RSizes.md
+                ),
+              ),
+              Text(
+                "Task Description: ${task.taskDescription}",
+                style: const TextStyle(
+                  fontSize: RSizes.md
+                ),
+              ),
+
+              // to display list of assignees, temporarily using string to show list
+              Text(
+                "Assignees: ${task.assignees.join('')}",
+                style: const TextStyle(
+                  fontSize: RSizes.md
+                ),
+              ),
+
+              // to display dueDate
+              Text(
+                "Due Date: ${task.dueDate.toString()}",
+                style: const TextStyle(
+                  fontSize: RSizes.md
+                ),
+              ),
+
+              // to display list of attachments
+              Text(
+                "Attachments: not implemented yet",
+                style: const TextStyle(
+                  fontSize: RSizes.md
+                ),
+              ),
+            ]
+          )
+        )
+      );
+    });
   }
 }
-
-            // Task widget implementation
-            // Container(
-            //       height: 50,
-            //       color: Colors.amber[600],
-            //       child: const Center(child: Text('Entry A')),
-            //     ),
-            //     Container(
-            //       height: 50,
-            //       color: Colors.amber[500],
-            //       child: const Center(child: Text('Entry B')),
-            //     ),
-            //     Container(
-            //       height: 50,
-            //       color: Colors.amber[100],
-            //       child: const Center(child: Text('Entry C')),
-            //     ),

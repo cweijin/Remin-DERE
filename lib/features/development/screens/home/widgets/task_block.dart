@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:remindere/utils/constants/sizes.dart';
+import 'package:remindere/features/taskallocation/models/task_model.dart';
 
 class RTaskBlock extends StatelessWidget {
-  final String? child;
+  final TaskModel task;
 
   const RTaskBlock({
     super.key,
-    this.child,
+    required this.task,
   });
 
   @override
@@ -14,7 +15,7 @@ class RTaskBlock extends StatelessWidget {
     return Row(children: [
       InkWell(
         splashColor: Colors.grey,
-        onTap: () {},
+        onTap: () {_showEventDetails(context);},
         child: Row(
           children: [
             Container(
@@ -26,7 +27,7 @@ class RTaskBlock extends StatelessWidget {
               width: 200,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Text(child ?? '')],
+                children: [Text(task.taskName)],
               ),
             ),
           ],
@@ -35,4 +36,63 @@ class RTaskBlock extends StatelessWidget {
       const SizedBox(width: RSizes.spaceBtwItems),
     ]);
   }
+
+  // display a pop up with event details
+  void _showEventDetails(BuildContext context) {
+    showModalBottomSheet(context: context, builder: (BuildContext bc) {
+      return Container(
+        height: MediaQuery.of(context).size.height*.60,    // Task detail popup-box size
+        child: Padding(
+          padding: const EdgeInsets.all(RSizes.borderRadiusMd),
+          child: Column(         
+            children: [
+              const Text(
+                'Task Details',
+                style: TextStyle(
+                  fontSize: RSizes.lg
+                ),
+              ),
+              Text(
+                "Task name: ${task.taskName}",
+                style: const TextStyle(
+                  fontSize: RSizes.md
+                ),
+              ),
+              Text(
+                "Task Description: ${task.taskDescription}",
+                style: const TextStyle(
+                  fontSize: RSizes.md
+                ),
+              ),
+
+              // to display list of assignees, temporarily using string to show list
+              Text(
+                "Assignees: ${task.assignees.join('')}",
+                style: const TextStyle(
+                  fontSize: RSizes.md
+                ),
+              ),
+
+              // to display dueDate
+              Text(
+                "Due Date: ${task.dueDate.toString()}",
+                style: const TextStyle(
+                  fontSize: RSizes.md
+                ),
+              ),
+
+              // to display list of attachments
+              Text(
+                "Attachments: not implemented yet",
+                style: const TextStyle(
+                  fontSize: RSizes.md
+                ),
+              ),
+            ]
+          )
+        )
+      );
+    });
+  }
+
 }
