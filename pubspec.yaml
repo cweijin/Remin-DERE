@@ -32,9 +32,9 @@ dependencies:
     sdk: flutter
 
   # For testing
-  test: ^1.24.9
-  flutter_test:
-    sdk: flutter
+  # test: ^1.24.9
+  # flutter_test:
+  #   sdk: flutter
 
   # Utility Packages
   http: ^1.2.1
