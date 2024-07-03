@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:remindere/utils/constants/colors.dart';
 import 'package:remindere/utils/constants/sizes.dart';
 import 'package:remindere/features/taskallocation/models/task_model.dart';
@@ -35,6 +33,8 @@ class TaskListItem extends StatelessWidget {
                     textAlign: TextAlign.center,
                     softWrap: true                    
                   ),
+
+                  // Task Name on the right
                   Expanded(child:
                     Column(
                       children: [

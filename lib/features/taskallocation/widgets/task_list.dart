@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:remindere/common/styles/spacing_styles.dart';
+import 'package:remindere/utils/constants/sizes.dart';
 import 'package:remindere/features/taskallocation/models/task_model.dart';
 import 'package:remindere/features/taskallocation/widgets/task_list_item.dart';
 
@@ -12,16 +13,17 @@ class TaskList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return ListView.separated(
+      separatorBuilder: (BuildContext context, int index) {
+        return const SizedBox(height: RSizes.spaceBtwItems); // seperation of scrollables
+      },
+      itemCount: tasks.length,
       scrollDirection: Axis.vertical,
       padding: RSpacingStyle.paddingWithAppBarHeight,
-      children: getChildrenTasks(),
+      itemBuilder: (BuildContext context, int index) {
+        tasks.sort(((taskA, taskB) => taskA.dueDate.compareTo(taskB.dueDate)));   // arrange based on dueDate
+        return TaskListItem(task: tasks[index]);
+      },
     );
-  }
-
-  // fetch from repo
-  List<Widget> getChildrenTasks() {
-    tasks.sort(((taskA, taskB) => taskA.dueDate.compareTo(taskB.dueDate)));   // arrange based on dueDate
-    return tasks.map((todo) => TaskListItem(task: todo)).toList();
   }
 }
