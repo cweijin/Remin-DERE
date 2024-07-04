@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'package:remindere/utils/device/device_utility.dart';
-import 'package:remindere/features/calendar/widgets/RCalendar.dart';
-import 'package:remindere/features/calendar/widgets/RTaskView.dart';
+import 'package:remindere/features/calendar/widgets/calendar_view.dart';
+import 'package:remindere/features/calendar/widgets/calendar_task_view.dart';
 
 class CalendarScreen extends StatelessWidget {
   const CalendarScreen({super.key});
@@ -16,11 +15,11 @@ class CalendarScreen extends StatelessWidget {
           centerTitle: true,
         ),
         backgroundColor: Colors.orange,
-        body: SafeArea(
+        body: const SafeArea(
           child: Column(
               children: [
                 RCalendar(),
-                const RTaskView()
+                RTaskView()
               ]
             )
           )
