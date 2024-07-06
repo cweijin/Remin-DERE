@@ -47,6 +47,17 @@ class CalendarTaskController extends GetxController {
     }
   }
 
+  // Fetch user specific tasks with dueDate later than inputted datetime for taskview.
+  Future<List<TaskModel>> getUserTasks(DateTime dateTime) async {
+    try {
+      final tasks = await taskRepository.fetchTaskList();
+      return tasks.where((task) {return task.dueDate.compareTo(dateTime) > -1;}).toList();
+    } catch (e) {
+      RLoaders.errorSnackBar(title: 'Task not found', message: e.toString());
+      return [];
+    }
+  }
+
 
   // below are methods for calendar to display info
   String showDate() {

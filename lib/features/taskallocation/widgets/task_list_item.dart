@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:remindere/utils/constants/colors.dart';
 import 'package:remindere/utils/constants/sizes.dart';
 import 'package:remindere/features/taskallocation/models/task_model.dart';
@@ -30,46 +28,53 @@ class TaskListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-              height: 70,
+              height: 80,
               child: ElevatedButton(
                 onPressed: () {
                   _showEventDetails(context);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: RColors.lightOrange,
-                  padding: const EdgeInsets.all(RSizes.borderRadiusLg),
+                  padding: const EdgeInsets.all(RSizes.borderRadiusSm),
                   side: const BorderSide(
                     color: RColors.lightestOrange,
                   ),                  
                 ),
                 child: Row(children: [
+
                   // duedate on the left
                   Container(
                     padding: const EdgeInsets.all(RSizes.borderRadiusLg),
                     child: Column(
                       children: [
                         // Day
-                        Text(
-                          "${task.dueDate.day} ${listOfMonths[task.dueDate.month-1]}",
-                          style: const TextStyle(
-                            color: RColors.textSecondary
-                          ),
-                          textAlign: TextAlign.center,
-                          softWrap: true                    
-                        ),
+                        Expanded(
+                          child: Text(
+                            "${task.dueDate.day} ${listOfMonths[task.dueDate.month-1]}",
+                            style: const TextStyle(
+                              color: RColors.textSecondary,
+                              fontSize: RSizes.lg
+                            ),
+                            textAlign: TextAlign.center,
+                            softWrap: false                  
+                          )),
 
-                        // Weekday
-                        Text(
-                          listOfDays[task.dueDate.weekday-1],
-                          style: const TextStyle(
-                            color: RColors.textSecondary
-                          ),
-                          textAlign: TextAlign.center,
-                          softWrap: true                    
-                        )
+                          // Weekday
+                          Text(
+                            listOfDays[task.dueDate.weekday-1],
+                            style: const TextStyle(
+                              color: RColors.textSecondary,
+                              fontSize: RSizes.md
+                            ),
+                            textAlign: TextAlign.center,
+                            softWrap: false                    
+                          )
+                  
+                          
                       ]
-                    )
+                )
                   ),
+
                   // Task Name on the right
                   Container(
                     padding: const EdgeInsets.all(RSizes.borderRadiusLg),

@@ -16,7 +16,7 @@ class RTaskView extends StatelessWidget {
       child: Obx(() => FutureBuilder(
             // Use key to trigger refresh
             key: Key(controller.refreshData.value.toString()),
-            future: controller.getAllUserTasks(),
+            future: controller.getUserTasks(DateTime.now()),  // currently set to only show tasks due after today.
             builder: (context, snapshot) {
               // Helper function to handle loader, no record, or error message
               final response = RCloudHelperFunctions.checkMultiRecordState(
