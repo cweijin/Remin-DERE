@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:remindere/features/development/screens/home/widgets/home_appbar.dart';
 import 'package:remindere/features/development/screens/home/widgets/task_card.dart';
 import 'package:remindere/features/development/screens/home/widgets/task_tile.dart';
@@ -10,7 +9,6 @@ import 'package:remindere/utils/helpers/cloud_helper_functions.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-  // static const tasks = ["Task 1", "Task 2", "Task 3", "Task 4", "Task 5", "Task 6"];
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +32,12 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(height: RSizes.spaceBtwItems),
                 // Task Cards
                 SizedBox(
-                  height: 200,
+                  height: 258,
                   child: Obx(
                     () => FutureBuilder(
                       // Use key to trigger refresh
                       key: Key(controller.refreshData.value.toString()),
-                      future: controller.getAllUserTasks(),
+                      future: controller.getUserTasks(DateTime.now()),
                       builder: (context, snapshot) {
                         // Helper function to handle loader, no record, or error message
                         final response =

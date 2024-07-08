@@ -13,21 +13,24 @@ class RTaskView extends StatelessWidget {
 
     // to show assigned tasks
     return Expanded(
-      child: Obx(() => FutureBuilder(
-            // Use key to trigger refresh
-            key: Key(controller.refreshData.value.toString()),
-            future: controller.getUserTasks(DateTime.now()),  // currently set to only show tasks due after today.
-            builder: (context, snapshot) {
-              // Helper function to handle loader, no record, or error message
-              final response = RCloudHelperFunctions.checkMultiRecordState(
-                  snapshot: snapshot);
-              if (response != null) return response;
+      child: Obx(
+        () => FutureBuilder(
+          // Use key to trigger refresh
+          key: Key(controller.refreshData.value.toString()),
+          future: controller.getUserTasks(DateTime
+              .now()), // currently set to only show tasks due after today.
+          builder: (context, snapshot) {
+            // Helper function to handle loader, no record, or error message
+            final response =
+                RCloudHelperFunctions.checkMultiRecordState(snapshot: snapshot);
+            if (response != null) return response;
 
-              final tasks = snapshot.data!;
+            final tasks = snapshot.data!;
 
-              return TaskList(tasks: tasks);
-            },
-          )),
+            return TaskList(tasks: tasks);
+          },
+        ),
+      ),
     );
   }
 }

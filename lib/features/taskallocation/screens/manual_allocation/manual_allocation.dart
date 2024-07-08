@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:remindere/common/styles/spacing_styles.dart';
 import 'package:remindere/features/taskallocation/controllers/task_allocation_controller.dart';
+import 'package:remindere/utils/constants/sizes.dart';
 
 class ManualAllocation extends StatelessWidget {
   const ManualAllocation({super.key});
@@ -20,6 +21,7 @@ class ManualAllocation extends StatelessWidget {
               const SizedBox(width: double.infinity),
               Text('Create Task',
                   style: Theme.of(context).textTheme.headlineMedium),
+              const SizedBox(height: RSizes.spaceBtwItems),
               Form(
                 child: Column(
                   children: [
@@ -30,6 +32,7 @@ class ManualAllocation extends StatelessWidget {
                       ),
                       // validator: need validator
                     ),
+                    const SizedBox(height: RSizes.spaceBtwInputFields),
                     TextFormField(
                       controller: controller.taskDescription,
                       decoration: const InputDecoration(
@@ -37,6 +40,8 @@ class ManualAllocation extends StatelessWidget {
                       ),
                       // validator: need validator
                     ),
+                    const SizedBox(height: RSizes.spaceBtwInputFields),
+
                     TextFormField(
                       controller: controller.taskAssignees,
                       decoration: const InputDecoration(
@@ -44,6 +49,7 @@ class ManualAllocation extends StatelessWidget {
                       ),
                       // validator: need validator
                     ),
+                    const SizedBox(height: RSizes.spaceBtwInputFields),
 
                     // due date picker
                     TextField(
@@ -56,6 +62,7 @@ class ManualAllocation extends StatelessWidget {
                         controller.selectDate(context);
                       },
                     ),
+                    const SizedBox(height: RSizes.spaceBtwInputFields),
 
                     TextFormField(
                       decoration: const InputDecoration(
@@ -65,6 +72,8 @@ class ManualAllocation extends StatelessWidget {
                   ],
                 ),
               ),
+
+              const SizedBox(height: RSizes.spaceBtwItems),
 
               // save event to database
               SizedBox(

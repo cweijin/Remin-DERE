@@ -1,6 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:remindere/utils/constants/colors.dart';
 import 'package:remindere/utils/constants/sizes.dart';
 import 'package:remindere/features/taskallocation/models/task_model.dart';
+import 'package:remindere/utils/formatters/formatter.dart';
 
 class RTaskCard extends StatelessWidget {
   final TaskModel task;
@@ -14,26 +18,56 @@ class RTaskCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(children: [
       InkWell(
-        splashColor: Colors.grey,
+        splashColor: RColors.grey,
+        radius: 50,
+        borderRadius: BorderRadius.circular(10),
         onTap: () {
           _showEventDetails(context);
         },
-        child: Row(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(10),
+        child: Card(
+          clipBehavior: Clip.antiAlias,
+          elevation: 6,
+          color: const Color.fromARGB(255, 243, 249, 241),
+          child: Column(
+            children: [
+              Container(
+                color: const Color.fromARGB(255, 42, 55, 64),
+                height: 150,
+                width: 250,
               ),
-              height: 200,
-              width: 200,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [Text(task.taskName)],
+              SizedBox(
+                width: 250,
+                child: Padding(
+                  padding: const EdgeInsets.all(RSizes.md),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(task.taskName,
+                          style: Theme.of(context).textTheme.headlineSmall),
+                      const SizedBox(height: RSizes.xs),
+                      Text(RFormatter.formatDate(task.dueDate)),
+                      Text(task.assignees.toString()),
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
+
+        // Container(
+        //   decoration: BoxDecoration(
+        //     color: RColors.primary,
+        //     borderRadius: BorderRadius.circular(10),
+        //   ),
+        //   height: 200,
+        //   width: 200,
+        //   child: Column(
+        //     mainAxisAlignment: MainAxisAlignment.center,
+        //     children: [Text(task.taskName)],
+        //   ),
+        // ),
       ),
       const SizedBox(width: RSizes.spaceBtwItems),
     ]);
