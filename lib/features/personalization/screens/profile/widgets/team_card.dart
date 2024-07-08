@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:remindere/utils/constants/sizes.dart';
 
 class TeamCard extends StatelessWidget {
@@ -15,15 +16,27 @@ class TeamCard extends StatelessWidget {
       InkWell(
         splashColor: Colors.grey,
         onTap: () {},
-        child: Container(
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: Colors.blue,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          height: 200,
-          width: 200,
-          child: Text(name, style: Theme.of(context).textTheme.headlineSmall),
+        child: Stack(
+          children: [
+            Container(
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              height: 200,
+              width: 200,
+              child:
+                  Text(name, style: Theme.of(context).textTheme.headlineSmall),
+            ),
+            Positioned(
+              right: 0,
+              child: IconButton(
+                onPressed: () {},
+                icon: const Icon(Iconsax.more),
+              ),
+            ),
+          ],
         ),
       ),
       const SizedBox(width: RSizes.spaceBtwItems),

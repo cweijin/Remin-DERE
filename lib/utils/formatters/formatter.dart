@@ -3,8 +3,13 @@ import 'package:intl/intl.dart';
 class RFormatter {
   static String formatDate(DateTime? date) {
     date ??= DateTime.now();
-    return DateFormat('dd-MMM-yyyy')
-        .format(date); // Customize the date format as needed
+    DateTime now = DateTime.now();
+    DateTime given = DateTime(date.year, date.month, date.day);
+    DateTime today = DateTime(now.year, now.month, now.day);
+    return given == today
+        ? "Today ${DateFormat('hh:mma').format(date)}"
+        : DateFormat('EEE, d MMM y, hh:mma')
+            .format(date); // Customize the date format as needed
   }
 
   static String formatCurrency(double amount) {
