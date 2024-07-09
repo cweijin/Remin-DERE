@@ -12,15 +12,21 @@ import 'package:remindere/utils/exceptions/platform_exceptions.dart';
 class CalendarEventRepository extends GetxController {
   static CalendarEventRepository get instance => Get.find();
 
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  CalendarEventRepository({FirebaseFirestore? firestore, User? user}) {
+    _db = firestore ?? FirebaseFirestore.instance;
+    _user = user ?? AuthenticationRepository.instance.authUser!;
+  }
+
+  late FirebaseFirestore _db;
+  late User _user;
 
   Future<void> saveTaskDetails(TaskModel task) async {
     try {
       await _db
           .collection("Users")
-          .doc(AuthenticationRepository.instance.authUser!.uid)
+          .doc(_user.uid)
           .collection("Tasks")
-          .add(task.toJSON()); // Find a way for the auto doc id!!!
+          .add(task.toJSON());
     } on FirebaseAuthException catch (e) {
       throw RFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
@@ -39,7 +45,7 @@ class CalendarEventRepository extends GetxController {
     try {
       final result = await _db
           .collection("Users")
-          .doc(AuthenticationRepository.instance.authUser!.uid)
+          .doc(_user.uid)
           .collection("Tasks")
           .get();
       // return this

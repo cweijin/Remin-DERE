@@ -53,4 +53,18 @@ class TaskModel {
       return TaskModel.empty();
     }
   }
+
+  @override
+  operator ==(other) {
+    if (other is TaskModel) {
+      return dueDate == other.dueDate &&
+          taskDescription == other.taskDescription &&
+          taskName == other.taskName;
+    }
+
+    return false;
+  }
+
+  @override
+  int get hashCode => Object.hash(dueDate, taskDescription, taskName);
 }

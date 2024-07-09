@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
@@ -25,7 +28,19 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   ).then(
-    (FirebaseApp value) => Get.put(AuthenticationRepository()),
+    (FirebaseApp value) async {
+      if (kDebugMode) {
+        try {
+          await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+          FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+        } catch (e) {
+          // ignore: avoid_print
+          print(e);
+        }
+      }
+
+      Get.put(AuthenticationRepository());
+    },
   );
 
   runApp(const MyApp());
