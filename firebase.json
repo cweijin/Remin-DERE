@@ -1,1 +1,37 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"remin-dere","appId":"1:29765040223:android:c99253eb12040654f003ea","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"remin-dere","configurations":{"android":"1:29765040223:android:c99253eb12040654f003ea","ios":"1:29765040223:ios:fbff4f1bbb085fe2f003ea","macos":"1:29765040223:ios:fbff4f1bbb085fe2f003ea","web":"1:29765040223:web:4a3f04cfbad94037f003ea","windows":"1:29765040223:web:36ee4e907f5f5ad5f003ea"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "remin-dere",
+          "appId": "1:29765040223:android:c99253eb12040654f003ea",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "remin-dere",
+          "configurations": {
+            "android": "1:29765040223:android:c99253eb12040654f003ea",
+            "ios": "1:29765040223:ios:fbff4f1bbb085fe2f003ea",
+            "macos": "1:29765040223:ios:fbff4f1bbb085fe2f003ea",
+            "web": "1:29765040223:web:4a3f04cfbad94037f003ea",
+            "windows": "1:29765040223:web:36ee4e907f5f5ad5f003ea"
+          }
+        }
+      }
+    }
+  },
+  "emulators": {
+    "auth": {
+      "port": 9099
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "ui": {
+      "enabled": true
+    },
+    "singleProjectMode": true
+  }
+}
