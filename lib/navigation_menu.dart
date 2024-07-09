@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:remindere/features/calendar/screens/calendar.dart';
-import 'package:remindere/features/development/screens/chat/chat.dart';
+import 'package:remindere/features/development/screens/chat/screens/chat.dart';
 import 'package:remindere/features/development/screens/home/home.dart';
 import 'package:remindere/features/personalization/screens/profile/profile.dart';
 import 'package:remindere/features/taskallocation/screens/manual_allocation/manual_allocation.dart';
