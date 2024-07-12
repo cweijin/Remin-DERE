@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:remindere/data/repositories/user/user_repository.dart';
 import 'package:remindere/features/personalization/models/user_model.dart';
 import 'package:remindere/utils/popups/loaders.dart';
@@ -7,6 +8,7 @@ import 'package:remindere/utils/popups/loaders.dart';
 class UserController extends GetxController {
   static UserController get instance => Get.find();
   RxBool profileLoading = false.obs;
+  RxBool imageUploading = false.obs;
   Rx<UserModel> user = UserModel.empty().obs;
   final userRepository = Get.put(UserRepository());
 
@@ -58,6 +60,39 @@ class UserController extends GetxController {
       RLoaders.warningSnackBar(
           title: 'Data not saved :(',
           message: 'Something went wrong while saving your information');
+    }
+  }
+
+  // Upload Profile Image
+  uploadUserProfilePicture() async {
+    try {
+      final image = await ImagePicker().pickImage(
+          source: ImageSource.gallery,
+          imageQuality: 70,
+          maxHeight: 512,
+          maxWidth: 512);
+      if (image != null) {
+        imageUploading.value = true;
+        final imageUrl =
+            await userRepository.uploadImage('Users/Images/Profile/', image);
+
+        // Update User Image Record
+        Map<String, dynamic> json = {'ProfilePicture': imageUrl};
+
+        await userRepository.updateSingleField(json);
+
+        user.value.profilePicture = imageUrl;
+        user.refresh();
+
+        RLoaders.successSnackBar(
+            title: 'Congratulations',
+            message: 'Your Profile Image has been updated!');
+      }
+    } catch (e) {
+      RLoaders.errorSnackBar(
+          title: 'Oops', message: 'Something went wrong: $e');
+    } finally {
+      imageUploading.value = false;
     }
   }
 }

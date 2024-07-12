@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:remindere/utils/formatters/formatter.dart';
 
 class UserModel {
@@ -82,4 +83,16 @@ class UserModel {
       return UserModel.empty();
     }
   }
+
+  @override
+  operator ==(o) {
+    if (o is UserModel) {
+      return id == o.id;
+    }
+    return false;
+  }
+
+  // @override
+  // // TODO: implement hashCode
+  // int get hashCode => Hash;
 }

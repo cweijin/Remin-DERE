@@ -38,18 +38,31 @@ class ProfileScreen extends StatelessWidget {
                   width: double.infinity,
                 ),
                 Positioned(
-                    top: 200,
-                    left: width - 180,
-                    child: const CircleAvatar(
-                      radius: 80,
-                      backgroundImage: AssetImage(RImages.profile1),
-                    )),
+                  top: 200,
+                  left: width - 180,
+                  child: Obx(
+                    () {
+                      final networkImage =
+                          userController.user.value.profilePicture;
+                      final image = networkImage.isNotEmpty
+                          ? NetworkImage(networkImage) as ImageProvider
+                          : const AssetImage(RImages.profile1) as ImageProvider;
+                      return userController.imageUploading.value
+                          ? const RShimmerEffect(
+                              width: 160, height: 160, radius: 80)
+                          : CircleAvatar(
+                              radius: 80,
+                              backgroundImage: image,
+                            );
+                    },
+                  ),
+                ),
                 Positioned(
                   top: 310,
                   left: width - 60,
                   child: IconButton(
                     icon: const Icon(Iconsax.edit),
-                    onPressed: () {},
+                    onPressed: () => userController.uploadUserProfilePicture(),
                   ),
                 ),
                 Positioned(
@@ -98,33 +111,35 @@ class ProfileScreen extends StatelessWidget {
                   const SizedBox(height: RSizes.spaceBtwItems),
                   SizedBox(
                     height: 200,
-                    // child: Obx(() => FutureBuilder(
-                    //       // Use key to trigger refresh
-                    //       key: Key(createTeamController.refreshData.value
-                    //           .toString()),
-                    //       future: teamController.getAllUserTeams(),
-                    //       builder: (context, snapshot) {
-                    //         // Helper function to handle loader, no record, or error message
-                    //         final response =
-                    //             RCloudHelperFunctions.checkMultiRecordState(
-                    //                 snapshot: snapshot);
-                    //         if (response != null) return response;
+                    child: Obx(
+                      () => FutureBuilder(
+                        // Use key to trigger refresh
+                        key: Key(
+                            createTeamController.refreshData.value.toString()),
+                        future: teamController.getAllUserTeams(),
+                        builder: (context, snapshot) {
+                          // Helper function to handle loader, no record, or error message
+                          final response =
+                              RCloudHelperFunctions.checkMultiRecordState(
+                                  snapshot: snapshot);
+                          if (response != null) return response;
 
-                    //         final teams = snapshot.data!;
+                          final teams = snapshot.data!;
 
-                    //         return ListView.builder(
-                    //           scrollDirection: Axis.horizontal,
-                    //           itemCount: teams.length,
-                    //           itemBuilder: (_, index) =>
-                    //               TeamCard(name: teams[index].teamName),
-                    //         );
-                    //       },
-                    //     ),),
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (_, index) =>
-                          const TeamCard(name: 'Testing'),
+                          return ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: teams.length,
+                            itemBuilder: (_, index) =>
+                                TeamCard(name: teams[index].teamName),
+                          );
+                        },
+                      ),
                     ),
+                    // child: ListView.builder(
+                    //   scrollDirection: Axis.horizontal,
+                    //   itemBuilder: (_, index) =>
+                    //       const TeamCard(name: 'Testing'),
+                    // ),
                   ),
                   const SizedBox(height: RSizes.spaceBtwSections),
                   SizedBox(

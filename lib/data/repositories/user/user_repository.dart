@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -47,6 +48,33 @@ class UserRepository extends GetxController {
       } else {
         return UserModel.empty();
       }
+    } on FirebaseAuthException catch (e) {
+      throw RFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw RFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const RFormatException();
+    } on PlatformException catch (e) {
+      throw RPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Unknown error. Please try again.';
+    }
+  }
+
+  //Function to fetch all users
+  Future<List<UserModel>> fetchAllUsers(String input) async {
+    final models = <UserModel>[];
+    try {
+      await _db.collection("Users").get().then(
+        (value) {
+          final snapshots = value.docs
+              .where((element) => element.data().containsValue(input));
+          for (var i in snapshots) {
+            models.add(UserModel.fromSnapshot(i));
+          }
+        },
+      );
+      return models;
     } on FirebaseAuthException catch (e) {
       throw RFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {

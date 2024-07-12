@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:remindere/data/repositories/team/team_repository.dart';
+import 'package:remindere/data/repositories/user/user_repository.dart';
+import 'package:remindere/features/personalization/models/user_model.dart';
 import 'package:remindere/features/teaming/models/team_model.dart';
 import 'package:remindere/utils/helpers/network_manager.dart';
 import 'package:remindere/utils/popups/full_screen_loader.dart';
@@ -12,6 +14,21 @@ class CreateTeamController extends GetxController {
   final members = TextEditingController();
 
   RxBool refreshData = true.obs;
+  RxBool refreshSearchResult = true.obs;
+  RxList<UserModel> selectedUsers = <UserModel>[].obs;
+  List<UserModel> searchResults = [];
+
+  void searchUsers(String input) async {
+    try {
+      final userRepository = Get.put(UserRepository());
+      final allUsers = await userRepository.fetchAllUsers(input);
+
+      searchResults = allUsers;
+      refreshSearchResult.toggle();
+    } catch (e) {
+      RLoaders.errorSnackBar(title: 'User not found', message: e.toString());
+    }
+  }
 
   Future<void> createTeam() async {
     try {
@@ -63,5 +80,7 @@ class CreateTeamController extends GetxController {
   void resetFormField() {
     name.clear();
     members.clear();
+    selectedUsers.clear();
+    searchResults.clear();
   }
 }
