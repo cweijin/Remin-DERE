@@ -45,7 +45,7 @@ class CreateTeamController extends GetxController {
       // Save authenticated user data in Firebase Firestore
       final newTeam = TeamModel(
         teamName: name.text.trim(),
-        teamMembers: [members.text.trim()],
+        teamMembers: selectedUsers.map((model) => model.id).toList(),
       );
 
       final teamRepository = Get.put(TeamRepository());
