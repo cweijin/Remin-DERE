@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:remindere/features/development/screens/chat/widgets/chat_view.dart';
+import 'package:remindere/features/development/screens/chat/widgets/chat_screen.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
@@ -15,7 +15,7 @@ class ChatScreen extends StatelessWidget {
         body: const SafeArea(
           child: Column(
               children: [
-                RChatView(),
+                RChatScreen(),
                 // can add stuff if needed
               ]
             )

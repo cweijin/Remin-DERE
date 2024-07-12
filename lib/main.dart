@@ -29,15 +29,16 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   ).then(
     (FirebaseApp value) async {
-      if (kDebugMode) {
-        try {
-          await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
-          FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
-        } catch (e) {
-          // ignore: avoid_print
-          print(e);
-        }
-      }
+      // for unit testing
+      // if (kDebugMode) {
+      //   try {
+      //     await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+      //     FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+      //   } catch (e) {
+      //     // ignore: avoid_print
+      //     print(e);
+      //   }
+      // }
 
       Get.put(AuthenticationRepository());
     },
