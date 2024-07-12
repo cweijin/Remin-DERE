@@ -44,8 +44,8 @@ class RCalendar extends StatelessWidget {
                     controller: controller.scrollController,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (BuildContext context, int index) {              
-                    return InkWell(
-                      onTap: () {
+                      return InkWell(
+                        onTap: () {
                           controller.refreshData.toggle();
                           controller.currentDateSelectedIndex = index;
                           controller.selectedDate =

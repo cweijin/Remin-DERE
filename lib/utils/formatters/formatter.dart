@@ -59,6 +59,11 @@ class RFormatter {
 
     return formattedNumber.toString();
   }
+
+  // for chat
+  static String formatTime(DateTime date) {
+    return DateFormat('hh:mm').format(date); // Customize the date format as needed
+  }
 }
 
 
