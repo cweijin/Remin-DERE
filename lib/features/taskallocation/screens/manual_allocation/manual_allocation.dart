@@ -35,6 +35,8 @@ class ManualAllocation extends StatelessWidget {
                     const SizedBox(height: RSizes.spaceBtwInputFields),
                     TextFormField(
                       controller: controller.taskDescription,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
                       decoration: const InputDecoration(
                         labelText: 'Description',
                       ),
