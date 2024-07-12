@@ -15,6 +15,7 @@ class TaskAllocationController extends GetxController {
       TextEditingController(); // task description editing controller
   final taskAssignees =
       TextEditingController(); // task asignee editing controller
+  final attachments = TextEditingController(); // attachment editing controller
   DateTime? _picked; // for datetime
 
   // Date Picker
@@ -71,6 +72,9 @@ class TaskAllocationController extends GetxController {
       RLoaders.successSnackBar(
           title: 'Congratulations', message: 'Task has been created!');
 
+      // Reset fields
+      resetFormField();
+
       // Move to home page
       Get.to(() => const NavigationMenu());
     } catch (e) {
@@ -80,5 +84,14 @@ class TaskAllocationController extends GetxController {
       RLoaders.errorSnackBar(
           title: 'Some error occured :(', message: e.toString());
     }
+  }
+
+  void resetFormField() {
+    dueDate.clear();
+    taskName.clear();
+    taskDescription.clear();
+    taskAssignees.clear();
+    attachments.clear();
+    _picked = null;
   }
 }

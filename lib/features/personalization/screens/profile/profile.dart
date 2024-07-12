@@ -129,8 +129,9 @@ class ProfileScreen extends StatelessWidget {
                           return ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: teams.length,
-                            itemBuilder: (_, index) =>
-                                TeamCard(name: teams[index].teamName),
+                            itemBuilder: (_, index) => TeamCard(
+                                name: teams[index].teamName,
+                                members: teams[index].teamMembers),
                           );
                         },
                       ),

@@ -5,7 +5,6 @@ import 'package:remindere/common/styles/spacing_styles.dart';
 import 'package:remindere/common/widgets/appbar/appbar.dart';
 import 'package:remindere/features/teaming/screens/create_team/create_team.dart';
 import 'package:remindere/utils/constants/sizes.dart';
-import 'package:remindere/navigation_menu.dart';
 
 class JoinTeamScreen extends StatelessWidget {
   const JoinTeamScreen({super.key});
@@ -15,7 +14,7 @@ class JoinTeamScreen extends StatelessWidget {
     return Scaffold(
       appBar: RAppBar(
         showBackArrow: true,
-        leadingOnPressed: () => Get.off(() => const NavigationMenu()),
+        leadingOnPressed: () => Get.back(),
       ),
       body: Padding(
         padding: RSpacingStyle.paddingWithAppBarHeight,

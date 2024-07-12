@@ -43,8 +43,11 @@ class RTaskCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(task.taskName,
-                          style: Theme.of(context).textTheme.headlineSmall),
+                      Text(
+                        task.taskName,
+                        style: Theme.of(context).textTheme.headlineSmall,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                       const SizedBox(height: RSizes.xs),
                       Text(RFormatter.formatDate(task.dueDate)),
                       Text(task.assignees.toString()),

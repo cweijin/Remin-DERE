@@ -6,16 +6,20 @@ class TeamCard extends StatelessWidget {
   const TeamCard({
     super.key,
     required this.name,
+    required this.members,
   });
 
   final String name;
+  final List<String> members;
 
   @override
   Widget build(BuildContext context) {
     return Row(children: [
       InkWell(
         splashColor: Colors.grey,
-        onTap: () {},
+        onTap: () {
+          _showTeamDetails(context);
+        },
         child: Stack(
           children: [
             Container(
@@ -41,5 +45,32 @@ class TeamCard extends StatelessWidget {
       ),
       const SizedBox(width: RSizes.spaceBtwItems),
     ]);
+  }
+
+  // display a pop up with event details
+  void _showTeamDetails(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return Container(
+              height: MediaQuery.of(context).size.height *
+                  .60, // Task detail popup-box size
+              child: Padding(
+                  padding: const EdgeInsets.all(RSizes.borderRadiusMd),
+                  child: Column(children: [
+                    const Text(
+                      'Team Details',
+                      style: TextStyle(fontSize: RSizes.lg),
+                    ),
+                    Text(
+                      "Team name: ${name}",
+                      style: const TextStyle(fontSize: RSizes.md),
+                    ),
+                    Text(
+                      "Task member: ${members}",
+                      style: const TextStyle(fontSize: RSizes.md),
+                    ),
+                  ])));
+        });
   }
 }

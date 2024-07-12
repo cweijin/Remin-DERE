@@ -84,15 +84,14 @@ class UserModel {
     }
   }
 
-  @override
-  operator ==(o) {
-    if (o is UserModel) {
-      return id == o.id;
-    }
-    return false;
-  }
+  // @override
+  // operator ==(other) {
+  //   if (other is UserModel) {
+  //     return id == other.id;
+  //   }
+  //   return false;
+  // }
 
   // @override
-  // // TODO: implement hashCode
-  // int get hashCode => Hash;
+  // int get hashCode => Object.hash(id, email);
 }
