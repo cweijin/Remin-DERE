@@ -17,10 +17,12 @@ class TeamController extends GetxController {
     try {
       final localStorage = GetStorage();
       final teams = await teamRepository.fetchUserTeams();
-      final selected = await teamRepository
-          .fetchTeamFromId(localStorage.read('CurrentTeam'));
-      if (teams.contains(selected)) {
-        teams.insert(0, teams.removeAt(teams.indexOf(selected)));
+      if (localStorage.read('CurrentTeam') != null) {
+        final selected = await teamRepository
+            .fetchTeamFromId(localStorage.read('CurrentTeam'));
+        if (teams.contains(selected)) {
+          teams.insert(0, teams.removeAt(teams.indexOf(selected)));
+        }
       }
       return teams;
     } catch (e) {
