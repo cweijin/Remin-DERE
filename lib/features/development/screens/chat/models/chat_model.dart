@@ -30,8 +30,8 @@ class ChatModel {
         conversationID: '',
         receiverID: '',
         receiverUsername: '',
-        updatedAt: DateTime(1000),
-        lastMessage: DateTime(1000),
+        updatedAt: DateTime.now(),
+        lastMessage: DateTime.now(),
         messages: []
       );
   

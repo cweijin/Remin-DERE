@@ -2,7 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:remindere/common/styles/spacing_styles.dart';
 import 'package:remindere/features/development/screens/chat/controllers/chat_controller.dart';
+import 'package:remindere/features/development/screens/chat/models/chat_model.dart';
+import 'package:remindere/features/development/screens/chat/widgets/chat_icon.dart';
 import 'package:remindere/features/development/screens/chat/widgets/chat_page.dart';
 
 class FindUser extends StatelessWidget {
@@ -13,19 +17,58 @@ class FindUser extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     ChatController controller = ChatController.instance;
+    TextEditingController search = TextEditingController();
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Find User')
       ),
-      body: InkWell(
-        onTap: () {
-          // Get.to(ChatPage(chat: chat));
-          controller.getUsers('');
-        },
-        child: ListView(),
+
+      body: SafeArea(
+        child: Column(
+          children: [
+            // search bar
+            TextFormField(
+              controller: search,
+              decoration: InputDecoration(
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    controller.getUsers(search.text);
+                  },
+                  icon: const Icon(
+                    Iconsax.search_favorite
+                  ),
+                )
+              ),
+            ),
+
+            // show list of users to start chat
+            Expanded(
+              child: Obx(() => ListView.separated(
+                  separatorBuilder: (BuildContext context, int index) {
+                    return const Divider(); // seperation of scrollables
+                  },
+                  itemCount: controller.users.length,
+                  scrollDirection: Axis.vertical,
+                  padding: RSpacingStyle.paddingWithAppBarHeight,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ChatIcon(
+                      chat: ChatModel(
+                        conversationID: '',
+                        receiverID: controller.users[index].id,
+                        receiverUsername: controller.users[index].username,
+                        updatedAt: DateTime.now(),
+                        lastMessage: DateTime.now(),
+                        messages: []
+                      )
+                    );
+                  },
+                )
+              )
+            )
+          ]
+        )
       )
     );
   }

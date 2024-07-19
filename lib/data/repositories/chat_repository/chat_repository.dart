@@ -17,7 +17,7 @@ import '../user/user_repository.dart';
 
 class ChatRepository extends GetxController {
   static ChatRepository get instance => Get.find();
-  final DatabaseReference _ref = FirebaseDatabase.instance.ref();
+  final DatabaseReference _ref = FirebaseDatabase.instance.ref('/');
 
   ChatRepository({FirebaseFirestore? firestore, User? user}) {
     _db = firestore ?? FirebaseFirestore.instance;
@@ -75,6 +75,8 @@ class ChatRepository extends GetxController {
       chat.snapshot.children
       .map((e) => ChatModel.fromJSON(e.value as Map<String, dynamic>))
       .toList());
+
+    // return stream;
   }
 
   Future<void> sendMessage(ChatMessageModel message) async {
