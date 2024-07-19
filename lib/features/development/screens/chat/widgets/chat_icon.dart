@@ -24,17 +24,15 @@ class ChatIcon extends StatelessWidget {
           Get.to(ChatPage(chat: chat));
         },
         child: ListTile(
-          leading: const Icon(
-            Iconsax.add
-          ),
+          leading: const CircleAvatar(),
           title: Text(chat.receiverUsername!),
-          subtitle: Text(chat.messages![0].message),
+          subtitle: Text(chat.messages!.isEmpty ? 'no messages yet' : chat.messages![0].message),
           trailing: Column(
             children: [
               // for alignement
               const SizedBox(height: RSizes.sm),
 
-              Text("${RFormatter.formatTime(chat.lastMessage)}"),
+              Text(chat.messages!.isEmpty ? 'start chat' : RFormatter.formatTime(chat.lastMessage)),
 
               const SizedBox(height: RSizes.sm),
 
@@ -43,7 +41,7 @@ class ChatIcon extends StatelessWidget {
                   color: RColors.accent,
                   borderRadius: BorderRadius.circular(50)
                 ),
-                child:Text(" ${chat.messages!.length} ")
+                child: Text(" ${chat.messages!.length} ")  // unread messages
               )
             ],
           ),

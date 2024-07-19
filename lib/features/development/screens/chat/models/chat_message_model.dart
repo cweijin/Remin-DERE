@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
+import 'package:remindere/utils/formatters/formatter.dart';
 
 class ChatMessageModel {
   final String id;
@@ -22,7 +23,7 @@ class ChatMessageModel {
     required this.attachments
   });
 
-  String get time => DateFormat('d/M, h:m a').format(DateTime.now());
+  String get time => RFormatter.formatTime(createdAt);
   bool get fromMe => senderID == FirebaseAuth.instance.currentUser!.uid;
 
   static ChatMessageModel empty() => ChatMessageModel(

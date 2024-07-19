@@ -1,8 +1,7 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:remindere/data/repositories/chat_repository/chat_repository.dart';
 import 'package:remindere/data/repositories/user/user_repository.dart';
 import 'package:remindere/features/development/screens/chat/models/chat_message_model.dart';
@@ -13,23 +12,27 @@ import 'package:remindere/utils/helpers/network_manager.dart';
 import 'package:remindere/utils/popups/full_screen_loader.dart';
 import 'package:remindere/utils/popups/loaders.dart';
 
+import 'dart:developer';
+
+
 class ChatController extends GetxController {
   // data for chatview
   static ChatController get instance => Get.find();
   final UserRepository user = Get.find();
   final chatRepository = Get.put(ChatRepository());
   RxBool refreshData = true.obs;
+  RxList<UserModel> users = <UserModel>[].obs;
 
   // data for chat
   TextEditingController msgController = TextEditingController();
 
 
   // need immplement sending messages and receiving messages
-  Future<List<UserModel>> getUsers(String username) {
+  void getUsers(String username) async {
     // final chatRepository = ChatRepository.instance;
     // chatRepository.searchUsers(username);
     // return chatRepository.searchResults.map((user) => user.fullName).toList();
-    return user.fetchAllUsers(username);
+    users.value = await user.fetchAllUsers(username);
   }
 
   // Fetch all user specific chats for chatview.  
@@ -38,6 +41,9 @@ class ChatController extends GetxController {
       final chatRepository = ChatRepository.instance;
       final chats = chatRepository.fetchChats(); //await ChatRepository.fetchChats();
 
+      log('function called');
+      log(chats.toString());
+
       return chats;
     } catch (e) {
       RLoaders.errorSnackBar(title: 'Chats not found', message: e.toString());
@@ -45,7 +51,7 @@ class ChatController extends GetxController {
     }
   }
 
-  // Create task
+  // Create Message
   Future<void> sendMessage({required String userID, required String receiverID}) async {
     if (msgController.text.isEmpty) return;
 
@@ -63,7 +69,7 @@ class ChatController extends GetxController {
       // Save authenticated message data in Firebase Firestore
       final newMessage = ChatMessageModel(  
         id: 'testing id',
-        message: '',
+        message: msgController.text,
         senderID: userID,
         receiverID: receiverID,
         createdAt: DateTime.now(),
