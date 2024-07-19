@@ -50,7 +50,10 @@ class RTaskCard extends StatelessWidget {
                       ),
                       const SizedBox(height: RSizes.xs),
                       Text(RFormatter.formatDate(task.dueDate)),
-                      Text(task.assignees.toString()),
+                      Text(
+                        task.assignees.toString(),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ],
                   ),
                 ),

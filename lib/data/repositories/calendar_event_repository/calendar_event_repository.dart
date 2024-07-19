@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:remindere/data/repositories/authentication_repository/authentication_repository.dart';
 import 'package:remindere/features/taskallocation/models/task_model.dart';
 import 'package:remindere/utils/exceptions/firebase_auth_exceptions.dart';
@@ -20,6 +21,8 @@ class CalendarEventRepository extends GetxController {
   late FirebaseFirestore _db;
   late User _user;
 
+  final localStorage = GetStorage();
+
   Future<void> saveTaskDetails(TaskModel task) async {
     try {
       await _db
@@ -27,6 +30,24 @@ class CalendarEventRepository extends GetxController {
           .doc(_user.uid)
           .collection("Tasks")
           .add(task.toJSON());
+
+      //Current selected team
+      String currentTeam = localStorage.read('CurrentTeam');
+
+      await _db
+          .collection('Teams')
+          .doc(currentTeam)
+          .collection('Tasks')
+          .add(task.toJSON());
+
+      //Upload task to each of the assignees
+      for (String id in task.assignees) {
+        await _db
+            .collection('Users')
+            .doc(id)
+            .collection('Tasks')
+            .add(task.toJSON());
+      }
     } on FirebaseAuthException catch (e) {
       throw RFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {

@@ -53,7 +53,10 @@ class RTaskTile extends StatelessWidget {
                 Text(task.taskName,
                     style: Theme.of(context).textTheme.headlineSmall),
                 Text(RFormatter.formatDate(task.dueDate)),
-                Text(task.assignees.toString()),
+                Text(
+                  task.assignees.toString(),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ],
             ),
           ),

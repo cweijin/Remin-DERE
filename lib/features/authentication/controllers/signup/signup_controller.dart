@@ -80,7 +80,7 @@ class SignupController extends GetxController {
           title: 'Congratulations', message: 'Your account has been created!');
 
       // Move to home page
-      Get.to(() => const NavigationMenu());
+      Get.offAll(const NavigationMenu());
     } catch (e) {
       // Remove Loader
       RFullScreenLoader.stopLoading();

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:remindere/features/personalization/controllers/team_controller.dart';
 import 'package:remindere/utils/constants/sizes.dart';
 
 class TeamCard extends StatelessWidget {
@@ -7,17 +10,23 @@ class TeamCard extends StatelessWidget {
     super.key,
     required this.name,
     required this.members,
+    required this.teamId,
   });
 
   final String name;
   final List<String> members;
+  final String teamId;
 
   @override
   Widget build(BuildContext context) {
+    TeamController controller = Get.find();
+    final localStorage = GetStorage();
+
     return Row(children: [
       InkWell(
         splashColor: Colors.grey,
         onTap: () {
+          controller.selectTeam(teamId);
           _showTeamDetails(context);
         },
         child: Stack(
@@ -30,8 +39,16 @@ class TeamCard extends StatelessWidget {
               ),
               height: 200,
               width: 200,
-              child:
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
                   Text(name, style: Theme.of(context).textTheme.headlineSmall),
+                  teamId == localStorage.read("CurrentTeam")
+                      ? Text('(Selected)',
+                          style: Theme.of(context).textTheme.bodySmall)
+                      : const SizedBox(),
+                ],
+              ),
             ),
             Positioned(
               right: 0,
