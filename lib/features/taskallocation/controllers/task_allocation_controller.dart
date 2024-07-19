@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:multi_dropdown/multiselect_dropdown.dart';
 import 'package:remindere/data/repositories/calendar_event_repository/calendar_event_repository.dart';
+import 'package:remindere/features/personalization/controllers/team_controller.dart';
+import 'package:remindere/features/personalization/models/user_model.dart';
 import 'package:remindere/features/taskallocation/models/task_model.dart';
 import 'package:remindere/navigation_menu.dart';
 import 'package:remindere/utils/helpers/network_manager.dart';
@@ -13,10 +16,13 @@ class TaskAllocationController extends GetxController {
   final taskName = TextEditingController(); // task name editing controller
   final taskDescription =
       TextEditingController(); // task description editing controller
-  final taskAssignees =
-      TextEditingController(); // task asignee editing controller
   final attachments = TextEditingController(); // attachment editing controller
   DateTime? _picked; // for datetime
+  final navigate = NavigationController.instance; // To navigate screens
+  TeamController team = Get.find();
+  final multiSelectController = MultiSelectController<UserModel>();
+
+  GlobalKey<FormState> taskFormKey = GlobalKey<FormState>();
 
   // Date Picker
   Future<void> selectDate(BuildContext context) async {
@@ -53,11 +59,19 @@ class TaskAllocationController extends GetxController {
         return;
       }
 
+      // Form Validation
+      if (!taskFormKey.currentState!.validate()) {
+        RFullScreenLoader.stopLoading();
+        return;
+      }
+
       // Save authenticated user data in Firebase Firestore
       final newTask = TaskModel(
         taskName: taskName.text.trim(),
         taskDescription: taskDescription.text.trim(),
-        assignees: [taskAssignees.text.trim()],
+        assignees: multiSelectController.selectedOptions
+            .map((item) => item.value!.id)
+            .toList(),
         dueDate: DateTime.parse(dueDate.text.trim()),
         attachments: [],
       );
@@ -75,8 +89,11 @@ class TaskAllocationController extends GetxController {
       // Reset fields
       resetFormField();
 
+      // Navigate to home page
+      navigate.navigateTo(0);
+
       // Move to home page
-      Get.to(() => const NavigationMenu());
+      Get.off(() => const NavigationMenu());
     } catch (e) {
       // Remove Loader
       RFullScreenLoader.stopLoading();
@@ -90,7 +107,7 @@ class TaskAllocationController extends GetxController {
     dueDate.clear();
     taskName.clear();
     taskDescription.clear();
-    taskAssignees.clear();
+    multiSelectController.clearAllSelection();
     attachments.clear();
     _picked = null;
   }

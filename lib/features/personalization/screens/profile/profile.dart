@@ -115,9 +115,10 @@ class ProfileScreen extends StatelessWidget {
                       () => FutureBuilder(
                         // Use key to trigger refresh
                         key: Key(
-                            createTeamController.refreshData.value.toString()),
+                            createTeamController.refreshData.value.toString() +
+                                teamController.refreshData.value.toString()),
                         future: teamController.getAllUserTeams(),
-                        builder: (context, snapshot) {
+                        builder: (_, snapshot) {
                           // Helper function to handle loader, no record, or error message
                           final response =
                               RCloudHelperFunctions.checkMultiRecordState(
@@ -130,8 +131,10 @@ class ProfileScreen extends StatelessWidget {
                             scrollDirection: Axis.horizontal,
                             itemCount: teams.length,
                             itemBuilder: (_, index) => TeamCard(
-                                name: teams[index].teamName,
-                                members: teams[index].teamMembers),
+                              name: teams[index].teamName,
+                              members: teams[index].teamMembers,
+                              teamId: teams[index].id,
+                            ),
                           );
                         },
                       ),

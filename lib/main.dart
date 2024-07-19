@@ -29,7 +29,7 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   ).then(
     (FirebaseApp value) async {
-      // for unit testing
+      //for unit testing
       // if (kDebugMode) {
       //   try {
       //     await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
