@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'chat_message_model.dart';
 
 class ChatModel {
@@ -47,6 +48,26 @@ class ChatModel {
       'messages': messages,
       // 'messages': messages?.map((msg) => msg.toJSON()).toList(),
     };
+  }
+
+  // Factory method to create a ChatModel from JSON
+  factory ChatModel.fromJSON(
+      Map<String, dynamic> document) {
+    // if (document.data() != null) {
+    //   final data = document.data()!;
+    if (document != null) {
+      final data = document;
+      return ChatModel(
+          conversationID: data['conversationID'] ?? ' ' ,
+          receiverID: data['receiverID'] ?? ' ',
+          receiverUsername: data['receiverUsername'],
+          updatedAt: data['updatedAt'].toDate() ?? data['lastMessage'].toDate(),  // temporary workaround
+          lastMessage: data['lastMessage'].toDate(),
+          messages: List<ChatMessageModel>.from(data['messages'])   // workaround
+          );
+    } else {
+      return ChatModel.empty();
+    }
   }
 
   // Factory method to create a ChatModel from a Firebase document snapshot
