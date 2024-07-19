@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:remindere/data/repositories/team/team_repository.dart';
 import 'package:remindere/data/repositories/user/user_repository.dart';
 import 'package:remindere/features/personalization/models/user_model.dart';
@@ -12,6 +13,7 @@ class CreateTeamController extends GetxController {
   static CreateTeamController get instance => Get.find();
   final name = TextEditingController();
   final members = TextEditingController();
+  final localStorage = GetStorage();
 
   RxBool refreshData = true.obs;
   RxBool refreshSearchResult = true.obs;
@@ -46,6 +48,7 @@ class CreateTeamController extends GetxController {
       final newTeam = TeamModel(
         teamName: name.text.trim(),
         teamMembers: selectedUsers.map((model) => model.id).toList(),
+        id: '',
       );
 
       final teamRepository = Get.put(TeamRepository());

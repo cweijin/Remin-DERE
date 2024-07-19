@@ -31,6 +31,17 @@ class UserController extends GetxController {
     }
   }
 
+  // Fetch user details from uids.
+  List<Future<UserModel>> fetchUser(List<String> userIds) {
+    try {
+      return userIds
+          .map((id) async => await userRepository.fetchUserDetails(userId: id))
+          .toList();
+    } catch (e) {
+      return [];
+    }
+  }
+
   // Save user record from any registration provider
   Future<void> saveUserRecord(UserCredential? userCredentials) async {
     try {

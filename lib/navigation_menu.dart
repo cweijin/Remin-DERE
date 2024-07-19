@@ -68,6 +68,7 @@ class NavigationMenu extends StatelessWidget {
 }
 
 class NavigationController extends GetxController {
+  static NavigationController get instance => Get.find();
   final Rx<int> selectedIndex = 0.obs;
 
   final screens = [
@@ -77,4 +78,8 @@ class NavigationController extends GetxController {
     const ChatScreen(),
     const ProfileScreen(),
   ];
+
+  void navigateTo(int screenIndex) {
+    selectedIndex.value = screenIndex;
+  }
 }
