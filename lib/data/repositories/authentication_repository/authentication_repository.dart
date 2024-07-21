@@ -11,6 +11,8 @@ import 'package:remindere/utils/exceptions/firebase_exceptions.dart';
 import 'package:remindere/utils/exceptions/format_exceptions.dart';
 import 'package:remindere/utils/exceptions/platform_exceptions.dart';
 
+import 'dart:developer';
+
 class AuthenticationRepository extends GetxController {
   static AuthenticationRepository get instance => Get.find();
 
@@ -33,6 +35,7 @@ class AuthenticationRepository extends GetxController {
   // Function to Show Relevant Screen
   void screenRedirect() async {
     final user = _auth.currentUser;
+    log('redirect');
 
     if (user != null) {
       // If user is logged in

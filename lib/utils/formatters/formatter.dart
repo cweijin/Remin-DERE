@@ -62,7 +62,7 @@ class RFormatter {
 
   // for chat
   static String formatTime(DateTime date) {
-    return DateFormat('hh:mm').format(date); // Customize the date format as needed
+    return DateFormat('d/M, hh:mm a').format(date); // Customize the date format as needed
   }
 }
 
