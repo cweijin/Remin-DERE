@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 import 'package:remindere/common/styles/spacing_styles.dart';
 import 'package:remindere/features/personalization/controllers/team_controller.dart';
@@ -10,6 +11,8 @@ import 'package:remindere/utils/constants/image_strings.dart';
 import 'package:remindere/utils/constants/sizes.dart';
 import 'package:remindere/utils/helpers/cloud_helper_functions.dart';
 import 'package:remindere/utils/validators/validation.dart';
+
+import 'dart:developer';
 
 class ManualAllocation extends StatelessWidget {
   const ManualAllocation({super.key});
@@ -81,10 +84,12 @@ class ManualAllocation extends StatelessWidget {
                           future: controller.team
                               .getTeamMembers(
                                   localStorage.read('CurrentTeam') ?? '')
-                              .then((list) => list
-                                  .map((model) => ValueItem<UserModel>(
-                                      label: model.fullName, value: model))
-                                  .toList()),
+                              .then((list) {
+                            return list
+                                .map((model) => ValueItem<UserModel>(
+                                    label: model.fullName, value: model))
+                                .toList();
+                          }),
                           builder: (_, snapshot) {
                             final response =
                                 RCloudHelperFunctions.checkMultiRecordState(
@@ -108,16 +113,25 @@ class ManualAllocation extends StatelessWidget {
                                 },
                               ),
                               onOptionSelected: (selectedOptions) {},
-                              optionBuilder: (_, item, selected) => ListTile(
-                                title: Text(
-                                  item.value?.firstName ?? '',
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                leading: const CircleAvatar(
-                                  backgroundImage: AssetImage(RImages.profile1),
-                                ),
-                              ),
-                              options: users,
+                              optionBuilder: (_, item, selected) {
+                                return ListTile(
+                                  title: Text(
+                                    item.value?.firstName ?? '',
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  leading: const CircleAvatar(
+                                    backgroundImage:
+                                        AssetImage(RImages.profile1),
+                                  ),
+                                );
+                              },
+                              options: () {
+                                //Workaround (set the controller directly) for options not updated after changing teams
+                                //Is there a better way to do so??
+                                controller.multiSelectController
+                                    .setOptions(users);
+                                return users;
+                              }(),
                             );
                           }),
 
@@ -146,14 +160,52 @@ class ManualAllocation extends StatelessWidget {
                           controller.selectDate(context);
                         },
                       ),
+
                       const SizedBox(height: RSizes.spaceBtwInputFields),
 
-                      TextFormField(
-                        controller: controller.attachments,
-                        decoration: const InputDecoration(
-                          labelText: 'Attachment (Optional)',
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(Iconsax.arrow_down_1)),
+                              Text(
+                                'Attachments [0]',
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                            ],
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              controller.uploadTaskAttachments();
+                            },
+                            child: const Text('Upload'),
+                          ),
+                        ],
                       ),
+
+                      // TextFormField(
+                      //   controller: controller.attachments,
+                      //   decoration: const InputDecoration(
+                      //     labelText: 'Attachment (Optional)',
+                      //   ),
+                      // ),
+
+                      const SizedBox(height: RSizes.spaceBtwInputFields),
+
+                      // OutlinedButton(
+                      //   onPressed: () {},
+                      //   child: const Row(
+                      //     mainAxisAlignment: MainAxisAlignment.center,
+                      //     children: [
+                      //       Icon(Icons.attach_file_rounded),
+                      //       SizedBox(width: RSizes.spaceBtwItems),
+                      //       Text('Upload Attachments (Optional)'),
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

@@ -4,6 +4,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:remindere/features/authentication/screens/login/login.dart';
+import 'package:remindere/features/authentication/screens/select_team/select_team.dart';
 import 'package:remindere/navigation_menu.dart';
 import 'package:remindere/utils/exceptions/firebase_auth_exceptions.dart';
 import 'package:remindere/utils/exceptions/firebase_exceptions.dart';
@@ -36,11 +37,19 @@ class AuthenticationRepository extends GetxController {
     if (user != null) {
       // If user is logged in
       Get.offAll(() => const NavigationMenu());
+
+      if (deviceStorage.read('CurrentTeam') == null) {
+        Get.to(() => const TeamSelectionScreen());
+      }
+      // } else {
+      //   Get.offAll(() => const NavigationMenu());
+      // }
     } else {
       // Local Storage
       deviceStorage.writeIfNull('firstTime', true);
       deviceStorage.read('firstTime') == true
-          ? Get.offAll(() => const LoginScreen())
+          ? Get.offAll(() =>
+              const LoginScreen()) // Should change to onboarding screen, if first time user
           : Get.offAll(() => const LoginScreen());
     }
   }

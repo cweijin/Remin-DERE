@@ -12,7 +12,7 @@ class RHomeAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(UserController());
+    final controller = UserController.instance;
     return RAppBar(
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

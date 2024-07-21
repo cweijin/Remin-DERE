@@ -15,7 +15,12 @@ import 'package:remindere/utils/constants/sizes.dart';
 import 'package:remindere/utils/validators/validation.dart';
 
 class CreateTeamScreen extends StatelessWidget {
-  const CreateTeamScreen({super.key});
+  final bool showBackArrow;
+
+  const CreateTeamScreen({
+    super.key,
+    this.showBackArrow = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +30,7 @@ class CreateTeamScreen extends StatelessWidget {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: RAppBar(
-          showBackArrow: true,
+          showBackArrow: showBackArrow,
           leadingOnPressed: () {
             controller.resetFormField();
             Get.back();
