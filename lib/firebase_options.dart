@@ -46,7 +46,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '29765040223',
     projectId: 'remin-dere',
     authDomain: 'remin-dere.firebaseapp.com',
-    databaseURL: 'https://remin-dere-default-rtdb.asia-southeast1.firebasedatabase.app', // IMPORTANT!
+    databaseURL: 'https://remin-dere-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'remin-dere.appspot.com',
     measurementId: 'G-9LNVWRVT7D',
   );
@@ -56,7 +56,7 @@ class DefaultFirebaseOptions {
     appId: '1:29765040223:android:c99253eb12040654f003ea',
     messagingSenderId: '29765040223',
     projectId: 'remin-dere',
-    databaseURL: 'https://remin-dere-default-rtdb.asia-southeast1.firebasedatabase.app', // IMPORTANT!
+    databaseURL: 'https://remin-dere-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'remin-dere.appspot.com',
   );
 
@@ -65,7 +65,7 @@ class DefaultFirebaseOptions {
     appId: '1:29765040223:ios:fbff4f1bbb085fe2f003ea',
     messagingSenderId: '29765040223',
     projectId: 'remin-dere',
-    databaseURL: 'https://remin-dere-default-rtdb.asia-southeast1.firebasedatabase.app', // IMPORTANT!
+    databaseURL: 'https://remin-dere-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'remin-dere.appspot.com',
     androidClientId: '29765040223-rit6h8l0rerl3u5urauf1bbc8caovrds.apps.googleusercontent.com',
     iosClientId: '29765040223-8pvc0rsqnec58djticjdkksagog3825l.apps.googleusercontent.com',
@@ -77,7 +77,7 @@ class DefaultFirebaseOptions {
     appId: '1:29765040223:ios:fbff4f1bbb085fe2f003ea',
     messagingSenderId: '29765040223',
     projectId: 'remin-dere',
-    databaseURL: 'https://remin-dere-default-rtdb.asia-southeast1.firebasedatabase.app', // IMPORTANT!
+    databaseURL: 'https://remin-dere-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'remin-dere.appspot.com',
     androidClientId: '29765040223-rit6h8l0rerl3u5urauf1bbc8caovrds.apps.googleusercontent.com',
     iosClientId: '29765040223-8pvc0rsqnec58djticjdkksagog3825l.apps.googleusercontent.com',
@@ -90,7 +90,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '29765040223',
     projectId: 'remin-dere',
     authDomain: 'remin-dere.firebaseapp.com',
-    databaseURL: 'https://remin-dere-default-rtdb.asia-southeast1.firebasedatabase.app', // IMPORTANT!
+    databaseURL: 'https://remin-dere-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'remin-dere.appspot.com',
     measurementId: 'G-L6NEN6R3T7',
   );

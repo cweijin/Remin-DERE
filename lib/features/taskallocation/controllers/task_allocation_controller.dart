@@ -1,7 +1,9 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
-import 'package:remindere/data/repositories/calendar_event_repository/calendar_event_repository.dart';
+import 'package:remindere/data/repositories/calendar_event_repository/task_repository.dart';
 import 'package:remindere/features/personalization/controllers/team_controller.dart';
 import 'package:remindere/features/personalization/models/user_model.dart';
 import 'package:remindere/features/taskallocation/models/task_model.dart';
@@ -11,16 +13,22 @@ import 'package:remindere/utils/popups/full_screen_loader.dart';
 import 'package:remindere/utils/popups/loaders.dart';
 
 class TaskAllocationController extends GetxController {
+  TaskAllocationController get instance => Get.find();
+
   // Variables
   final dueDate = TextEditingController(); // date editing controller
   final taskName = TextEditingController(); // task name editing controller
   final taskDescription =
       TextEditingController(); // task description editing controller
-  final attachments = TextEditingController(); // attachment editing controller
+  final RxList<String> attachments =
+      <String>[].obs; // attachment editing controller
   DateTime? _picked; // for datetime
   final navigate = NavigationController.instance; // To navigate screens
   TeamController team = Get.find();
   final multiSelectController = MultiSelectController<UserModel>();
+
+  final taskRepository = TaskRepository.instance;
+  final deviceStorage = GetStorage();
 
   GlobalKey<FormState> taskFormKey = GlobalKey<FormState>();
 
@@ -73,10 +81,10 @@ class TaskAllocationController extends GetxController {
             .map((item) => item.value!.id)
             .toList(),
         dueDate: DateTime.parse(dueDate.text.trim()),
-        attachments: [],
+        attachments: attachments,
       );
 
-      final taskRepository = Get.put(CalendarEventRepository());
+      final taskRepository = Get.put(TaskRepository());
       await taskRepository.saveTaskDetails(newTask);
 
       // Remove Loader
@@ -100,6 +108,32 @@ class TaskAllocationController extends GetxController {
 
       RLoaders.errorSnackBar(
           title: 'Some error occured :(', message: e.toString());
+    }
+  }
+
+  // Upload attachments
+  Future<List<String>> uploadTaskAttachments() async {
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        allowMultiple: true,
+      );
+
+      if (result != null) {
+        final attachments = result.xFiles;
+        final attachmentUrls = await taskRepository.uploadFiles(
+            'Teams/${deviceStorage.read('CurrentTeam')}/Attachments/',
+            attachments);
+
+        RLoaders.successSnackBar(
+            title: 'Congratulations', message: 'Files uploaded!');
+
+        return attachmentUrls;
+      }
+      return [];
+    } catch (e) {
+      RLoaders.errorSnackBar(
+          title: 'Oops', message: 'Something went wrong: $e');
+      return [];
     }
   }
 

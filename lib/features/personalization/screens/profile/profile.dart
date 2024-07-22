@@ -21,7 +21,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userController = UserController.instance;
-    final teamController = Get.put(TeamController());
+    final teamController = TeamController.instance;
     final createTeamController = Get.put(CreateTeamController());
     final auth = FirebaseAuth.instance;
     final width = RDeviceUtils.getScreenWidth(context);

@@ -10,6 +10,8 @@ class TeamController extends GetxController {
 
   final teamRepository = Get.put(TeamRepository());
   final localStorage = GetStorage();
+  // late Future<List<UserModel>> teamMemberFuture =
+  //     getTeamMembers(localStorage.read('CurrentTeam'));
   RxBool refreshData = true.obs;
 
   // Fetch all user specific teams
@@ -44,6 +46,7 @@ class TeamController extends GetxController {
   // Change current selected team.
   void selectTeam(String teamId) {
     localStorage.write('CurrentTeam', teamId);
+    // teamMemberFuture = getTeamMembers(teamId);
     refreshData.toggle();
   }
 }
