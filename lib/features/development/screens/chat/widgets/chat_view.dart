@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:remindere/common/styles/spacing_styles.dart';
+import 'package:remindere/features/development/screens/chat/models/chat_message_model.dart';
 import 'package:remindere/features/development/screens/chat/models/chat_model.dart';
 import 'package:remindere/features/development/screens/chat/widgets/chat_icon.dart';
-import 'package:remindere/utils/constants/sizes.dart';
-import 'package:remindere/utils/constants/colors.dart';
 
 class ChatView extends StatelessWidget {
   // Shows all the users that can be messaged

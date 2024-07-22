@@ -1,8 +1,10 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:remindere/data/repositories/authentication_repository/authentication_repository.dart';
 import 'package:remindere/features/development/screens/chat/controllers/chat_controller.dart';
+import 'package:remindere/features/development/screens/chat/models/chat_message_model.dart';
 import 'package:remindere/features/development/screens/chat/models/chat_model.dart';
 import 'package:remindere/utils/constants/colors.dart';
 import 'package:remindere/utils/constants/sizes.dart';
@@ -26,13 +28,13 @@ class ChatIcon extends StatelessWidget {
         child: ListTile(
           leading: const CircleAvatar(),
           title: Text(chat.receiverUsername!),
-          subtitle: Text(chat.messages!.isEmpty ? 'no messages yet' : chat.messages![0].message),
+          subtitle: Text(chat.isOpen? 'no messages yet' : "Testing message!"),  // need to change testing message
           trailing: Column(
             children: [
               // for alignement
               const SizedBox(height: RSizes.sm),
 
-              Text(chat.messages!.isEmpty ? 'start chat' : RFormatter.formatTime(chat.lastMessage)),
+              Text(chat.isOpen ? 'start chat' : RFormatter.formatTime(chat.lastMessage)),
 
               const SizedBox(height: RSizes.sm),
 
@@ -41,7 +43,7 @@ class ChatIcon extends StatelessWidget {
                   color: RColors.accent,
                   borderRadius: BorderRadius.circular(50)
                 ),
-                child: Text(" ${chat.messages!.length} ")  // unread messages
+                child: Text(" ${chat.unreadMessagesCount} ")  // unread messages
               )
             ],
           ),

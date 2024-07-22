@@ -1,5 +1,9 @@
+import 'dart:developer';
+
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:remindere/data/repositories/authentication_repository/authentication_repository.dart';
 import 'package:remindere/features/development/screens/chat/models/chat_message_model.dart';
 import 'package:remindere/features/development/screens/chat/models/chat_model.dart';
@@ -24,44 +28,40 @@ class RChatScreen extends StatelessWidget {
     final controller = Get.put(ChatController());
 
     // to show all chats
-    // return Expanded(
-    //     child: Obx(
-    //         () => StreamBuilder(
-    //           // Use key to trigger refresh
-    //           key: Key(controller.refreshData.value.toString()),
-    //           stream: controller.getUserChats(), // currently set to show all chats. can update to only show users with chat history
-    //           builder: (context, snapshot) {
-    //             // Helper function to handle loader, no record, or error message
-    //             final response =
-    //                 RCloudHelperFunctions.checkMultiRecordState(
-    //                   snapshot: snapshot, nothingFound: const Center(child: Text('you have no friends')),
-    //                 );
-    //             if (response != null) return response;
+    return Expanded(
+        child: Obx(
+            () => StreamBuilder(
+              // Use key to trigger refresh
+              key: Key(controller.refreshData.value.toString()),
+              stream: controller.getUserChats(), // currently set to show all chats. can update to only show users with chat history
+              builder: (context, snapshot) {
+                // Helper function to handle loader, no record, or error message
+                // final response =
+                //     RCloudHelperFunctions.checkMultiRecordState(
+                //       snapshot: snapshot, nothingFound: const Center(child: Text('you have no friends')),
+                //     );
+                // if (response != null) return response;
+                if (snapshot.hasData && !snapshot.hasError && 
+                  snapshot.data!.snapshot.value != null) {
+                  
+                  log("StreamBuilder: snapshot data: ");
 
-    //             final chats = snapshot.data!;
+                  final data = Map<String, dynamic>.from(snapshot.data!.snapshot.value as Map);
 
-    //             return ChatView(chats: chats);
-    //           },
-    //         ),
-    //       )      
-    // );
+                  List<ChatModel> chats = [];
+                  data.forEach((index, chat) {
+                    log("keys are: ${index.toString()}");
+                    log(data[index].toString());
+                    log(data[index].runtimeType.toString());
+                    chats.add(ChatModel.fromJSON(Map<String, dynamic>.from(data[index])));
+                  });
+                  return ChatView(chats: chats);
+                }
 
-    // For testing purposes
-
-  // testing purposes
-    List<ChatMessageModel> messageTest = [
-      ChatMessageModel(id: 'random id for deletion', message: 'no messages yet', senderID: 'testing ID', receiverID: 'test', createdAt: DateTime.now(), readAt: DateTime.now(), attachments: []),
-      ChatMessageModel(id: 'random id for deletion 2', message: 'hi', senderID: 'testing ID', receiverID: 'test', createdAt: DateTime.now(), readAt: DateTime.now(), attachments: []),
-      ChatMessageModel(id: 'random id for deletion 3', message: 'no messages yet', senderID: AuthenticationRepository.instance.authUser!.uid, receiverID: 'test', createdAt: DateTime.now(), readAt: null, attachments: []),
-    ];
-    
-    List<ChatModel> chatsTest = [
-      ChatModel(conversationID: 'testID', receiverID: 'noone', receiverUsername: 'chat test', updatedAt: DateTime.now(), lastMessage: DateTime.now(), messages: messageTest),
-      ChatModel(conversationID: 'testID2', receiverID: 'someone', receiverUsername: 'chat test 2', updatedAt: DateTime.now(), lastMessage: DateTime.now(), messages: messageTest)      
-    ];
-
-    return Expanded(child: 
-          ChatView(chats: chatsTest)
+                return const Center(child: Text('you have no friends'));
+              },
+            ),
+          )      
     );
   }
 }

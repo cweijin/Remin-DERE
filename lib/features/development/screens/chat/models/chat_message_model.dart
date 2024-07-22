@@ -1,6 +1,8 @@
+import 'dart:developer';
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:intl/intl.dart';
 import 'package:remindere/utils/formatters/formatter.dart';
 
@@ -10,8 +12,8 @@ class ChatMessageModel {
   final String senderID;
   final String receiverID;
   final DateTime createdAt;
-  final DateTime? readAt;
-  final List<File> attachments; // Final??? modify if needed.
+  final bool read;
+  // final List<String> attachments; // Final??? modify if needed.
 
   ChatMessageModel({
     required this.id,
@@ -19,8 +21,8 @@ class ChatMessageModel {
     required this.senderID,
     required this.receiverID,
     required this.createdAt,
-    required this.readAt,
-    required this.attachments
+    required this.read,
+    // required this.attachments
   });
 
   String get time => RFormatter.formatTime(createdAt);
@@ -32,8 +34,8 @@ class ChatMessageModel {
         senderID: '',
         receiverID: '',
         createdAt: DateTime(1000),
-        readAt: DateTime(1000),
-        attachments: [],
+        read: false,
+        // attachments: [],
       );
   
 
@@ -45,26 +47,30 @@ class ChatMessageModel {
       'message': message,
       'senderID': senderID,
       'receiverID': receiverID,
-      'createdAt': createdAt,
-      'readAt': readAt,
-      'Attachments': attachments,
+      'createdAt': createdAt.toIso8601String(),
+      'read': read,
+      // 'Attachments': attachments,
     };
   }
 
-  // Factory method to create a ChatMessageModel from a Firebase document snapshot
-  factory ChatMessageModel.fromSnapshot(
-      DocumentSnapshot<Map<String, dynamic>> document) {
-    if (document.data() != null) {
-      final data = document.data()!;
+  // factory method to create ChatMessageModel from JSON
+  factory ChatMessageModel.fromJSON(
+    Map<String, dynamic> data) {
+    if (data.isNotEmpty) {
+      // final data = snapshot;
+
+      log("ChatMessageModel.fromJSON called");
+      log(data.runtimeType.toString());
+      log((data['read']).toString());
 
       return ChatMessageModel(
-          id: data['id'] ?? ' ',
-          message: data['message'] ?? ' ',
-          senderID: data['senderID'] ?? ' ',
-          receiverID: data['receiverID'] ?? ' ',
-          createdAt: data['createdAt'].toDate(),
-          readAt: data['readAt'].toDate() ?? DateTime.timestamp(),  // temporary workarouond
-          attachments: List<File>.from(data['Attachments']) // workaround
+          id: data['id'],
+          message: data['message'],
+          senderID: data['senderID'],
+          receiverID: data['receiverID'],
+          createdAt: DateTime.parse(data['createdAt']),
+          read: data['read'],  // temporary workarouond
+          // attachments: List<String>.from(data['Attachments']) // workaround
           );
     } else {
       return ChatMessageModel.empty();

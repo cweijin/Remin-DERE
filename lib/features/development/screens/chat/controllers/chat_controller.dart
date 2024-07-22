@@ -1,13 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:remindere/data/repositories/chat_repository/chat_repository.dart';
 import 'package:remindere/data/repositories/user/user_repository.dart';
 import 'package:remindere/features/development/screens/chat/models/chat_message_model.dart';
 import 'package:remindere/features/development/screens/chat/models/chat_model.dart';
 import 'package:remindere/features/personalization/models/user_model.dart';
-import 'package:remindere/navigation_menu.dart';
 import 'package:remindere/utils/helpers/network_manager.dart';
 import 'package:remindere/utils/popups/full_screen_loader.dart';
 import 'package:remindere/utils/popups/loaders.dart';
@@ -36,13 +34,14 @@ class ChatController extends GetxController {
   }
 
   // Fetch all user specific chats for chatview.  
-  Stream<List<ChatModel>> getUserChats() {
+  Stream<DatabaseEvent> getUserChats() {
     try {
       final chatRepository = ChatRepository.instance;
       final chats = chatRepository.fetchChats(); //await ChatRepository.fetchChats();
 
-      log('function called');
-      log(chats.toString());
+      // log('function called: ChatController.getUserChats()');
+      // log(chats.runtimeType.toString());
+      // log(chats.toString());
 
       return chats;
     } catch (e) {
@@ -51,8 +50,25 @@ class ChatController extends GetxController {
     }
   }
 
+  // Fetch all user specific chats for chatview.  
+  Stream<DatabaseEvent> getMessages(String receiverID) {
+    try {
+      final chatRepository = ChatRepository.instance;
+      final messages = chatRepository.fetchMessages(receiverID); //await ChatRepository.fetchChats();
+
+      log('function called: ChatController.getMessages(receiverID)');
+      log(messages.runtimeType.toString());
+      log(messages.toString());
+
+      return messages;
+    } catch (e) {
+      RLoaders.errorSnackBar(title: 'MEssages not found', message: e.toString());
+      return const Stream.empty();
+    }
+  }
+
   // Create Message
-  Future<void> sendMessage({required String userID, required String receiverID}) async {
+  Future<void> sendMessage({required String userID, required String receiverID, required ChatModel chat}) async {
     if (msgController.text.isEmpty) return;
 
     try {
@@ -73,12 +89,12 @@ class ChatController extends GetxController {
         senderID: userID,
         receiverID: receiverID,
         createdAt: DateTime.now(),
-        readAt: null,
-        attachments: [],
+        read: false,
+        // attachments: [],
       );
 
       final chatRepository = ChatRepository.instance;
-      await chatRepository.sendMessage(newMessage);
+      await chatRepository.sendMessage(newMessage, chat);
       
       msgController.clear(); // clear the message after sending
 

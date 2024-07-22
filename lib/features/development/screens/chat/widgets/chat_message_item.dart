@@ -19,7 +19,8 @@ class ChatMessageItem extends StatelessWidget {
         message.fromMe
             ? Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: Icon(Icons.check_circle, size: 20, color: message.readAt == null ? Colors.grey : Colors.blue[400]),
+                // if read, blue. if unread, grey.
+                child: Icon(Icons.check_circle, size: 20, color: message.read == false ? Colors.grey : Colors.blue[400]),
               )
             : const SizedBox(),
         Card(

@@ -55,12 +55,11 @@ class FindUser extends StatelessWidget {
                   itemBuilder: (BuildContext context, int index) {
                     return ChatIcon(
                       chat: ChatModel(
-                        conversationID: '',
                         receiverID: controller.users[index].id,
                         receiverUsername: controller.users[index].username,
                         updatedAt: DateTime.now(),
                         lastMessage: DateTime.now(),
-                        messages: []
+                        unreadMessagesCount: 0
                       )
                     );
                   },
