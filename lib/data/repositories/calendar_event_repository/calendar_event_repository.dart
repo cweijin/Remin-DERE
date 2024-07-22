@@ -13,11 +13,13 @@ import 'package:remindere/utils/exceptions/platform_exceptions.dart';
 class CalendarEventRepository extends GetxController {
   static CalendarEventRepository get instance => Get.find();
 
+  // these are provided if we want to test using a fake firestore.
   CalendarEventRepository({FirebaseFirestore? firestore, User? user}) {
     _db = firestore ?? FirebaseFirestore.instance;
     _user = user ?? AuthenticationRepository.instance.authUser!;
   }
 
+  // needed for testing
   late FirebaseFirestore _db;
   late User _user;
 

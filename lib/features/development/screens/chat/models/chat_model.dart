@@ -1,38 +1,29 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'chat_message_model.dart';
+import "dart:developer";
 
 class ChatModel {
-  String conversationID;
   String receiverID;
   String? receiverUsername;
   DateTime? updatedAt;
   DateTime lastMessage;
-  List<ChatMessageModel>? messages;
+  int unreadMessagesCount;
   
   // ValueNotifier<int> notifier = ValueNotifier(0);
   bool isOpen = false;
 
   ChatModel({
-    required this.conversationID,
     required this.receiverID,
     required this.receiverUsername,
     required this.updatedAt,
     required this.lastMessage,
-    required this.messages
+    required this.unreadMessagesCount
   });
 
-  // int get unreadMessagesCount {
-    // return messages?.where((e) => e.senderID == receiverID && e.readAt == null).length ?? 0;
-  // }
-
   static ChatModel empty() => ChatModel(
-        conversationID: '',
         receiverID: '',
         receiverUsername: '',
         updatedAt: DateTime.now(),
         lastMessage: DateTime.now(),
-        messages: []
+        unreadMessagesCount: 0
       );
   
 
@@ -40,52 +31,47 @@ class ChatModel {
 
   Map<String, dynamic> toJSON() {
     return {
-      'conversationID': conversationID,
-      'receiverID': receiverID,
+      'receiverID': receiverID,  // not required since document id is receiver id
       'receiverUsername': receiverUsername,
-      'updatedAt': updatedAt,
-      'lastMessage': lastMessage,
-      'messages': messages,
-      // 'messages': messages?.map((msg) => msg.toJSON()).toList(),
-    };
+      'updatedAt': (updatedAt != null) ? updatedAt!.toIso8601String() : DateTime.now().toIso8601String(),
+      'lastMessage': lastMessage.toIso8601String(),
+      'unreadMessagesCount': unreadMessagesCount
+      };
   }
 
   // Factory method to create a ChatModel from JSON
   factory ChatModel.fromJSON(
-      Map<String, dynamic> document) {
-    // if (document.data() != null) {
-    //   final data = document.data()!;
-    if (document != null) {
-      final data = document;
-      return ChatModel(
-          conversationID: data['conversationID'] ?? ' ' ,
-          receiverID: data['receiverID'] ?? ' ',
+      Map<String, dynamic> snapshot) {
+    if (snapshot.isNotEmpty) {
+      final data = snapshot['details'];
+      // log("here Chatmodel from Json is called");
+      // log(snapshot.toString());
+      // log(data.toString());
+      final chat = ChatModel(
+          receiverID: data['receiverID'],
           receiverUsername: data['receiverUsername'],
-          updatedAt: data['updatedAt'].toDate() ?? data['lastMessage'].toDate(),  // temporary workaround
-          lastMessage: data['lastMessage'].toDate(),
-          messages: List<ChatMessageModel>.from(data['messages'])   // workaround
+          updatedAt: DateTime.parse(data['updatedAt']),  // temporary workaround
+          lastMessage: DateTime.parse(data['lastMessage']),
+          unreadMessagesCount: data['unreadMessagesCount']
           );
+      // log(chat.toString());
+      // log("here Chatmodel from Json is returned");
+      return chat;
     } else {
       return ChatModel.empty();
     }
   }
+  
+  void updateLastMessage(DateTime message) {
+    lastMessage = message;
+    unreadMessagesCount++;
+  }
 
-  // Factory method to create a ChatModel from a Firebase document snapshot
-  factory ChatModel.fromSnapshot(
-      DocumentSnapshot<Map<String, dynamic>> document) {
-    if (document.data() != null) {
-      final data = document.data()!;
+  void readMessages() {
+    unreadMessagesCount = 0;
+  }
 
-      return ChatModel(
-          conversationID: data['conversationID'] ?? ' ' ,
-          receiverID: data['receiverID'] ?? ' ',
-          receiverUsername: data['receiverUsername'],
-          updatedAt: data['updatedAt'].toDate() ?? data['lastMessage'].toDate(),  // temporary workaround
-          lastMessage: data['lastMessage'].toDate(),
-          messages: List<ChatMessageModel>.from(data['messages'])   // workaround
-          );
-    } else {
-      return ChatModel.empty();
-    }
-  }  
+  void createChat() {
+    isOpen = true;
+  }
 }
