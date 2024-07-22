@@ -9,7 +9,7 @@ class RTaskView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(CalendarTaskController());
+    final controller = CalendarTaskController.instance;
 
     // to show assigned tasks
     return Expanded(

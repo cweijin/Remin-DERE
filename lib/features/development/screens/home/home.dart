@@ -12,7 +12,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(CalendarTaskController());
+    final controller = CalendarTaskController.instance;
 
     return Scaffold(
       body: CustomScrollView(

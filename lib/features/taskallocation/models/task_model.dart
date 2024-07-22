@@ -6,7 +6,7 @@ class TaskModel {
   final String taskDescription;
   final List<String> assignees;
   final DateTime dueDate;
-  final List<File> attachments; // Final??? modify if needed.
+  final List<String> attachments; // Final??? modify if needed.
 
   TaskModel({
     required this.taskName,
@@ -47,7 +47,7 @@ class TaskModel {
           taskDescription: data['TaskDescription'] ?? ' ',
           assignees: List<String>.from(data['Assignees']), // workaround
           dueDate: data['DueDate'].toDate(),
-          attachments: List<File>.from(data['Attachments']) // workaround
+          attachments: List<String>.from(data['Attachments']) // workaround
           );
     } else {
       return TaskModel.empty();
