@@ -27,11 +27,11 @@ class CalendarEventRepository extends GetxController {
 
   Future<void> saveTaskDetails(TaskModel task) async {
     try {
-      await _db
-          .collection("Users")
-          .doc(_user.uid)
-          .collection("Tasks")
-          .add(task.toJSON());
+      // await _db
+      //     .collection("Users")
+      //     .doc(_user.uid)
+      //     .collection("Tasks")
+      //     .add(task.toJSON());
 
       //Current selected team
       String currentTeam = localStorage.read('CurrentTeam');
