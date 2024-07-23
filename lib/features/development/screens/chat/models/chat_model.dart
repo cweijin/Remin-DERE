@@ -64,6 +64,9 @@ class ChatModel {
   
   void updateLastMessage(DateTime message) {
     lastMessage = message;
+  }
+
+  void updateUnread() {
     unreadMessagesCount++;
   }
 

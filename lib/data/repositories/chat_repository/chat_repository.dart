@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
@@ -95,15 +97,18 @@ class ChatRepository extends GetxController {
       await chatRef.set(chat.toJSON());
 
       // To send the message to the receiver's side as well (if needed)
-      _ref
-        .child('users/${chat.receiverID}/chats/${sender.id}/details')
-        .set(ChatModel(
+      final otherChat = ChatModel(
           receiverID: sender.id,
           receiverUsername: sender.username, 
           updatedAt: chat.updatedAt,
           lastMessage: message.createdAt,
           unreadMessagesCount: chat.unreadMessagesCount
-        ).toJSON());
+      );
+      otherChat.updateUnread(); // updates unread message count
+
+      _ref
+        .child('users/${chat.receiverID}/chats/${sender.id}/details')
+        .set(otherChat.toJSON());
 
     } on FirebaseAuthException catch (e) {
       throw RFirebaseAuthException(e.code).message;
@@ -112,4 +117,12 @@ class ChatRepository extends GetxController {
     }
   }
 
+  Future<void> readMessages(ChatModel chat) async {
+    final sender = userController.user.value;
+    final chatRef =
+      _ref.child('users/${sender.id}/chats/${chat.receiverID}/details');
+
+    chat.readMessages();
+    await chatRef.set(chat.toJSON());
+  }
 }

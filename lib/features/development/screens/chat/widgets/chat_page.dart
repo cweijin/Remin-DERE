@@ -26,17 +26,22 @@ class ChatPage extends StatelessWidget {
           Expanded(
             child: 
               GestureDetector(
-                onTap: () => FocusScope.of(context).unfocus(),
+                onTap: () {
+                  // log("screen tapped");
+                  FocusScope.of(context).unfocus();
+                  controller.readMessages(chat);
+                  // log("messages read");
+                },
                 child: StreamBuilder(
                   stream: controller.getMessages(chat.receiverID), // need to fetch from firebase
                   builder: ((context, snapshot) {
                     if (snapshot.hasData && !snapshot.hasError && 
                       snapshot.data!.snapshot.value != null) {
 
-                        log("StreamBuilder: chat snapshot data: ");
+                        // log("StreamBuilder: chat snapshot data: ");
                         final data = Map<String, dynamic>.from(snapshot.data!.snapshot.value as Map);
-                        log(data.toString());
-                        log(data.runtimeType.toString());
+                        // log(data.toString());
+                        // log(data.runtimeType.toString());
 
                         List<ChatMessageModel> chat = [];
                         data.forEach((index, messages) {
@@ -54,7 +59,7 @@ class ChatPage extends StatelessWidget {
                           }
                         );
                       }
-                    return Text("No messages found");
+                    return const Text("No messages found");
                   }
                 )
               )

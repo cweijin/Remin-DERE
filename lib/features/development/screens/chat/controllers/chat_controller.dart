@@ -56,9 +56,9 @@ class ChatController extends GetxController {
       final chatRepository = ChatRepository.instance;
       final messages = chatRepository.fetchMessages(receiverID); //await ChatRepository.fetchChats();
 
-      log('function called: ChatController.getMessages(receiverID)');
-      log(messages.runtimeType.toString());
-      log(messages.toString());
+      // log('function called: ChatController.getMessages(receiverID)');
+      // log(messages.runtimeType.toString());
+      // log(messages.toString());
 
       return messages;
     } catch (e) {
@@ -105,6 +105,12 @@ class ChatController extends GetxController {
       RLoaders.errorSnackBar(
           title: 'Some error occured :(', message: e.toString());
     }
+  }
+
+  // read messages
+  Future<void> readMessages(ChatModel chat) async {
+    final chatRepository = ChatRepository.instance;
+    chatRepository.readMessages(chat);
   }
 
   void resetFormField() {
