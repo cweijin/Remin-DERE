@@ -40,9 +40,9 @@ class ChatPage extends StatelessWidget {
 
                         List<ChatMessageModel> chat = [];
                         data.forEach((index, messages) {
-                          log("keys are: ${index.toString()}");
-                          log(data[index].toString());
-                          log(data[index].runtimeType.toString());
+                          // log("keys are: ${index.toString()}");
+                          // log(data[index].toString());
+                          // log(data[index].runtimeType.toString());
                           chat.add(ChatMessageModel.fromJSON(Map<String, dynamic>.from(data[index])));
                         });
                 

@@ -47,7 +47,7 @@ class ChatMessageModel {
       'message': message,
       'senderID': senderID,
       'receiverID': receiverID,
-      'createdAt': createdAt.toIso8601String(),
+      'createdAt': createdAt.toUtc().toIso8601String(),
       'read': read,
       // 'Attachments': attachments,
     };
@@ -59,16 +59,16 @@ class ChatMessageModel {
     if (data.isNotEmpty) {
       // final data = snapshot;
 
-      log("ChatMessageModel.fromJSON called");
-      log(data.runtimeType.toString());
-      log((data['read']).toString());
+      // log("ChatMessageModel.fromJSON called");
+      // log(data.runtimeType.toString());
+      // log((data['read']).toString());
 
       return ChatMessageModel(
           id: data['id'],
           message: data['message'],
           senderID: data['senderID'],
           receiverID: data['receiverID'],
-          createdAt: DateTime.parse(data['createdAt']),
+          createdAt: DateTime.parse(data['createdAt']).toLocal(),
           read: data['read'],  // temporary workarouond
           // attachments: List<String>.from(data['Attachments']) // workaround
           );

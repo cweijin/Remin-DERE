@@ -50,9 +50,9 @@ class RChatScreen extends StatelessWidget {
 
                   List<ChatModel> chats = [];
                   data.forEach((index, chat) {
-                    log("keys are: ${index.toString()}");
-                    log(data[index].toString());
-                    log(data[index].runtimeType.toString());
+                    // log("keys are: ${index.toString()}");
+                    // log(data[index].toString());
+                    // log(data[index].runtimeType.toString());
                     chats.add(ChatModel.fromJSON(Map<String, dynamic>.from(data[index])));
                   });
                   return ChatView(chats: chats);
