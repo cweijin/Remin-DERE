@@ -33,8 +33,8 @@ class ChatModel {
     return {
       'receiverID': receiverID,  // not required since document id is receiver id
       'receiverUsername': receiverUsername,
-      'updatedAt': (updatedAt != null) ? updatedAt!.toIso8601String() : DateTime.now().toIso8601String(),
-      'lastMessage': lastMessage.toIso8601String(),
+      'updatedAt': (updatedAt != null) ? updatedAt!.toUtc().toIso8601String() : DateTime.now().toUtc().toIso8601String(),
+      'lastMessage': lastMessage.toUtc().toIso8601String(),
       'unreadMessagesCount': unreadMessagesCount
       };
   }
@@ -50,8 +50,8 @@ class ChatModel {
       final chat = ChatModel(
           receiverID: data['receiverID'],
           receiverUsername: data['receiverUsername'],
-          updatedAt: DateTime.parse(data['updatedAt']),  // temporary workaround
-          lastMessage: DateTime.parse(data['lastMessage']),
+          updatedAt: DateTime.parse(data['updatedAt']).toLocal(),  // temporary workaround
+          lastMessage: DateTime.parse(data['lastMessage']).toLocal(),
           unreadMessagesCount: data['unreadMessagesCount']
           );
       // log(chat.toString());
@@ -64,6 +64,9 @@ class ChatModel {
   
   void updateLastMessage(DateTime message) {
     lastMessage = message;
+  }
+
+  void updateUnread() {
     unreadMessagesCount++;
   }
 

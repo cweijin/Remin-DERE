@@ -44,17 +44,20 @@ class RChatScreen extends StatelessWidget {
                 if (snapshot.hasData && !snapshot.hasError && 
                   snapshot.data!.snapshot.value != null) {
                   
-                  log("StreamBuilder: snapshot data: ");
+                  // log("StreamBuilder: snapshot data: ");
 
                   final data = Map<String, dynamic>.from(snapshot.data!.snapshot.value as Map);
 
                   List<ChatModel> chats = [];
                   data.forEach((index, chat) {
-                    log("keys are: ${index.toString()}");
-                    log(data[index].toString());
-                    log(data[index].runtimeType.toString());
+                    // log("keys are: ${index.toString()}");
+                    // log(data[index].toString());
+                    // log(data[index].runtimeType.toString());
                     chats.add(ChatModel.fromJSON(Map<String, dynamic>.from(data[index])));
                   });
+
+                  chats.sort((chatA, chatB) => chatB.lastMessage.compareTo(chatA.lastMessage)); // sort based on latest last message
+
                   return ChatView(chats: chats);
                 }
 

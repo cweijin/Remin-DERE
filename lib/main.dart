@@ -26,7 +26,6 @@ Future<void> main() async {
 
   // Initialize Firebase & Authentication Repository
   await Firebase.initializeApp(
-    name: 'Remin-DERE',
     options: DefaultFirebaseOptions.currentPlatform,
   ).then(
     (FirebaseApp value) async {
