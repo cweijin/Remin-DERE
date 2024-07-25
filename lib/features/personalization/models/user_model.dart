@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 import 'package:remindere/utils/formatters/formatter.dart';
 
 class UserModel {
@@ -10,22 +13,49 @@ class UserModel {
   final String email;
   String phoneNumber;
   String profilePicture;
+  int unread;
 
   // Constructor for UserModel
-  UserModel(
-      {required this.id,
-      required this.firstName,
-      required this.lastName,
-      required this.username,
-      required this.email,
-      required this.phoneNumber,
-      required this.profilePicture});
+  UserModel({
+    required this.id,
+    required this.firstName,
+    required this.lastName,
+    required this.username,
+    required this.email,
+    required this.phoneNumber,
+    required this.profilePicture,
+    this.unread = 0,
+  });
 
   // Helper function to get the full name
   String get fullName => '$firstName $lastName';
 
   // Helper function to format phone number
   String get formattedPhoneNo => RFormatter.formatPhoneNumber(phoneNumber);
+
+  // Helper function to generate search keywords for current user
+  List<String> searchKeywords() {
+    Set<String> finalKeywords = {};
+
+    List<String> keywordHelper(String str) {
+      List<String> keywords = [];
+      List<String> charList = str.split('');
+      String currStr = '';
+
+      for (String char in charList) {
+        currStr += char;
+        keywords.add(currStr);
+      }
+
+      return keywords;
+    }
+
+    finalKeywords.addAll(keywordHelper(fullName.toLowerCase()));
+    finalKeywords.addAll(keywordHelper(lastName.toLowerCase()));
+    finalKeywords.addAll(keywordHelper(email.toLowerCase()));
+
+    return finalKeywords.toList();
+  }
 
   // Static function to split full name into first and last name.
   static List<String> nameParts(fullName) => fullName.split(" ");
@@ -62,6 +92,7 @@ class UserModel {
       'Email': email,
       'PhoneNumber': phoneNumber,
       'ProfilePicture': profilePicture,
+      'Unread': unread,
     };
   }
 
@@ -78,6 +109,7 @@ class UserModel {
         email: data['Email'] ?? '',
         phoneNumber: data['PhoneNumber'] ?? '',
         profilePicture: data['ProfilePicture'] ?? '',
+        unread: data['Unread'] ?? 0,
       );
     } else {
       return UserModel.empty();

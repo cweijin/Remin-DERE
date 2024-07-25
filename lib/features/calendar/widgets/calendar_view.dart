@@ -33,7 +33,7 @@ class RCalendar extends StatelessWidget {
               const SizedBox(height: RSizes.spaceBtwSections),
 
               //To show Calendar Widget
-              Container(
+              SizedBox(
                 height: 100, // need new RSizes
                 child: Container(
                     child: ListView.separated(

@@ -18,17 +18,17 @@ class CreateTeamController extends GetxController {
   final localStorage = GetStorage();
 
   RxBool refreshData = true.obs;
-  RxBool refreshSearchResult = true.obs;
+  //RxBool refreshSearchResult = true.obs;
   RxList<UserModel> selectedUsers = <UserModel>[].obs;
-  List<UserModel> searchResults = [];
+  RxList<UserModel> searchResults = <UserModel>[].obs;
 
   void searchUsers(String input) async {
     try {
       final userRepository = Get.put(UserRepository());
       final allUsers = await userRepository.fetchAllUsers(input);
 
-      searchResults = allUsers;
-      refreshSearchResult.toggle();
+      searchResults.value = allUsers;
+      //refreshSearchResult.toggle();
     } catch (e) {
       RLoaders.errorSnackBar(title: 'User not found', message: e.toString());
     }

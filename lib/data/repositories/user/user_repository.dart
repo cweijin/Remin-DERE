@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:remindere/data/repositories/authentication_repository/authentication_repository.dart';
+import 'package:remindere/features/personalization/controllers/user_controller.dart';
 import 'package:remindere/features/personalization/models/user_model.dart';
 import 'package:remindere/utils/exceptions/firebase_auth_exceptions.dart';
 import 'package:remindere/utils/exceptions/firebase_exceptions.dart';
@@ -22,6 +24,10 @@ class UserRepository extends GetxController {
   Future<void> saveUserRecord(UserModel user) async {
     try {
       await _db.collection("Users").doc(user.id).set(user.toJSON());
+      await _db
+          .collection("Users")
+          .doc(user.id)
+          .update({'Keywords': user.searchKeywords()});
     } on FirebaseAuthException catch (e) {
       throw RFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
@@ -60,20 +66,73 @@ class UserRepository extends GetxController {
     }
   }
 
+  // Function to fetch user details (stream )based on user ID
+  Stream<UserModel> fetchUserDetailsStream({String? userId}) {
+    try {
+      final documentSnapshot = _db
+          .collection("Users")
+          .doc(userId ?? AuthenticationRepository.instance.authUser?.uid)
+          .snapshots();
+
+      return documentSnapshot.map((event) => UserModel.fromSnapshot(event));
+    } on FirebaseAuthException catch (e) {
+      throw RFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw RFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const RFormatException();
+    } on PlatformException catch (e) {
+      throw RPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Unknown error. Please try again.';
+    }
+  }
+
   //Function to fetch all users based on user input
   Future<List<UserModel>> fetchAllUsers(String input) async {
     final models = <UserModel>[];
+    const limit = 8;
     try {
-      await _db.collection("Users").get().then(
-        (value) {
-          final snapshots = value.docs
-              .where((element) => element.data().containsValue(input));
-          for (var i in snapshots) {
-            models.add(UserModel.fromSnapshot(i));
-          }
-        },
-      );
+      if (input.isNotEmpty) {
+        await _db
+            .collection("Users")
+            .orderBy('FirstName')
+            .where('Email',
+                isNotEqualTo:
+                    UserController.instance.user.value.email.toLowerCase())
+            .where('Keywords', arrayContains: input.toLowerCase())
+            .limit(limit)
+            .get()
+            .then(
+          (value) {
+            final snapshots = value.docs;
+            for (var i in snapshots) {
+              models.add(UserModel.fromSnapshot(i));
+            }
+          },
+        );
+      }
       return models;
+    } on FirebaseAuthException catch (e) {
+      throw RFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw RFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const RFormatException();
+    } on PlatformException catch (e) {
+      throw RPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Unknown error. Please try again.';
+    }
+  }
+
+  // Reset notification read status
+  void resetUnread() async {
+    try {
+      await _db
+          .collection('Users')
+          .doc(AuthenticationRepository.instance.authUser!.uid)
+          .update({'Unread': 0});
     } on FirebaseAuthException catch (e) {
       throw RFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {

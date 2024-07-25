@@ -6,7 +6,9 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
+import 'package:remindere/data/repositories/authentication_repository/authentication_repository.dart';
 import 'package:remindere/data/repositories/calendar_event_repository/task_repository.dart';
+import 'package:remindere/features/development/models/notification/notification_model.dart';
 import 'package:remindere/features/personalization/controllers/team_controller.dart';
 import 'package:remindere/features/personalization/models/user_model.dart';
 import 'package:remindere/features/taskallocation/models/task_model.dart';
@@ -40,13 +42,29 @@ class TaskAllocationController extends GetxController {
   // Date Picker
   Future<void> selectDate(BuildContext context) async {
     _picked = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime.now(),
-        lastDate: DateTime(2100));
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime.now(),
+            lastDate: DateTime(2100))
+        .then(
+      (value) async {
+        if (value != null) {
+          final time = await showTimePicker(
+              context: context, initialTime: TimeOfDay.now());
+
+          if (time != null) {
+            return _picked =
+                value.copyWith(hour: time.hour, minute: time.minute);
+          }
+        }
+        return null;
+      },
+    );
 
     if (_picked != null) {
-      dueDate.value = TextEditingValue(text: _picked.toString().split(" ")[0]);
+      dueDate.value = TextEditingValue(
+          text:
+              '${_picked.toString().split(':')[0]}:${_picked.toString().split(':')[1]}');
     }
   }
 

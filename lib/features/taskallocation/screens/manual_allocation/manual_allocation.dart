@@ -23,9 +23,10 @@ class ManualAllocation extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(TaskAllocationController());
     final localStorage = GetStorage();
+    controller.resetFormField(); // reset the form fields when screen rebuilt
 
     return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         body: CustomScrollView(
           slivers: [
@@ -241,25 +242,30 @@ class ManualAllocation extends StatelessWidget {
             SliverPadding(
               padding:
                   const EdgeInsets.symmetric(horizontal: RSizes.defaultSpace),
-              sliver: Obx(() => SliverList.builder(
-                    itemCount: controller.attachments.length,
-                    itemBuilder: (_, index) {
-                      final files = controller.attachments
-                          .map((file) => file.name)
-                          .toList();
-                      return Column(
-                        children: [
-                          Chip(
-                            label: Text(
-                              files[index],
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            onDeleted: () {},
-                          ),
-                        ],
-                      );
-                    },
-                  )),
+              sliver: Obx(
+                () => controller.showAttachment.value
+                    ? SliverList.builder(
+                        itemCount: controller.attachments.length,
+                        itemBuilder: (_, index) {
+                          final files = controller.attachments
+                              .map((file) => file.name)
+                              .toList();
+                          return Column(
+                            children: [
+                              Chip(
+                                label: Text(
+                                  files[index],
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                onDeleted: () =>
+                                    controller.attachments.removeAt(index),
+                              ),
+                            ],
+                          );
+                        },
+                      )
+                    : const SliverToBoxAdapter(child: SizedBox()),
+              ),
             ),
 
             // save event to database
@@ -267,15 +273,20 @@ class ManualAllocation extends StatelessWidget {
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: RSizes.defaultSpace),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      controller.createTask();
-                      FocusManager.instance.primaryFocus?.unfocus();
-                    }, // Save to Firestore Database
-                    child: const Text("Assign Task"),
-                  ),
+                child: Column(
+                  children: [
+                    const SizedBox(height: RSizes.spaceBtwItems),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          controller.createTask();
+                          FocusManager.instance.primaryFocus?.unfocus();
+                        }, // Save to Firestore Database
+                        child: const Text("Assign Task"),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             )

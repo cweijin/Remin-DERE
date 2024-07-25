@@ -3,7 +3,10 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:remindere/common/widgets/appbar/appbar.dart';
 import 'package:remindere/common/widgets/shimmer/shimmer.dart';
+import 'package:remindere/features/development/screens/notification/notification.dart';
 import 'package:remindere/features/personalization/controllers/user_controller.dart';
+
+import 'dart:developer';
 
 class RHomeAppBar extends StatelessWidget {
   const RHomeAppBar({
@@ -35,17 +38,25 @@ class RHomeAppBar extends StatelessWidget {
         Stack(
           children: [
             IconButton(
-                icon: const Icon(Iconsax.notification), onPressed: () {}),
+              icon: const Icon(Iconsax.notification),
+              onPressed: () {
+                controller.notificationRead();
+                Get.to(() => const NotificationScreen());
+              },
+            ),
             Positioned(
-              right: 0,
-              child: Container(
-                height: 15,
-                width: 15,
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(100),
-                ),
-              ),
+              right: 12,
+              top: 12,
+              child: Obx(() => controller.user.value.unread != 0
+                  ? Container(
+                      height: 10,
+                      width: 10,
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                    )
+                  : const SizedBox()),
             )
           ],
         )

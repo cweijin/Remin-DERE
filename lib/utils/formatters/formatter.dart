@@ -12,6 +12,22 @@ class RFormatter {
             .format(date); // Customize the date format as needed
   }
 
+  static String formatDuration(Duration duration) {
+    return duration.inDays != 0
+        ? duration.inDays == 1
+            ? '${duration.inDays} day ago'
+            : '${duration.inDays} days ago'
+        : duration.inHours != 0
+            ? duration.inHours == 1
+                ? '${duration.inHours} hour ago'
+                : '${duration.inHours} hours ago'
+            : duration.inMinutes != 0
+                ? duration.inMinutes == 1
+                    ? '${duration.inMinutes} minute ago'
+                    : '${duration.inMinutes} minutes ago'
+                : '${duration.inSeconds} seconds ago';
+  }
+
   static String formatCurrency(double amount) {
     return NumberFormat.currency(locale: 'en_US', symbol: '\$')
         .format(amount); // Customize the currency locale and symbol as needed
@@ -62,7 +78,8 @@ class RFormatter {
 
   // for chat
   static String formatTime(DateTime date) {
-    return DateFormat('d/M, hh:mm a').format(date); // Customize the date format as needed
+    return DateFormat('d/M, hh:mm a')
+        .format(date); // Customize the date format as needed
   }
 }
 

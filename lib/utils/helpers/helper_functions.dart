@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:remindere/utils/formatters/formatter.dart';
 
 class RHelperFunctions {
   static Color? getColor(String value) {
@@ -37,6 +38,12 @@ class RHelperFunctions {
     } else {
       return null;
     }
+  }
+
+  static String getDuration(DateTime created) {
+    final now = DateTime.now();
+    final duration = now.difference(created);
+    return RFormatter.formatDuration(duration);
   }
 
   static void showSnackBar(String message) {

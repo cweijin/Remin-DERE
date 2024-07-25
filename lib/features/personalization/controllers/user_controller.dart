@@ -22,8 +22,9 @@ class UserController extends GetxController {
   Future<void> fetchUserRecord() async {
     try {
       profileLoading.value = true;
-      final user = await userRepository.fetchUserDetails();
-      this.user(user);
+      //final user = await userRepository.fetchUserDetails();
+      //this.user(user);
+      userRepository.fetchUserDetailsStream().listen((event) => user(event));
     } catch (e) {
       user(UserModel.empty());
     } finally {
@@ -31,15 +32,31 @@ class UserController extends GetxController {
     }
   }
 
-  // Fetch user details from uids.
-  List<Future<UserModel>> fetchUser(List<String> userIds) {
+  // Fetch user record stream
+  Stream<UserModel> fetchUserRecordStream() {
     try {
-      return userIds
+      return userRepository.fetchUserDetailsStream();
+    } catch (e) {
+      return Stream.fromIterable([UserModel.empty()]);
+    }
+  }
+
+  // Fetch user details from uids.
+  Future<List<UserModel>> fetchUsers(List<String> userIds) async {
+    try {
+      final futureList = userIds
           .map((id) async => await userRepository.fetchUserDetails(userId: id))
           .toList();
+
+      return await Future.wait(futureList);
     } catch (e) {
-      return [];
+      return <UserModel>[];
     }
+  }
+
+  // Update unread status.
+  void notificationRead() async {
+    userRepository.resetUnread();
   }
 
   // Save user record from any registration provider
@@ -75,7 +92,7 @@ class UserController extends GetxController {
   }
 
   // Upload Profile Image
-  uploadUserProfilePicture() async {
+  void uploadUserProfilePicture() async {
     try {
       final image = await ImagePicker().pickImage(
           source: ImageSource.gallery,
