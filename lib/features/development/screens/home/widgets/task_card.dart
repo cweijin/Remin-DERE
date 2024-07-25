@@ -27,7 +27,7 @@ class RTaskCard extends StatelessWidget {
         child: Card(
           clipBehavior: Clip.antiAlias,
           elevation: 6,
-          color: const Color.fromARGB(255, 243, 249, 241),
+          // color: const Color.fromARGB(255, 243, 249, 241),
           child: Column(
             children: [
               Container(

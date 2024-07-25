@@ -10,14 +10,16 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Chat'),
-          centerTitle: true,
-        ),
-        body: SafeArea(
-            child: Column(children: [
-          // Find Users screen
-          InkWell(
+      appBar: AppBar(
+        title: const Text('Chat'),
+        centerTitle: true,
+      ),
+      // backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Find Users screen
+            InkWell(
               onTap: () {
                 Get.to(const FindUser());
               },

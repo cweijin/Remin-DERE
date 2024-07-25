@@ -51,6 +51,9 @@ class ChatPage extends StatelessWidget {
                           chat.add(ChatMessageModel.fromJSON(Map<String, dynamic>.from(data[index])));
                         });
                 
+                        chat.sort((messageA, messageB) => 
+                          messageA.createdAt.compareTo(messageB.createdAt)); // sort based on latest last message
+                        
                         return ListView.builder(
                           padding: const EdgeInsets.only(top: 12.0),
                           itemCount: chat.length,
