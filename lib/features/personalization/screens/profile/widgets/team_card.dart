@@ -27,6 +27,7 @@ class TeamCard extends StatelessWidget {
         splashColor: Colors.grey,
         onTap: () {
           controller.selectTeam(teamId);
+          localStorage.write('CurrentTeamName', name);
           _showTeamDetails(context);
         },
         child: Stack(
@@ -42,7 +43,12 @@ class TeamCard extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(name, style: Theme.of(context).textTheme.headlineSmall),
+                  Text(
+                    name,
+                    style: Theme.of(context).textTheme.headlineSmall,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                   teamId == localStorage.read("CurrentTeam")
                       ? Text('(Selected)',
                           style: Theme.of(context).textTheme.bodySmall)
@@ -69,7 +75,7 @@ class TeamCard extends StatelessWidget {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
-          return Container(
+          return SizedBox(
               height: MediaQuery.of(context).size.height *
                   .60, // Task detail popup-box size
               child: Padding(

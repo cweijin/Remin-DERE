@@ -84,7 +84,7 @@ class RTaskCard extends StatelessWidget {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
-          return Container(
+          return SizedBox(
               height: MediaQuery.of(context).size.height *
                   .60, // Task detail popup-box size
               child: Padding(

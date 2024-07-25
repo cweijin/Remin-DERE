@@ -9,6 +9,8 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:remindere/data/repositories/authentication_repository/authentication_repository.dart';
+import 'package:remindere/features/development/models/notification/notification_model.dart';
+import 'package:remindere/features/personalization/controllers/user_controller.dart';
 import 'package:remindere/features/taskallocation/models/task_model.dart';
 import 'package:remindere/utils/exceptions/firebase_auth_exceptions.dart';
 import 'package:remindere/utils/exceptions/firebase_exceptions.dart';
@@ -30,12 +32,6 @@ class TaskRepository extends GetxController {
 
   Future<void> saveTaskDetails(TaskModel task) async {
     try {
-      // await _db
-      //     .collection("Users")
-      //     .doc(_user.uid)
-      //     .collection("Tasks")
-      //     .add(task.toJSON());
-
       //Current selected team
       String currentTeam = localStorage.read('CurrentTeam');
 
@@ -45,6 +41,15 @@ class TaskRepository extends GetxController {
           .collection('Tasks')
           .add(task.toJSON());
 
+      // Create a notification to update related users
+      final notification = NotificationModel(
+        title: task.taskName,
+        team: localStorage.read('CurrentTeamName'),
+        timeCreated: DateTime.now(),
+        createdBy: _user.uid,
+        type: NotificationType.taskCreation,
+      );
+
       //Upload task to each of the assignees
       for (String id in task.assignees) {
         await _db
@@ -52,6 +57,17 @@ class TaskRepository extends GetxController {
             .doc(id)
             .collection('Tasks')
             .add(task.toJSON());
+
+        await _db
+            .collection('Users')
+            .doc(id)
+            .collection('Notifications')
+            .add(notification.toJSON());
+
+        await _db
+            .collection('Users')
+            .doc(id)
+            .update({'Unread': FieldValue.increment(1)});
       }
     } on FirebaseAuthException catch (e) {
       throw RFirebaseAuthException(e.code).message;

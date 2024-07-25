@@ -71,7 +71,7 @@ class RTaskTile extends StatelessWidget {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
-          return Container(
+          return SizedBox(
               height: MediaQuery.of(context).size.height *
                   .60, // Task detail popup-box size
               child: Padding(
@@ -103,9 +103,9 @@ class RTaskTile extends StatelessWidget {
                     ),
 
                     // to display list of attachments
-                    Text(
+                    const Text(
                       "Attachments: not implemented yet",
-                      style: const TextStyle(fontSize: RSizes.md),
+                      style: TextStyle(fontSize: RSizes.md),
                     ),
                   ])));
         });

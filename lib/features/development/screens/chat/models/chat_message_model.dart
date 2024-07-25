@@ -1,9 +1,7 @@
 import 'dart:developer';
-import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:intl/intl.dart';
 import 'package:remindere/utils/formatters/formatter.dart';
 
 class ChatMessageModel {
@@ -37,7 +35,6 @@ class ChatMessageModel {
         read: false,
         // attachments: [],
       );
-  
 
   // Whatever function needed.
 
@@ -54,8 +51,7 @@ class ChatMessageModel {
   }
 
   // factory method to create ChatMessageModel from JSON
-  factory ChatMessageModel.fromJSON(
-    Map<String, dynamic> data) {
+  factory ChatMessageModel.fromJSON(Map<String, dynamic> data) {
     if (data.isNotEmpty) {
       // final data = snapshot;
 
@@ -64,14 +60,14 @@ class ChatMessageModel {
       // log((data['read']).toString());
 
       return ChatMessageModel(
-          id: data['id'],
-          message: data['message'],
-          senderID: data['senderID'],
-          receiverID: data['receiverID'],
-          createdAt: DateTime.parse(data['createdAt']).toLocal(),
-          read: data['read'],  // temporary workarouond
-          // attachments: List<String>.from(data['Attachments']) // workaround
-          );
+        id: data['id'],
+        message: data['message'],
+        senderID: data['senderID'],
+        receiverID: data['receiverID'],
+        createdAt: DateTime.parse(data['createdAt']).toLocal(),
+        read: data['read'], // temporary workarouond
+        // attachments: List<String>.from(data['Attachments']) // workaround
+      );
     } else {
       return ChatMessageModel.empty();
     }

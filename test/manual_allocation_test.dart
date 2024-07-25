@@ -12,7 +12,7 @@ void main() {
     await tester.pumpWidget(const MaterialApp(home: ManualAllocation()));
     await tester.tap(datePicker);
     await tester.tap(createTask);
-    await tester.pump;
+    tester.pump;
 
     // check outputs
     expect(find.text("Make Widget Testing video"), findsAtLeastNWidgets(2));

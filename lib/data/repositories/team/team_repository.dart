@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:remindere/data/repositories/authentication_repository/authentication_repository.dart';
+import 'package:remindere/features/development/models/notification/notification_model.dart';
 import 'package:remindere/features/personalization/models/user_model.dart';
 import 'package:remindere/features/teaming/models/team_model.dart';
 import 'package:remindere/utils/exceptions/firebase_auth_exceptions.dart';
@@ -39,9 +40,19 @@ class TeamRepository extends GetxController {
               .update({"Id": value.id});
 
           localStorage.write('CurrentTeam', value.id);
+          localStorage.write('CurrentTeamName', team.teamName);
 
           // Add to Teams collection
           await _db.collection("Teams").doc(value.id).set(team.toJSON());
+
+          // Create a notification to update related users
+          final notification = NotificationModel(
+            title: team.teamName,
+            team: '',
+            timeCreated: DateTime.now(),
+            createdBy: AuthenticationRepository.instance.authUser!.uid,
+            type: NotificationType.teamCreation,
+          );
 
           // upload team data to each team member
           for (String userId in team.teamMembers) {
@@ -51,6 +62,17 @@ class TeamRepository extends GetxController {
                 .collection('Teams')
                 .doc(value.id)
                 .set(team.toJSON());
+
+            await _db
+                .collection('Users')
+                .doc(userId)
+                .collection('Notifications')
+                .add(notification.toJSON());
+
+            await _db
+                .collection('Users')
+                .doc(userId)
+                .update({'Unread': FieldValue.increment(1)});
           }
 
           return value;

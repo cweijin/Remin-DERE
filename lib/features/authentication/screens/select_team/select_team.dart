@@ -53,6 +53,8 @@ class TeamSelectionScreen extends StatelessWidget {
                         title: Text(teams[index].teamName),
                         onTap: () {
                           deviceStorage.write('CurrentTeam', teams[index].id);
+                          deviceStorage.write(
+                              'CurrentTeamName', teams[index].teamName);
                           Get.offAll(const NavigationMenu());
                         },
                       ),
