@@ -42,10 +42,10 @@ class TaskListItem extends StatelessWidget {
               _showEventDetails(context);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: RColors.lightOrange,
+              backgroundColor: Colors.blue,
               padding: const EdgeInsets.all(RSizes.borderRadiusSm),
               side: const BorderSide(
-                color: RColors.lightestOrange,
+                color: Colors.lightBlue,
               ),
             ),
             child: Row(children: [
@@ -58,7 +58,7 @@ class TaskListItem extends StatelessWidget {
                         child: Text(
                             "${task.dueDate.day} ${listOfMonths[task.dueDate.month - 1]}",
                             style: const TextStyle(
-                                color: RColors.textSecondary,
+                                color: RColors.textWhite,
                                 fontSize: RSizes.lg),
                             textAlign: TextAlign.center,
                             softWrap: false)),
@@ -66,7 +66,7 @@ class TaskListItem extends StatelessWidget {
                     // Weekday
                     Text(listOfDays[task.dueDate.weekday - 1],
                         style: const TextStyle(
-                            color: RColors.textSecondary, fontSize: RSizes.md),
+                            color: RColors.textWhite, fontSize: RSizes.md),
                         textAlign: TextAlign.center,
                         softWrap: false)
                   ])),
