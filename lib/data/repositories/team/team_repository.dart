@@ -5,8 +5,10 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:remindere/data/repositories/authentication_repository/authentication_repository.dart';
 import 'package:remindere/features/development/models/notification/notification_model.dart';
+import 'package:remindere/features/personalization/controllers/team_controller.dart';
 import 'package:remindere/features/personalization/models/user_model.dart';
 import 'package:remindere/features/teaming/models/team_model.dart';
+import 'package:remindere/navigation_menu.dart';
 import 'package:remindere/utils/exceptions/firebase_auth_exceptions.dart';
 import 'package:remindere/utils/exceptions/firebase_exceptions.dart';
 import 'package:remindere/utils/exceptions/format_exceptions.dart';
@@ -75,6 +77,8 @@ class TeamRepository extends GetxController {
                 .update({'Unread': FieldValue.increment(1)});
           }
 
+          await TeamController.instance.fetchCurrentTeam();
+          NavigationController.instance.verifyOwnership();
           return value;
         },
       );

@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:remindere/data/repositories/calendar_event_repository/task_repository.dart';
-import 'package:remindere/features/taskallocation/models/task_model.dart';
+import 'package:remindere/features/task_allocation/models/task_model.dart';
 import 'package:remindere/utils/popups/loaders.dart';
 
 class CalendarTaskController extends GetxController {

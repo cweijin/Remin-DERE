@@ -1,15 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:remindere/common/styles/spacing_styles.dart';
 import 'package:remindere/common/widgets/appbar/appbar.dart';
 import 'package:remindere/features/personalization/models/user_model.dart';
-import 'package:remindere/features/personalization/screens/profile/widgets/team_card.dart';
 import 'package:remindere/features/teaming/controllers/create_team/create_team_controller.dart';
-import 'package:remindere/features/teaming/screens/join_team/join_team.dart';
 import 'package:remindere/utils/constants/colors.dart';
 import 'package:remindere/utils/constants/image_strings.dart';
 import 'package:remindere/utils/constants/sizes.dart';

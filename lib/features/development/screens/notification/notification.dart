@@ -77,39 +77,59 @@ class NotificationScreen extends StatelessWidget {
                             leading: CircleAvatar(
                               backgroundImage: image,
                             ),
-                            title: notification.type ==
-                                    NotificationType.taskCreation
-                                ? Text.rich(
-                                    TextSpan(
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                            text: owner.firstName,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headlineSmall),
-                                        const TextSpan(
-                                            text: ' assigned you a task in '),
-                                        TextSpan(
-                                            text: '${notification.team}:',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headlineSmall),
-                                      ],
-                                    ),
-                                  )
-                                : Text.rich(
-                                    TextSpan(
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                            text: owner.firstName,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headlineSmall),
-                                        const TextSpan(
-                                            text: ' added you to a team:'),
-                                      ],
-                                    ),
+                            title: switch (notification.type) {
+                              NotificationType.taskCreation => Text.rich(
+                                  TextSpan(
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                          text: owner.firstName,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineSmall),
+                                      const TextSpan(
+                                          text: ' assigned you a task in '),
+                                      TextSpan(
+                                          text: '${notification.team}:',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineSmall),
+                                    ],
                                   ),
+                                ),
+                              NotificationType.teamCreation => Text.rich(
+                                  TextSpan(
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                          text: owner.firstName,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineSmall),
+                                      const TextSpan(
+                                          text: ' added you to a team:'),
+                                    ],
+                                  ),
+                                ),
+                              NotificationType.taskSubmission => Text.rich(
+                                  TextSpan(
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                          text: owner.firstName,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineSmall),
+                                      const TextSpan(
+                                          text: ' submitted a task in '),
+                                      TextSpan(
+                                          text: '${notification.team}:',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineSmall),
+                                    ],
+                                  ),
+                                ),
+                              NotificationType.none =>
+                                const Text('Invalid Notification')
+                            },
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

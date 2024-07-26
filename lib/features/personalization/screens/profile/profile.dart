@@ -14,6 +14,7 @@ import 'package:remindere/utils/constants/image_strings.dart';
 import 'package:remindere/utils/constants/sizes.dart';
 import 'package:remindere/utils/device/device_utility.dart';
 import 'package:remindere/utils/helpers/cloud_helper_functions.dart';
+import 'package:remindere/utils/helpers/helper_functions.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -25,6 +26,7 @@ class ProfileScreen extends StatelessWidget {
     final createTeamController = Get.put(CreateTeamController());
     final auth = FirebaseAuth.instance;
     final width = RDeviceUtils.getScreenWidth(context);
+    bool isDark = RHelperFunctions.isDarkMode(context);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -85,8 +87,8 @@ class ProfileScreen extends StatelessWidget {
                             );
                           }
                         }),
-                        Text("Software Engineer",
-                            style: Theme.of(context).textTheme.bodyMedium),
+                        // Text("Software Engineer",
+                        //     style: Theme.of(context).textTheme.bodyMedium),
                       ],
                     ),
                   ),
@@ -110,7 +112,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: RSizes.spaceBtwItems),
                   SizedBox(
-                    height: 200,
+                    height: 210,
                     child: Obx(
                       () => FutureBuilder(
                         // Use key to trigger refresh
@@ -130,10 +132,9 @@ class ProfileScreen extends StatelessWidget {
                           return ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: teams.length,
-                            itemBuilder: (_, index) => TeamCard(
-                              name: teams[index].teamName,
-                              members: teams[index].teamMembers,
-                              teamId: teams[index].id,
+                            itemBuilder: (_, index) => RTeamCard(
+                              team: teams[index],
+                              isDark: isDark,
                             ),
                           );
                         },

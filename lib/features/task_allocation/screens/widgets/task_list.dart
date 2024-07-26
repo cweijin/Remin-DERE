@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:remindere/common/styles/spacing_styles.dart';
 import 'package:remindere/utils/constants/sizes.dart';
-import 'package:remindere/features/taskallocation/models/task_model.dart';
-import 'package:remindere/features/taskallocation/screens/widgets/task_list_item.dart';
+import 'package:remindere/features/task_allocation/models/task_model.dart';
+import 'package:remindere/features/task_allocation/screens/widgets/task_list_item.dart';
 
 class TaskList extends StatelessWidget {
   // this helps build the changeable list of events. based on a to-do list.

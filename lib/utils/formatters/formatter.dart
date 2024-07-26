@@ -13,19 +13,27 @@ class RFormatter {
   }
 
   static String formatDuration(Duration duration) {
+    // return duration.inDays != 0
+    //     ? duration.inDays == 1
+    //         ? '${duration.inDays} day ago'
+    //         : '${duration.inDays} days ago'
+    //     : duration.inHours != 0
+    //         ? duration.inHours == 1
+    //             ? '${duration.inHours} hour ago'
+    //             : '${duration.inHours} hours ago'
+    //         : duration.inMinutes != 0
+    //             ? duration.inMinutes == 1
+    //                 ? '${duration.inMinutes} minute ago'
+    //                 : '${duration.inMinutes} minutes ago'
+    //             : '${duration.inSeconds} seconds ago';
+
     return duration.inDays != 0
-        ? duration.inDays == 1
-            ? '${duration.inDays} day ago'
-            : '${duration.inDays} days ago'
+        ? '${duration.inDays}d'
         : duration.inHours != 0
-            ? duration.inHours == 1
-                ? '${duration.inHours} hour ago'
-                : '${duration.inHours} hours ago'
+            ? '${duration.inHours}h'
             : duration.inMinutes != 0
-                ? duration.inMinutes == 1
-                    ? '${duration.inMinutes} minute ago'
-                    : '${duration.inMinutes} minutes ago'
-                : '${duration.inSeconds} seconds ago';
+                ? '${duration.inMinutes}m'
+                : '${duration.inSeconds}s';
   }
 
   static String formatCurrency(double amount) {

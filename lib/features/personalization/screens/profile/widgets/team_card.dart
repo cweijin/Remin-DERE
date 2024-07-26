@@ -3,19 +3,19 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:remindere/features/personalization/controllers/team_controller.dart';
+import 'package:remindere/features/teaming/models/team_model.dart';
+import 'package:remindere/features/teaming/screens/team.dart';
 import 'package:remindere/utils/constants/sizes.dart';
 
-class TeamCard extends StatelessWidget {
-  const TeamCard({
+class RTeamCard extends StatelessWidget {
+  const RTeamCard({
     super.key,
-    required this.name,
-    required this.members,
-    required this.teamId,
+    required this.team,
+    required this.isDark,
   });
 
-  final String name;
-  final List<String> members;
-  final String teamId;
+  final bool isDark;
+  final TeamModel team;
 
   @override
   Widget build(BuildContext context) {
@@ -25,18 +25,24 @@ class TeamCard extends StatelessWidget {
     return Row(children: [
       InkWell(
         splashColor: Colors.grey,
-        onTap: () {
-          controller.selectTeam(teamId);
-          localStorage.write('CurrentTeamName', name);
-          _showTeamDetails(context);
-        },
+        onTap: () => Get.to(() => TeamScreen(team: team)),
         child: Stack(
           children: [
             Container(
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: isDark
+                    ? Colors.transparent
+                    : const Color.fromARGB(255, 243, 249, 241),
                 borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: isDark ? Colors.grey.withOpacity(0.3) : Colors.grey,
+                    spreadRadius: 1,
+                    blurRadius: 2,
+                    offset: const Offset(0, 3), // changes position of shadow
+                  ),
+                ],
               ),
               height: 200,
               width: 200,
@@ -44,12 +50,12 @@ class TeamCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    name,
+                    team.teamName,
                     style: Theme.of(context).textTheme.headlineSmall,
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  teamId == localStorage.read("CurrentTeam")
+                  team.id == localStorage.read("CurrentTeam")
                       ? Text('(Selected)',
                           style: Theme.of(context).textTheme.bodySmall)
                       : const SizedBox(),
@@ -61,6 +67,18 @@ class TeamCard extends StatelessWidget {
               child: IconButton(
                 onPressed: () {},
                 icon: const Icon(Iconsax.more),
+              ),
+            ),
+            Positioned(
+              left: 0,
+              bottom: 0,
+              child: TextButton(
+                onPressed: () {
+                  controller.selectTeam(team.id);
+                  localStorage.write('CurrentTeamName', team.teamName);
+                  _showTeamDetails(context);
+                },
+                child: const Text('Change'),
               ),
             ),
           ],
@@ -86,11 +104,11 @@ class TeamCard extends StatelessWidget {
                       style: TextStyle(fontSize: RSizes.lg),
                     ),
                     Text(
-                      "Team name: ${name}",
+                      "Team name: ${team.teamName}",
                       style: const TextStyle(fontSize: RSizes.md),
                     ),
                     Text(
-                      "Task member: ${members}",
+                      "Task member: ${team.teamMembers}",
                       style: const TextStyle(fontSize: RSizes.md),
                     ),
                   ])));

@@ -1,7 +1,4 @@
-import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:remindere/utils/formatters/formatter.dart';
 
 class ChatMessageModel {
