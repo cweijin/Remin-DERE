@@ -11,7 +11,7 @@ import 'package:remindere/data/repositories/calendar_event_repository/task_repos
 import 'package:remindere/features/development/models/notification/notification_model.dart';
 import 'package:remindere/features/personalization/controllers/team_controller.dart';
 import 'package:remindere/features/personalization/models/user_model.dart';
-import 'package:remindere/features/taskallocation/models/task_model.dart';
+import 'package:remindere/features/task_allocation/models/task_model.dart';
 import 'package:remindere/navigation_menu.dart';
 import 'package:remindere/utils/helpers/network_manager.dart';
 import 'package:remindere/utils/popups/full_screen_loader.dart';
@@ -110,6 +110,7 @@ class TaskAllocationController extends GetxController {
             .toList(),
         dueDate: DateTime.parse(dueDate.text.trim()),
         attachments: attachmentUrls,
+        owner: AuthenticationRepository.instance.authUser!.uid,
       );
 
       await taskRepository.saveTaskDetails(newTask);
@@ -147,7 +148,6 @@ class TaskAllocationController extends GetxController {
 
       if (result != null) {
         attachments.value = result.xFiles;
-        log(attachments.toString());
         attachments.refresh();
         // final attachmentUrls = await taskRepository.uploadFiles(
         //     'Teams/${deviceStorage.read('CurrentTeam')}/Attachments/',

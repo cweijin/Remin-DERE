@@ -8,7 +8,7 @@ import 'package:multi_dropdown/multiselect_dropdown.dart';
 import 'package:remindere/common/styles/spacing_styles.dart';
 import 'package:remindere/features/personalization/controllers/team_controller.dart';
 import 'package:remindere/features/personalization/models/user_model.dart';
-import 'package:remindere/features/taskallocation/controllers/task_allocation_controller.dart';
+import 'package:remindere/features/task_allocation/controllers/task_allocation_controller.dart';
 import 'package:remindere/utils/constants/image_strings.dart';
 import 'package:remindere/utils/constants/sizes.dart';
 import 'package:remindere/utils/helpers/cloud_helper_functions.dart';

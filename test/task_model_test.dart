@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:test/test.dart';
-import 'package:remindere/features/taskallocation/models/task_model.dart';
+import 'package:remindere/features/task_allocation/models/task_model.dart';
 
 void main() {
   test('Task Model Empty', () {

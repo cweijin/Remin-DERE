@@ -5,18 +5,21 @@ class TeamModel {
   final String teamName;
   final List<String> teamMembers;
   final String id;
+  final String owner;
 
   const TeamModel({
     required this.teamName,
     required this.teamMembers,
     required this.id,
+    required this.owner,
   });
 
   Map<String, dynamic> toJSON() {
     return {
-      "TeamName": teamName,
-      "TeamMembers": teamMembers,
-      "Id": id,
+      'TeamName': teamName,
+      'TeamMembers': teamMembers,
+      'Id': id,
+      'Owner': owner,
     };
   }
 
@@ -24,6 +27,7 @@ class TeamModel {
         teamName: '',
         teamMembers: [],
         id: '',
+        owner: '',
       );
 
   // Factory method to create a UserModel from a Firebase document snapshot
@@ -33,10 +37,11 @@ class TeamModel {
       final data = document.data()!;
 
       return TeamModel(
-        teamName: data["TeamName"] ?? ' ',
-        teamMembers: List<String>.from(data[
-            "TeamMembers"]), //**Firestore returns us List<dynamic> causing incompatible type, this is a workaround.
+        teamName: data["TeamName"] ?? '',
+        teamMembers: List<String>.from(data["TeamMembers"] ?? []),
+        //**Firestore returns us List<dynamic> causing incompatible type, this is a workaround.
         id: data["Id"] ?? '',
+        owner: data['Owner'] ?? '',
       );
     } else {
       return TeamModel.empty();
@@ -44,12 +49,13 @@ class TeamModel {
   }
 
   TeamModel setId(String id) {
-    return TeamModel(teamName: teamName, teamMembers: teamMembers, id: id);
+    return TeamModel(
+        teamName: teamName, teamMembers: teamMembers, id: id, owner: owner);
   }
 
   @override
   String toString() {
-    return "Team Model: $teamName";
+    return 'Team Model: $teamName';
   }
 
   @override

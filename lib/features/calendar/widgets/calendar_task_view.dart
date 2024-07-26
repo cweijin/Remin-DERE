@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:remindere/utils/helpers/cloud_helper_functions.dart';
 import 'package:remindere/features/calendar/controllers/calendar_task_controller.dart';
-import 'package:remindere/features/taskallocation/screens/widgets/task_list.dart';
+import 'package:remindere/features/task_allocation/screens/widgets/task_list.dart';
 
 class RTaskView extends StatelessWidget {
   const RTaskView({super.key});

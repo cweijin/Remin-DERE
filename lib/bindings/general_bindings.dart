@@ -6,6 +6,7 @@ import 'package:remindere/features/calendar/controllers/calendar_task_controller
 import 'package:remindere/features/development/controllers/notification/notification_controller.dart';
 import 'package:remindere/features/personalization/controllers/team_controller.dart';
 import 'package:remindere/features/personalization/controllers/user_controller.dart';
+import 'package:remindere/features/task_management/controllers/task_management_controller.dart';
 import 'package:remindere/features/teaming/controllers/create_team/create_team_controller.dart';
 import 'package:remindere/utils/helpers/network_manager.dart';
 
@@ -20,6 +21,8 @@ class GeneralBingdings extends Bindings {
         fenix: true);
     Get.lazyPut<UserController>(() => UserController(), fenix: true);
     Get.lazyPut<NotificationController>(() => NotificationController(),
+        fenix: true);
+    Get.lazyPut<TaskManagementController>(() => TaskManagementController(),
         fenix: true);
 
     // Repository

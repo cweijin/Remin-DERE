@@ -46,6 +46,17 @@ class RHelperFunctions {
     return RFormatter.formatDuration(duration);
   }
 
+  static String getAttachmentName(String url) {
+    url = url.split("/")[7];
+    url = url.replaceAll("%20", " ");
+    url = url.replaceAll("%2C", ",");
+    url = url.replaceAll("%2F", "");
+    url = url.replaceAll("%40", "@");
+    url = url.substring(url.indexOf('Attachments') + 11, url.indexOf('?alt'));
+
+    return url;
+  }
+
   static void showSnackBar(String message) {
     ScaffoldMessenger.of(Get.context!).showSnackBar(
       SnackBar(content: Text(message)),

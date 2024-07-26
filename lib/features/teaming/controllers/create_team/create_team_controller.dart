@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:remindere/data/repositories/team/team_repository.dart';
 import 'package:remindere/data/repositories/user/user_repository.dart';
+import 'package:remindere/features/personalization/controllers/user_controller.dart';
 import 'package:remindere/features/personalization/models/user_model.dart';
 import 'package:remindere/features/personalization/screens/profile/profile.dart';
 import 'package:remindere/features/teaming/models/team_model.dart';
@@ -51,6 +52,7 @@ class CreateTeamController extends GetxController {
         teamName: name.text.trim(),
         teamMembers: selectedUsers.map((model) => model.id).toList(),
         id: '',
+        owner: UserController.instance.user.value.id,
       );
 
       final teamRepository = Get.put(TeamRepository());

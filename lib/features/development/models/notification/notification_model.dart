@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-enum NotificationType { teamCreation, taskCreation, none }
+enum NotificationType { teamCreation, taskCreation, taskSubmission, none }
 
 class NotificationModel {
   final String title;
@@ -37,6 +37,7 @@ class NotificationModel {
       'Type': switch (type) {
         NotificationType.taskCreation => 'task',
         NotificationType.teamCreation => 'team',
+        NotificationType.taskSubmission => 'submit',
         NotificationType.none => 'Invalid'
       }
     };
@@ -54,7 +55,11 @@ class NotificationModel {
         createdBy: data['CreatedBy'] ?? '',
         type: data['Type'] == 'task'
             ? NotificationType.taskCreation
-            : NotificationType.teamCreation,
+            : data['Type'] == 'team'
+                ? NotificationType.teamCreation
+                : data['Type'] == 'submit'
+                    ? NotificationType.taskSubmission
+                    : NotificationType.none,
       );
     } else {
       return NotificationModel.empty();

@@ -1,17 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
+import 'package:remindere/features/task_management/screens/task_management.dart';
+import 'package:remindere/features/task_allocation/models/task_model.dart';
 import 'package:remindere/utils/constants/colors.dart';
 import 'package:remindere/utils/constants/sizes.dart';
-import 'package:remindere/features/taskallocation/models/task_model.dart';
+import 'package:remindere/utils/device/device_utility.dart';
 import 'package:remindere/utils/formatters/formatter.dart';
 
 class RTaskCard extends StatelessWidget {
   final TaskModel task;
+  final bool isDark;
 
   const RTaskCard({
     super.key,
     required this.task,
+    required this.isDark,
   });
 
   @override
@@ -22,12 +27,14 @@ class RTaskCard extends StatelessWidget {
         radius: 50,
         borderRadius: BorderRadius.circular(10),
         onTap: () {
-          _showEventDetails(context);
+          Get.to(() => TaskManagementScreen(task: task));
         },
         child: Card(
           clipBehavior: Clip.antiAlias,
           elevation: 6,
-          // color: const Color.fromARGB(255, 243, 249, 241),
+          color: isDark
+              ? Colors.transparent
+              : const Color.fromARGB(255, 243, 249, 241),
           child: Column(
             children: [
               Container(

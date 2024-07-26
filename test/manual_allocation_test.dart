@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:remindere/features/taskallocation/screens/manual_allocation/manual_allocation.dart';
+import 'package:remindere/features/task_allocation/screens/manual_allocation/manual_allocation.dart';
 
 void main() {
   testWidgets("Manual allocation test", (WidgetTester tester) async {

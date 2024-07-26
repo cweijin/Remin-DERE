@@ -6,12 +6,14 @@ import 'package:remindere/utils/constants/sizes.dart';
 import 'package:remindere/features/calendar/controllers/calendar_task_controller.dart';
 import 'package:get/get.dart';
 import 'package:remindere/utils/helpers/cloud_helper_functions.dart';
+import 'package:remindere/utils/helpers/helper_functions.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = RHelperFunctions.isDarkMode(context);
     final controller = CalendarTaskController.instance;
 
     return Scaffold(
@@ -53,7 +55,10 @@ class HomeScreen extends StatelessWidget {
                           itemCount: tasks.length,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
-                            return RTaskCard(task: tasks[index]);
+                            return RTaskCard(
+                              task: tasks[index],
+                              isDark: isDark,
+                            );
                           },
                         );
                       },
@@ -93,7 +98,10 @@ class HomeScreen extends StatelessWidget {
                   return SliverList.builder(
                     itemCount: tasks.length,
                     itemBuilder: (context, index) {
-                      return RTaskTile(task: tasks[index]);
+                      return RTaskTile(
+                        task: tasks[index],
+                        isDark: isDark,
+                      );
                     },
                   );
                 },

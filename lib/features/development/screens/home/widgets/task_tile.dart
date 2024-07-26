@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:remindere/features/task_management/screens/task_management.dart';
 import 'package:remindere/utils/constants/colors.dart';
 import 'package:remindere/utils/constants/sizes.dart';
 import 'package:remindere/utils/device/device_utility.dart';
-import 'package:remindere/features/taskallocation/models/task_model.dart';
+import 'package:remindere/features/task_allocation/models/task_model.dart';
 import 'package:remindere/utils/formatters/formatter.dart';
 
 class RTaskTile extends StatelessWidget {
   final TaskModel task;
+  final bool isDark;
   // final String? task;
 
   const RTaskTile({
     super.key,
     required this.task,
+    required this.isDark,
   });
 
   @override
@@ -22,19 +26,21 @@ class RTaskTile extends StatelessWidget {
       InkWell(
         splashColor: Colors.grey,
         onTap: () {
-          _showEventDetails(context);
+          Get.to(() => TaskManagementScreen(task: task));
         },
         child: Container(
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            // color: const Color.fromARGB(255, 243, 249, 241),
+            color: isDark
+                ? Colors.transparent
+                : const Color.fromARGB(255, 243, 249, 241),
             borderRadius: BorderRadius.circular(10),
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
-                color: RColors.grey,
+                color: isDark ? Colors.grey.withOpacity(0.3) : Colors.grey,
                 spreadRadius: 1,
                 blurRadius: 2,
-                offset: Offset(0, 3), // changes position of shadow
+                offset: const Offset(0, 3), // changes position of shadow
               ),
             ],
           ),
