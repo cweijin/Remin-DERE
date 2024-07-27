@@ -37,7 +37,7 @@ class TaskRepository extends GetxController {
 
   Future<void> saveTaskDetails(TaskModel task) async {
     try {
-      //Current selected team
+      // Current selected team
       String currentTeam = localStorage.read('CurrentTeam');
 
       await _db
@@ -50,7 +50,7 @@ class TaskRepository extends GetxController {
       final notification = NotificationModel(
         title: task.taskName,
         team: localStorage.read('CurrentTeamName'),
-        timeCreated: DateTime.now(),
+        timeCreated: Timestamp.now().toDate(),
         createdBy: _user.uid,
         type: NotificationType.taskCreation,
       );
@@ -87,12 +87,31 @@ class TaskRepository extends GetxController {
     }
   }
 
-  // modeled after team_repository.dart
-  Future<List<TaskModel>> fetchTaskList() async {
+  // Fetch user tasks
+  Future<List<TaskModel>> fetchUserTaskList() async {
     try {
       final result = await _db
           .collection("Users")
           .doc(_user.uid)
+          .collection("Tasks")
+          .get();
+      // return this
+      return result.docs
+          .map((docSnapshot) => TaskModel.fromSnapshot(docSnapshot))
+          .toList();
+    } catch (e) {
+      throw 'Something went wrong while fetching task list. Please try again later.';
+    }
+  }
+
+  // Fetch user tasks
+  Future<List<TaskModel>> fetchTeamTaskList() async {
+    // Current selected team
+    String currentTeam = localStorage.read('CurrentTeam');
+    try {
+      final result = await _db
+          .collection("Teams")
+          .doc(currentTeam)
           .collection("Tasks")
           .get();
       // return this
