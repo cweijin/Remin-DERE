@@ -1,5 +1,6 @@
 // find friends to chat with
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -57,8 +58,8 @@ class FindUser extends StatelessWidget {
                       chat: ChatModel(
                         receiverID: controller.users[index].id,
                         receiverUsername: controller.users[index].username,
-                        updatedAt: DateTime.now(),
-                        lastMessage: DateTime.now(),
+                        updatedAt: Timestamp.now().toDate(),
+                        lastMessage: Timestamp.now().toDate(),
                         unreadMessagesCount: 0
                       )
                     );

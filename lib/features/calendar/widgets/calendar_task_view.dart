@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:remindere/utils/helpers/cloud_helper_functions.dart';
@@ -17,8 +18,8 @@ class RTaskView extends StatelessWidget {
         () => FutureBuilder(
           // Use key to trigger refresh
           key: Key(controller.refreshData.value.toString()),
-          future: controller.getUserTasks(DateTime
-              .now()), // currently set to only show tasks due after today.
+          future: (controller.team.value ? controller.getTeamTasks(Timestamp.now().toDate())
+                       : controller.getUserTasks(Timestamp.now().toDate())), // currently set to only show tasks due after today.
           builder: (context, snapshot) {
             // Helper function to handle loader, no record, or error message
             final response =

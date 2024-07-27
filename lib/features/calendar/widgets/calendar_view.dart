@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:remindere/common/styles/spacing_styles.dart';
 import 'package:remindere/utils/constants/sizes.dart';
 import 'package:remindere/utils/constants/colors.dart';
@@ -17,6 +18,7 @@ class RCalendar extends StatelessWidget {
             // Use key to trigger refresh
             key: Key(controller.refreshData.value.toString()),
             children: [
+              Row(children: [
               //To Show Current Date
               Container(
                   height: RSizes.md,
@@ -29,6 +31,18 @@ class RCalendar extends StatelessWidget {
                         fontWeight: FontWeight.w800,
                         color: RColors.primary),
                   )),
+
+                  const Expanded(child: SizedBox()),
+
+                  // switch from personal calendar to team calendar
+                  ElevatedButton(
+                    onPressed: () {controller.team.toggle();},
+                    child: controller.team.value ? const Text("View Personal Calendar") : const Text("View Team Calendar")
+                  ), 
+
+                  const SizedBox()
+                ]
+              ),
 
               const SizedBox(height: RSizes.spaceBtwSections),
 
@@ -114,7 +128,9 @@ class RCalendar extends StatelessWidget {
                     );
                   },
                 )),
-              )
-            ]));
+              ),
+            ]
+          )
+        );
   }
 }

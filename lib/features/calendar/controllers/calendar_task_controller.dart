@@ -9,6 +9,7 @@ class CalendarTaskController extends GetxController {
   static CalendarTaskController get instance => Get.find();
   final taskRepository = Get.put(TaskRepository());
   RxBool refreshData = true.obs;
+  RxBool team = false.obs;  // checks if is team calendar
 
   // data for calendar
   DateTime selectedDate = DateTime.now(); // TO tracking date
@@ -37,7 +38,7 @@ class CalendarTaskController extends GetxController {
   // Fetch all user specific tasks for taskview.
   Future<List<TaskModel>> getAllUserTasks() async {
     try {
-      final tasks = await taskRepository.fetchTaskList();
+      final tasks = await taskRepository.fetchUserTaskList();
       return tasks;
     } catch (e) {
       RLoaders.errorSnackBar(title: 'Task not found', message: e.toString());
@@ -48,7 +49,21 @@ class CalendarTaskController extends GetxController {
   // Fetch user specific tasks with dueDate later than inputted datetime for taskview.
   Future<List<TaskModel>> getUserTasks(DateTime dateTime) async {
     try {
-      final tasks = await taskRepository.fetchTaskList();
+      final tasks = await taskRepository.fetchUserTaskList();
+      return tasks.where((task) {
+        return task.dueDate.compareTo(dateTime) > -1;
+      }).toList();
+    } catch (e) {
+      RLoaders.errorSnackBar(title: 'Task not found', message: e.toString());
+      return [];
+    }
+  }
+
+
+  // Fetch team specific tasks with dueDate later than inputted datetime for taskview.
+  Future<List<TaskModel>> getTeamTasks(DateTime dateTime) async {
+    try {
+      final tasks = await taskRepository.fetchTeamTaskList();
       return tasks.where((task) {
         return task.dueDate.compareTo(dateTime) > -1;
       }).toList();

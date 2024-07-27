@@ -23,6 +23,6 @@ void main() {
 
     repository.saveTaskDetails(model);
 
-    expect(await repository.fetchTaskList().then((value) => value[0]), model);
+    expect(await repository.fetchUserTaskList().then((value) => value[0]), model);
   });
 }

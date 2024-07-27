@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -88,7 +89,7 @@ class ChatController extends GetxController {
         message: msgController.text,
         senderID: userID,
         receiverID: receiverID,
-        createdAt: DateTime.now(),
+        createdAt: Timestamp.now().toDate(),
         read: false,
         // attachments: [],
       );
