@@ -13,7 +13,6 @@ import 'package:remindere/utils/popups/loaders.dart';
 
 import 'dart:developer';
 
-
 class ChatController extends GetxController {
   // data for chatview
   static ChatController get instance => Get.find();
@@ -25,7 +24,6 @@ class ChatController extends GetxController {
   // data for chat
   TextEditingController msgController = TextEditingController();
 
-
   // need immplement sending messages and receiving messages
   void getUsers(String username) async {
     // final chatRepository = ChatRepository.instance;
@@ -34,15 +32,12 @@ class ChatController extends GetxController {
     users.value = await user.fetchAllUsers(username);
   }
 
-  // Fetch all user specific chats for chatview.  
+  // Fetch all user specific chats for chatview.
   Stream<DatabaseEvent> getUserChats() {
     try {
       final chatRepository = ChatRepository.instance;
-      final chats = chatRepository.fetchChats(); //await ChatRepository.fetchChats();
-
-      // log('function called: ChatController.getUserChats()');
-      // log(chats.runtimeType.toString());
-      // log(chats.toString());
+      final chats =
+          chatRepository.fetchChats(); //await ChatRepository.fetchChats();
 
       return chats;
     } catch (e) {
@@ -51,25 +46,26 @@ class ChatController extends GetxController {
     }
   }
 
-  // Fetch all user specific chats for chatview.  
+  // Fetch all user specific chats for chatview.
   Stream<DatabaseEvent> getMessages(String receiverID) {
     try {
       final chatRepository = ChatRepository.instance;
-      final messages = chatRepository.fetchMessages(receiverID); //await ChatRepository.fetchChats();
-
-      // log('function called: ChatController.getMessages(receiverID)');
-      // log(messages.runtimeType.toString());
-      // log(messages.toString());
+      final messages = chatRepository
+          .fetchMessages(receiverID); //await ChatRepository.fetchChats();
 
       return messages;
     } catch (e) {
-      RLoaders.errorSnackBar(title: 'MEssages not found', message: e.toString());
+      RLoaders.errorSnackBar(
+          title: 'MEssages not found', message: e.toString());
       return const Stream.empty();
     }
   }
 
   // Create Message
-  Future<void> sendMessage({required String userID, required String receiverID, required ChatModel chat}) async {
+  Future<void> sendMessage(
+      {required String userID,
+      required String receiverID,
+      required ChatModel chat}) async {
     if (msgController.text.isEmpty) return;
 
     try {
@@ -84,7 +80,7 @@ class ChatController extends GetxController {
       }
 
       // Save authenticated message data in Firebase Firestore
-      final newMessage = ChatMessageModel(  
+      final newMessage = ChatMessageModel(
         id: 'testing id',
         message: msgController.text,
         senderID: userID,
@@ -96,12 +92,11 @@ class ChatController extends GetxController {
 
       final chatRepository = ChatRepository.instance;
       await chatRepository.sendMessage(newMessage, chat);
-      
+
       msgController.clear(); // clear the message after sending
 
       // Remove Loader
       RFullScreenLoader.stopLoading();
-
     } catch (e) {
       RLoaders.errorSnackBar(
           title: 'Some error occured :(', message: e.toString());

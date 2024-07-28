@@ -1,20 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
-import 'package:remindere/common/styles/spacing_styles.dart';
-import 'package:remindere/features/personalization/controllers/team_controller.dart';
 import 'package:remindere/features/personalization/models/user_model.dart';
 import 'package:remindere/features/task_allocation/controllers/task_allocation_controller.dart';
 import 'package:remindere/utils/constants/image_strings.dart';
 import 'package:remindere/utils/constants/sizes.dart';
 import 'package:remindere/utils/helpers/cloud_helper_functions.dart';
 import 'package:remindere/utils/validators/validation.dart';
-
-import 'dart:developer';
 
 class ManualAllocation extends StatelessWidget {
   const ManualAllocation({super.key});
@@ -72,24 +66,6 @@ class ManualAllocation extends StatelessWidget {
                             ),
 
                             const SizedBox(height: RSizes.spaceBtwInputFields),
-
-                            // DropdownSearch.multiSelection(
-                            //   popupProps: PopupPropsMultiSelection.menu(
-                            //     showSearchBox: true,
-                            //     itemBuilder: (context, item, isSelected) {
-                            //       return ListTile(
-                            //         leading: const CircleAvatar(
-                            //           backgroundImage: AssetImage(RImages.profile1),
-                            //           radius: 30,
-                            //         ),
-                            //         title: Text('Name'),
-                            //         subtitle: Text('Email'),
-                            //       );
-                            //     },
-                            //     selectionWidget: null,
-                            //   ),
-                            //   items: ['Gello', 'World', 'Hey', '5', '999'],
-                            // ),
 
                             FutureBuilder(
                                 future: controller.team

@@ -1,37 +1,56 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:remindere/common/styles/spacing_styles.dart';
-import 'package:remindere/features/authentication/screens/login/login.dart';
+import 'package:remindere/common/widgets/appbar/appbar.dart';
+import 'package:remindere/features/personalization/controllers/account_security_controller.dart';
+import 'package:remindere/features/personalization/screens/account_security/re_authenticate.dart';
+import 'package:remindere/utils/constants/sizes.dart';
 
-class SettingScreen extends StatelessWidget {
-  const SettingScreen({super.key});
+class AccountSecurityScreen extends StatelessWidget {
+  const AccountSecurityScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final auth = FirebaseAuth.instance;
+    final controller = AccountSecurityController.instance;
 
     return Scaffold(
-      body: Expanded(
-        child: Padding(
-          padding: RSpacingStyle.paddingWithAppBarHeight,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(width: double.infinity),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                      onPressed: () {
-                        auth.signOut();
-                        Get.offAll(const LoginScreen());
-                      },
-                      child: const Text('Logout')),
-                ),
-              ],
+      appBar: RAppBar(
+        showBackArrow: true,
+        leadingOnPressed: () => Get.back(),
+        title: const Text('Account Security'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(RSizes.defaultSpace),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton(
+                  onPressed: () => Get.to(
+                        () => const ReAuthenticateScreen(
+                          emailRequired: false,
+                        ),
+                      ),
+                  child: const Text('Reset Email')),
             ),
-          ),
+            const SizedBox(height: RSizes.spaceBtwItems),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                  onPressed: () => controller.sendPasswordResetEmail(),
+                  child: const Text('Reset Password')),
+            ),
+            const SizedBox(height: RSizes.spaceBtwItems),
+            Center(
+              child: TextButton(
+                  child: const Text(
+                    'Close account',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  onPressed: () {} //controller.deleteAccountWarningPopup(),
+                  ),
+            ),
+          ],
         ),
       ),
     );

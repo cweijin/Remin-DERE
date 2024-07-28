@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:remindere/features/task_management/controllers/task_management_controller.dart';
 import 'package:remindere/utils/constants/colors.dart';
 import 'package:remindere/utils/constants/image_strings.dart';

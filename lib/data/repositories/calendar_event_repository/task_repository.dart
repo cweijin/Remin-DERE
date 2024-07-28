@@ -253,7 +253,7 @@ class TaskRepository extends GetxController {
           .collection('Tasks')
           .doc(submission.taskId)
           .collection('Submissions')
-          .doc(_user.uid)
+          .doc(UserController.instance.user.value.id)
           .set(submission.toJSON());
 
       // Create a notification to update task owner the submission

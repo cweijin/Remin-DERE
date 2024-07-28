@@ -92,8 +92,8 @@ class HomeScreen extends StatelessWidget {
                   }
 
                   final tasks = snapshot.data!;
-                  tasks.sort(((taskA, taskB) => taskA.dueDate
-                      .compareTo(taskB.dueDate))); // arrange based on dueDate
+                  // tasks.sort(((taskA, taskB) => taskA.dueDate
+                  //     .compareTo(taskB.dueDate))); // arrange based on dueDate
 
                   return SliverList.builder(
                     itemCount: tasks.length,

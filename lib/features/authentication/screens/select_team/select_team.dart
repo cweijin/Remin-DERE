@@ -52,8 +52,9 @@ class TeamSelectionScreen extends StatelessWidget {
                       itemBuilder: (_, index) => ListTile(
                         title: Text(teams[index].teamName),
                         onTap: () async {
-                          deviceStorage.write('CurrentTeam', teams[index].id);
-                          deviceStorage.write(
+                          await deviceStorage.write(
+                              'CurrentTeam', teams[index].id);
+                          await deviceStorage.write(
                               'CurrentTeamName', teams[index].teamName);
                           await TeamController.instance.fetchCurrentTeam();
                           NavigationController.instance.verifyOwnership();

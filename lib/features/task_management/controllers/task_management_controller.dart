@@ -95,8 +95,6 @@ class TaskManagementController extends GetxController {
   Future<SubmissionModel> getSubmission(String teamId, String taskId,
       {bool isOwner = false}) async {
     try {
-      log(teamId);
-      log(taskId);
       return await taskRepository.fetchSubmission(
           teamId, taskId, isOwner ? view.value.id : user.user.value.id);
     } catch (e) {
