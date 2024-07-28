@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:test/test.dart';
 import 'package:remindere/features/task_allocation/models/task_model.dart';
 
@@ -9,7 +8,7 @@ void main() {
     final task = TaskModel.empty();
 
     // execute the actual test
-    final snapshot = task.toJSON;
+    //final snapshot = task.toJSON;
     // final fetchTask = TaskModel.fromSnapshot(snapshot);
 
     // check outputs

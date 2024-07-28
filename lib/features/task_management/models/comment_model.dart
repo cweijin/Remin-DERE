@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class CommentModel {
   final String comment;
   final String ownerId;

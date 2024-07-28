@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,6 +13,7 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:remindere/data/repositories/authentication_repository/authentication_repository.dart';
 import 'package:remindere/features/development/models/notification/notification_model.dart';
+import 'package:remindere/features/personalization/controllers/user_controller.dart';
 import 'package:remindere/features/task_allocation/models/task_model.dart';
 import 'package:remindere/features/task_management/models/comment_model.dart';
 import 'package:remindere/features/task_management/models/submission_model.dart';
@@ -21,6 +21,7 @@ import 'package:remindere/utils/exceptions/firebase_auth_exceptions.dart';
 import 'package:remindere/utils/exceptions/firebase_exceptions.dart';
 import 'package:remindere/utils/exceptions/format_exceptions.dart';
 import 'package:remindere/utils/exceptions/platform_exceptions.dart';
+import 'package:remindere/utils/helpers/helper_functions.dart';
 
 class TaskRepository extends GetxController {
   static TaskRepository get instance => Get.find();
@@ -49,8 +50,8 @@ class TaskRepository extends GetxController {
       // Create a notification to update related users
       final notification = NotificationModel(
         title: task.taskName,
-        team: localStorage.read('CurrentTeamName'),
         timeCreated: Timestamp.now().toDate(),
+        where: localStorage.read('CurrentTeamName'),
         createdBy: _user.uid,
         type: NotificationType.taskCreation,
       );
@@ -62,6 +63,9 @@ class TaskRepository extends GetxController {
             .doc(id)
             .collection('Tasks')
             .add(task.toJSON());
+
+        // No need to notify owner
+        if (id == UserController.instance.user.value.id) continue;
 
         await _db
             .collection('Users')
@@ -87,6 +91,60 @@ class TaskRepository extends GetxController {
     }
   }
 
+  Future<void> removeTaskDetails(TaskModel task) async {
+    try {
+      await _db
+          .collection('Teams')
+          .doc(task.team)
+          .collection('Tasks')
+          .doc(task.id)
+          .delete();
+
+      // // Create a notification to update related users
+      // final notification = NotificationModel(
+      //   title: task.taskName,
+      //   timeCreated: Timestamp.now().toDate(),
+      //   where: localStorage.read('CurrentTeamName'),
+      //   createdBy: _user.uid,
+      //   type: NotificationType.taskCreation,
+      // );
+
+      //Delete task data for each of the assignees
+      for (String id in task.assignees) {
+        await _db
+            .collection('Users')
+            .doc(id)
+            .collection('Tasks')
+            .doc(task.id)
+            .delete();
+
+        // // No need to notify owner
+        // if (id == UserController.instance.user.value.id) continue;
+
+        // await _db
+        //     .collection('Users')
+        //     .doc(id)
+        //     .collection('Notifications')
+        //     .add(notification.toJSON());
+
+        // await _db
+        //     .collection('Users')
+        //     .doc(id)
+        //     .update({'Unread': FieldValue.increment(1)});
+      }
+    } on FirebaseAuthException catch (e) {
+      throw RFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw RFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const RFormatException();
+    } on PlatformException catch (e) {
+      throw RPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Unknown error. Please try again.';
+    }
+  }
+
   // Fetch user tasks
   Future<List<TaskModel>> fetchUserTaskList() async {
     try {
@@ -94,6 +152,7 @@ class TaskRepository extends GetxController {
           .collection("Users")
           .doc(_user.uid)
           .collection("Tasks")
+          .orderBy('DueDate')
           .get();
       // return this
       return result.docs
@@ -104,17 +163,16 @@ class TaskRepository extends GetxController {
     }
   }
 
-  // Fetch user tasks
-  Future<List<TaskModel>> fetchTeamTaskList() async {
-    // Current selected team
-    String currentTeam = localStorage.read('CurrentTeam');
+  // Fetch team specific tasks from Firestore
+  Future<List<TaskModel>> fetchTeamTaskList({String? teamId}) async {
     try {
       final result = await _db
-          .collection("Teams")
-          .doc(currentTeam)
-          .collection("Tasks")
+          .collection('Teams')
+          .doc(teamId ?? localStorage.read('CurrentTeam'))
+          .collection('Tasks')
+          .orderBy('DueDate')
           .get();
-      // return this
+
       return result.docs
           .map((docSnapshot) => TaskModel.fromSnapshot(docSnapshot))
           .toList();
@@ -124,12 +182,13 @@ class TaskRepository extends GetxController {
   }
 
   // Upload comment data
-  Future<void> saveComment(CommentModel comment, bool isPrivate) async {
+  Future<void> saveComment(
+      CommentModel comment, String assigneeId, bool isPrivate) async {
     try {
       final ref = FirebaseDatabase.instance
           .ref()
           .child(isPrivate
-              ? 'Tasks/${comment.taskId}/Private/${AuthenticationRepository.instance.authUser!.uid}'
+              ? 'Tasks/${comment.taskId}/Private/$assigneeId'
               : 'Tasks/${comment.taskId}/Comments')
           .push();
 
@@ -147,58 +206,11 @@ class TaskRepository extends GetxController {
     }
   }
 
-  Future<void> saveSubmissionDetails(SubmissionModel submission) async {
-    try {
-      //Current selected team
-      String currentTeam = localStorage.read('CurrentTeam');
-
-      await _db
-          .collection('Teams')
-          .doc(currentTeam)
-          .collection('Tasks')
-          .doc(submission.taskId)
-          .collection('Submission')
-          .doc(_user.uid)
-          .set(submission.toJSON());
-
-      // Create a notification to update task owner the submission
-      final notification = NotificationModel(
-        title: submission.taskName,
-        team: localStorage.read('CurrentTeamName'),
-        timeCreated: DateTime.now(),
-        createdBy: _user.uid,
-        type: NotificationType.taskSubmission,
-      );
-
-      log('${submission.taskOwnerId}');
-
-      await _db
-          .collection('Users')
-          .doc(submission.taskOwnerId)
-          .collection('Notifications')
-          .add(notification.toJSON());
-
-      await _db
-          .collection('Users')
-          .doc(submission.taskOwnerId)
-          .update({'Unread': FieldValue.increment(1)});
-    } on FirebaseAuthException catch (e) {
-      throw RFirebaseAuthException(e.code).message;
-    } on FirebaseException catch (e) {
-      throw RFirebaseException(e.code).message;
-    } on FormatException catch (_) {
-      throw const RFormatException();
-    } on PlatformException catch (e) {
-      throw RPlatformException(e.code).message;
-    } catch (e) {
-      throw 'Unknown error. Please try again.';
-    }
-  }
-
-  Stream<List<CommentModel>> fetchComment(String taskId, bool isPrivate) {
+  Stream<List<CommentModel>> fetchComment(
+      String taskId, String assigneeId, bool isPrivate) {
     try {
       final ref = FirebaseDatabase.instance.ref().child(isPrivate
-          ? 'Tasks/$taskId/Private/${AuthenticationRepository.instance.authUser!.uid}'
+          ? 'Tasks/$taskId/Private/$assigneeId'
           : 'Tasks/$taskId/Comments');
 
       final commentStream = ref.onValue.asyncMap(
@@ -225,6 +237,122 @@ class TaskRepository extends GetxController {
       return sorted;
     } catch (e) {
       throw 'Something went wrong while fetching comments. Please try again later.';
+    }
+  }
+
+  Future<void> saveSubmissionDetails(
+      SubmissionModel submission, String teamId) async {
+    try {
+      await _db
+          .collection('Teams')
+          .doc(teamId)
+          .collection('Tasks')
+          .doc(submission.taskId)
+          .collection('Submissions')
+          .doc(_user.uid)
+          .set(submission.toJSON());
+
+      // Create a notification to update task owner the submission
+      final notification = NotificationModel(
+        title: submission.taskName,
+        where: localStorage.read('CurrentTeamName'),
+        timeCreated: DateTime.now(),
+        createdBy: _user.uid,
+        type: NotificationType.taskSubmission,
+      );
+
+      await _db
+          .collection('Users')
+          .doc(submission.taskOwnerId)
+          .collection('Notifications')
+          .add(notification.toJSON());
+
+      await _db
+          .collection('Users')
+          .doc(submission.taskOwnerId)
+          .update({'Unread': FieldValue.increment(1)});
+    } on FirebaseAuthException catch (e) {
+      throw RFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw RFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const RFormatException();
+    } on PlatformException catch (e) {
+      throw RPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Unknown error. Please try again.';
+    }
+  }
+
+  // Update one single field of the task
+  Future<void> updateTaskStatus(TaskStatus status, TaskModel task) async {
+    try {
+      Map<String, dynamic> json = {'Status': status.name};
+      await _db
+          .collection('Teams')
+          .doc(task.team)
+          .collection('Tasks')
+          .doc(task.id)
+          .update(json);
+
+      // Create a notification to update task owner the submission
+      final notification = NotificationModel(
+        title: RHelperFunctions.getTaskStatus(status),
+        where: task.taskName,
+        timeCreated: DateTime.now(),
+        createdBy: _user.uid,
+        type: NotificationType.statusUpdate,
+      );
+
+      //Send notification to assignees
+      for (String id in task.assignees) {
+        // No need to notify owner
+        if (id == UserController.instance.user.value.id) continue;
+
+        await _db
+            .collection('Users')
+            .doc(id)
+            .collection('Notifications')
+            .add(notification.toJSON());
+
+        await _db
+            .collection('Users')
+            .doc(id)
+            .update({'Unread': FieldValue.increment(1)});
+      }
+    } on FirebaseAuthException catch (e) {
+      throw RFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw RFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const RFormatException();
+    } on PlatformException catch (e) {
+      throw RPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Unknown error. Please try again.';
+    }
+  }
+
+  // Fetch team specific tasks from Firestore
+  Future<SubmissionModel> fetchSubmission(
+      String teamId, String taskId, String assigneeId) async {
+    try {
+      final result = await _db
+          .collection('Teams')
+          .doc(teamId)
+          .collection('Tasks')
+          .doc(taskId)
+          .collection('Submissions')
+          .doc(assigneeId)
+          .get();
+
+      if (result.data() == null) {
+        return SubmissionModel.empty();
+      }
+
+      return SubmissionModel.fromJSON(result.data()!);
+    } catch (e) {
+      throw 'Something went wrong while fetching task list. Please try again later.';
     }
   }
 
@@ -271,16 +399,12 @@ class TaskRepository extends GetxController {
       //         taskSnapshot.bytesTransferred / taskSnapshot.totalBytes;
       //         break;
       //       case TaskState.paused:
-      //         // TODO: Handle this case.
       //         break;
       //       case TaskState.success:
-      //         // TODO: Handle this case.
       //         break;
       //       case TaskState.canceled:
-      //         // TODO: Handle this case.
       //         break;
       //       case TaskState.error:
-      //         // TODO: Handle this case.
       //         break;
       //     }
       // },

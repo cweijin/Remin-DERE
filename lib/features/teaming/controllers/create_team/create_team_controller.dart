@@ -5,9 +5,7 @@ import 'package:remindere/data/repositories/team/team_repository.dart';
 import 'package:remindere/data/repositories/user/user_repository.dart';
 import 'package:remindere/features/personalization/controllers/user_controller.dart';
 import 'package:remindere/features/personalization/models/user_model.dart';
-import 'package:remindere/features/personalization/screens/profile/profile.dart';
 import 'package:remindere/features/teaming/models/team_model.dart';
-import 'package:remindere/navigation_menu.dart';
 import 'package:remindere/utils/helpers/network_manager.dart';
 import 'package:remindere/utils/popups/full_screen_loader.dart';
 import 'package:remindere/utils/popups/loaders.dart';
@@ -47,10 +45,14 @@ class CreateTeamController extends GetxController {
         return;
       }
 
+      // Create list of team member ids
+      final members = selectedUsers.map((model) => model.id).toList();
+      members.add(UserController.instance.user.value.id);
+
       // Save authenticated user data in Firebase Firestore
       final newTeam = TeamModel(
         teamName: name.text.trim(),
-        teamMembers: selectedUsers.map((model) => model.id).toList(),
+        teamMembers: members,
         id: '',
         owner: UserController.instance.user.value.id,
       );

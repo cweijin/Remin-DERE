@@ -89,7 +89,7 @@ class NotificationScreen extends StatelessWidget {
                                       const TextSpan(
                                           text: ' assigned you a task in '),
                                       TextSpan(
-                                          text: '${notification.team}:',
+                                          text: '${notification.where}:',
                                           style: Theme.of(context)
                                               .textTheme
                                               .headlineSmall),
@@ -120,10 +120,28 @@ class NotificationScreen extends StatelessWidget {
                                       const TextSpan(
                                           text: ' submitted a task in '),
                                       TextSpan(
-                                          text: '${notification.team}:',
+                                          text: '${notification.where}:',
                                           style: Theme.of(context)
                                               .textTheme
                                               .headlineSmall),
+                                    ],
+                                  ),
+                                ),
+                              NotificationType.statusUpdate => Text.rich(
+                                  TextSpan(
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                          text: owner.firstName,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineSmall),
+                                      const TextSpan(text: ' marked '),
+                                      TextSpan(
+                                          text: notification.where,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineSmall),
+                                      const TextSpan(text: ' as:'),
                                     ],
                                   ),
                                 ),

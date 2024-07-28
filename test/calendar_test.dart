@@ -1,13 +1,9 @@
-import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:remindere/features/calendar/screens/calendar.dart';
 import 'package:test/test.dart';
-import 'package:remindere/features/task_allocation/models/task_model.dart';
 
 void main() {
   test('Calendar Empty', () {
     // Find all widgets needed
-    final CalendarScreen = TaskModel.empty();
+    //final CalendarScreen = TaskModel.empty();
 
     // // execute the actual test
     // final snapshot = task.toJSON;

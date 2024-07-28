@@ -4,7 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:remindere/common/styles/spacing_styles.dart';
 import 'package:remindere/utils/constants/sizes.dart';
 import 'package:remindere/utils/constants/colors.dart';
-import 'package:remindere/features/calendar/controllers/calendar_task_controller.dart';
+import 'package:remindere/features/calendar/controllers/task_controller.dart';
 
 // actual calendar
 class RCalendar extends StatelessWidget {
@@ -12,37 +12,39 @@ class RCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = CalendarTaskController.instance;
+    final controller = TaskController.instance;
 
     return Obx(() => Column(
             // Use key to trigger refresh
             key: Key(controller.refreshData.value.toString()),
             children: [
               Row(children: [
-              //To Show Current Date
-              Container(
-                  height: RSizes.md,
-                  margin: RSpacingStyle.paddingWithAppBarHeight,
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    controller.showDate(),
-                    style: const TextStyle(
-                        fontSize: RSizes.fontSizesm,
-                        fontWeight: FontWeight.w800,
-                        color: RColors.primary),
-                  )),
+                //To Show Current Date
+                Container(
+                    height: RSizes.md,
+                    margin: RSpacingStyle.paddingWithAppBarHeight,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      controller.showDate(),
+                      style: const TextStyle(
+                          fontSize: RSizes.fontSizesm,
+                          fontWeight: FontWeight.w800,
+                          color: RColors.primary),
+                    )),
 
-                  const Expanded(child: SizedBox()),
+                const Expanded(child: SizedBox()),
 
-                  // switch from personal calendar to team calendar
-                  ElevatedButton(
-                    onPressed: () {controller.team.toggle();},
-                    child: controller.team.value ? const Text("View Personal Calendar") : const Text("View Team Calendar")
-                  ), 
+                // switch from personal calendar to team calendar
+                ElevatedButton(
+                    onPressed: () {
+                      controller.team.toggle();
+                    },
+                    child: controller.team.value
+                        ? const Text("View Personal Calendar")
+                        : const Text("View Team Calendar")),
 
-                  const SizedBox()
-                ]
-              ),
+                const SizedBox()
+              ]),
 
               const SizedBox(height: RSizes.spaceBtwSections),
 
@@ -129,8 +131,6 @@ class RCalendar extends StatelessWidget {
                   },
                 )),
               ),
-            ]
-          )
-        );
+            ]));
   }
 }

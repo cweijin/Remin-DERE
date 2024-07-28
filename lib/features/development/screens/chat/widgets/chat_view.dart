@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:remindere/common/styles/spacing_styles.dart';
-import 'package:remindere/features/development/screens/chat/models/chat_message_model.dart';
 import 'package:remindere/features/development/screens/chat/models/chat_model.dart';
 import 'package:remindere/features/development/screens/chat/widgets/chat_icon.dart';
 

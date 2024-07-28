@@ -3,7 +3,7 @@ import 'package:remindere/features/development/screens/home/widgets/home_appbar.
 import 'package:remindere/features/development/screens/home/widgets/task_card.dart';
 import 'package:remindere/features/development/screens/home/widgets/task_tile.dart';
 import 'package:remindere/utils/constants/sizes.dart';
-import 'package:remindere/features/calendar/controllers/calendar_task_controller.dart';
+import 'package:remindere/features/calendar/controllers/task_controller.dart';
 import 'package:get/get.dart';
 import 'package:remindere/utils/helpers/cloud_helper_functions.dart';
 import 'package:remindere/utils/helpers/helper_functions.dart';
@@ -14,7 +14,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isDark = RHelperFunctions.isDarkMode(context);
-    final controller = CalendarTaskController.instance;
+    final controller = TaskController.instance;
 
     return Scaffold(
       body: CustomScrollView(
@@ -92,8 +92,8 @@ class HomeScreen extends StatelessWidget {
                   }
 
                   final tasks = snapshot.data!;
-                  tasks.sort(((taskA, taskB) => taskA.dueDate
-                      .compareTo(taskB.dueDate))); // arrange based on dueDate
+                  // tasks.sort(((taskA, taskB) => taskA.dueDate
+                  //     .compareTo(taskB.dueDate))); // arrange based on dueDate
 
                   return SliverList.builder(
                     itemCount: tasks.length,

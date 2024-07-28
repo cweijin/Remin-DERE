@@ -1,47 +1,43 @@
-import "dart:developer";
-
 class ChatModel {
   String receiverID;
   String? receiverUsername;
   DateTime? updatedAt;
   DateTime lastMessage;
   int unreadMessagesCount;
-  
+
   // ValueNotifier<int> notifier = ValueNotifier(0);
   bool isOpen = false;
 
-  ChatModel({
-    required this.receiverID,
-    required this.receiverUsername,
-    required this.updatedAt,
-    required this.lastMessage,
-    required this.unreadMessagesCount
-  });
+  ChatModel(
+      {required this.receiverID,
+      required this.receiverUsername,
+      required this.updatedAt,
+      required this.lastMessage,
+      required this.unreadMessagesCount});
 
   static ChatModel empty() => ChatModel(
-        receiverID: '',
-        receiverUsername: '',
-        updatedAt: DateTime.now(),
-        lastMessage: DateTime.now(),
-        unreadMessagesCount: 0
-      );
-  
+      receiverID: '',
+      receiverUsername: '',
+      updatedAt: DateTime.now(),
+      lastMessage: DateTime.now(),
+      unreadMessagesCount: 0);
 
   // Whatever function needed.
 
   Map<String, dynamic> toJSON() {
     return {
-      'receiverID': receiverID,  // not required since document id is receiver id
+      'receiverID': receiverID, // not required since document id is receiver id
       'receiverUsername': receiverUsername,
-      'updatedAt': (updatedAt != null) ? updatedAt!.toUtc().toIso8601String() : DateTime.now().toUtc().toIso8601String(),
+      'updatedAt': (updatedAt != null)
+          ? updatedAt!.toUtc().toIso8601String()
+          : DateTime.now().toUtc().toIso8601String(),
       'lastMessage': lastMessage.toUtc().toIso8601String(),
       'unreadMessagesCount': unreadMessagesCount
-      };
+    };
   }
 
   // Factory method to create a ChatModel from JSON
-  factory ChatModel.fromJSON(
-      Map<String, dynamic> snapshot) {
+  factory ChatModel.fromJSON(Map<String, dynamic> snapshot) {
     if (snapshot.isNotEmpty) {
       final data = snapshot['details'];
       // log("here Chatmodel from Json is called");
@@ -50,10 +46,10 @@ class ChatModel {
       final chat = ChatModel(
           receiverID: data['receiverID'],
           receiverUsername: data['receiverUsername'],
-          updatedAt: DateTime.parse(data['updatedAt']).toLocal(),  // temporary workaround
+          updatedAt: DateTime.parse(data['updatedAt'])
+              .toLocal(), // temporary workaround
           lastMessage: DateTime.parse(data['lastMessage']).toLocal(),
-          unreadMessagesCount: data['unreadMessagesCount']
-          );
+          unreadMessagesCount: data['unreadMessagesCount']);
       // log(chat.toString());
       // log("here Chatmodel from Json is returned");
       return chat;
@@ -61,7 +57,7 @@ class ChatModel {
       return ChatModel.empty();
     }
   }
-  
+
   void updateLastMessage(DateTime message) {
     lastMessage = message;
   }

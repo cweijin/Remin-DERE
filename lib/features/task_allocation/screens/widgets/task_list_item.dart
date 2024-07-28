@@ -58,8 +58,7 @@ class TaskListItem extends StatelessWidget {
                         child: Text(
                             "${task.dueDate.day} ${listOfMonths[task.dueDate.month - 1]}",
                             style: const TextStyle(
-                                color: RColors.textWhite,
-                                fontSize: RSizes.lg),
+                                color: RColors.textWhite, fontSize: RSizes.lg),
                             textAlign: TextAlign.center,
                             softWrap: false)),
 
@@ -87,7 +86,7 @@ class TaskListItem extends StatelessWidget {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
-          return Container(
+          return SizedBox(
               height: MediaQuery.of(context).size.height *
                   .60, // Task detail popup-box size
               child: Padding(

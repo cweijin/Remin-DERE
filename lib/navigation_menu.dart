@@ -144,6 +144,10 @@ class NavigationController extends GetxController {
   }
 
   void navigateTo(int screenIndex) {
-    selectedIndex.value = screenIndex;
+    isTeamOwner.value
+        ? selectedIndex.value = screenIndex
+        : screenIndex > 2
+            ? selectedIndex.value = screenIndex - 1
+            : 0;
   }
 }

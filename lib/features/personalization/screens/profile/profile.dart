@@ -4,9 +4,11 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:remindere/common/styles/spacing_styles.dart';
 import 'package:remindere/common/widgets/shimmer/shimmer.dart';
-import 'package:remindere/features/authentication/screens/login/login.dart';
+import 'package:remindere/data/repositories/authentication_repository/authentication_repository.dart';
 import 'package:remindere/features/personalization/controllers/team_controller.dart';
 import 'package:remindere/features/personalization/controllers/user_controller.dart';
+import 'package:remindere/features/personalization/screens/account_security/account_security.dart';
+import 'package:remindere/features/personalization/screens/personal_details/personal_details.dart';
 import 'package:remindere/features/personalization/screens/profile/widgets/team_card.dart';
 import 'package:remindere/features/teaming/controllers/create_team/create_team_controller.dart';
 import 'package:remindere/features/teaming/screens/join_team/join_team.dart';
@@ -150,7 +152,8 @@ class ProfileScreen extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: OutlinedButton(
-                      onPressed: () {},
+                      onPressed: () =>
+                          Get.to(() => const PersonalDetailsScreen()),
                       child: const Text("Personal Details"),
                     ),
                   ),
@@ -158,25 +161,25 @@ class ProfileScreen extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: OutlinedButton(
-                      onPressed: () {},
+                      onPressed: () =>
+                          Get.to(() => const AccountSecurityScreen()),
                       child: const Text("Account Security"),
                     ),
                   ),
-                  const SizedBox(height: RSizes.spaceBtwItems),
-                  SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton(
-                      onPressed: () {},
-                      child: const Text("Settings"),
-                    ),
-                  ),
+                  // const SizedBox(height: RSizes.spaceBtwItems),
+                  // SizedBox(
+                  //   width: double.infinity,
+                  //   child: OutlinedButton(
+                  //     onPressed: () {},
+                  //     child: const Text("Settings"),
+                  //   ),
+                  // ),
                   const SizedBox(height: RSizes.spaceBtwSections),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
                         onPressed: () {
-                          auth.signOut();
-                          Get.offAll(const LoginScreen());
+                          AuthenticationRepository.instance.logout();
                         },
                         child: const Text('Logout')),
                   )

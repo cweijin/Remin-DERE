@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -186,10 +185,25 @@ class UserRepository extends GetxController {
     }
   }
 
-  // Function to remove specific user data from Firestore Database
+  // Function to remove user data from Firestore Database
   Future<void> removeUserRecord(String userId) async {
     try {
-      await _db.collection("Users").doc(userId).delete();
+      // await _db
+      //     .collection('Users')
+      //     .doc(userId)
+      //     .collection('Teams')
+      //     .get()
+      //     .then((snapshot) =>
+      //         snapshot.docs.map((document) => document.data()['Id'] as String))
+      //     .then((idList) async {
+      //       for (String id in idList) {
+      //         await _db.collection('Teams').doc(id).;
+      //       }
+      // });
+
+      // await _db.collection('Users').doc(userId).collection('Tasks').get();
+
+      await _db.collection('Users').doc(userId).delete();
     } on FirebaseAuthException catch (e) {
       throw RFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {

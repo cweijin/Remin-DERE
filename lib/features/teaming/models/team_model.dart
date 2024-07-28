@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:developer';
 
 class TeamModel {
   final String teamName;
@@ -40,7 +39,7 @@ class TeamModel {
         teamName: data["TeamName"] ?? '',
         teamMembers: List<String>.from(data["TeamMembers"] ?? []),
         //**Firestore returns us List<dynamic> causing incompatible type, this is a workaround.
-        id: data["Id"] ?? '',
+        id: document.id,
         owner: data['Owner'] ?? '',
       );
     } else {

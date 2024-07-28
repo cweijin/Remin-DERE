@@ -1,3 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -32,6 +36,8 @@ Future<void> main() async {
       //   try {
       //     await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
       //     FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+      //     FirebaseDatabase.instance.useDatabaseEmulator('localhost', 9000);
+      //     await FirebaseStorage.instance.useStorageEmulator('localhost', 9199);
       //   } catch (e) {
       //     // ignore: avoid_print
       //     print(e);
@@ -51,10 +57,12 @@ class MyApp extends StatelessWidget {
   // Root of application.
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent, // Transparent status bar
-      statusBarBrightness: Brightness.dark, // Dark text for status bar
-    ));
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent, // Transparent status bar
+        statusBarBrightness: Brightness.dark, // Dark text for status bar
+      ),
+    );
 
     return GetMaterialApp(
       themeMode: ThemeMode.system,

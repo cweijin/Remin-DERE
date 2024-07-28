@@ -8,6 +8,7 @@ import 'package:remindere/utils/constants/colors.dart';
 import 'package:remindere/utils/constants/sizes.dart';
 import 'package:remindere/utils/device/device_utility.dart';
 import 'package:remindere/utils/formatters/formatter.dart';
+import 'package:remindere/utils/helpers/helper_functions.dart';
 
 class RTaskCard extends StatelessWidget {
   final TaskModel task;
@@ -41,6 +42,39 @@ class RTaskCard extends StatelessWidget {
                 color: const Color.fromARGB(255, 42, 55, 64),
                 height: 150,
                 width: 250,
+                child: Padding(
+                  padding: const EdgeInsets.all(RSizes.defaultSpace),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: switch (task.status) {
+                                TaskStatus.toDo => Colors.grey[300],
+                                TaskStatus.inProgress => Colors.blue[300],
+                                TaskStatus.completed => Colors.green[300],
+                                TaskStatus.overdue => Colors.red[300],
+                              },
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: RSizes.md),
+                              child: Text(
+                                  RHelperFunctions.getTaskStatus(task.status),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineSmall),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ),
               SizedBox(
                 width: 250,
