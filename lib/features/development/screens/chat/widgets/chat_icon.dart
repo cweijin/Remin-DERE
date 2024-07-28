@@ -21,7 +21,10 @@ class ChatIcon extends StatelessWidget {
         child: ListTile(
           leading: const CircleAvatar(),
           title: Text(chat.receiverUsername!),
-          subtitle: Text(chat.isOpen? 'no messages yet' : chat.messageDetails),
+          subtitle: Text(
+            chat.isOpen? 'no messages yet' : chat.messageDetails,
+            overflow: TextOverflow.ellipsis,
+          ),
           trailing: Column(
             children: [
               // for alignement
