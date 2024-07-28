@@ -61,7 +61,7 @@ class RChatScreen extends StatelessWidget {
                   return ChatView(chats: chats);
                 }
 
-                return const Center(child: Text('you have no friends'));
+                return const Center(child: Text('Start a chat!'));
               },
             ),
           )      
