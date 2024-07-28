@@ -85,7 +85,7 @@ class ChatRepository extends GetxController {
   Future<void> saveChatDetails(ChatModel chat, ChatMessageModel message) async {
     try {
       final sender = userController.user.value;
-      chat.updateLastMessage(message.createdAt); // updates unread message count
+      chat.updateLastMessage(message); // updates unread message count
 
       final chatRef =
           _ref.child('users/${sender.id}/chats/${chat.receiverID}/details');
@@ -98,6 +98,7 @@ class ChatRepository extends GetxController {
           receiverUsername: sender.username,
           updatedAt: chat.updatedAt,
           lastMessage: message.createdAt,
+          messageDetails: message.message,
           unreadMessagesCount: chat.unreadMessagesCount);
       otherChat.updateUnread(); // updates unread message count
 
