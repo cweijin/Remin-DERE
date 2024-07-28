@@ -60,6 +60,7 @@ class FindUser extends StatelessWidget {
                         receiverUsername: controller.users[index].username,
                         updatedAt: Timestamp.now().toDate(),
                         lastMessage: Timestamp.now().toDate(),
+                        messageDetails: '',
                         unreadMessagesCount: 0
                       )
                     );

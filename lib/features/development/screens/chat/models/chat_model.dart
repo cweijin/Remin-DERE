@@ -1,10 +1,13 @@
 import "dart:developer";
 
+import "package:remindere/features/development/screens/chat/models/chat_message_model.dart";
+
 class ChatModel {
   String receiverID;
   String? receiverUsername;
   DateTime? updatedAt;
   DateTime lastMessage;
+  String messageDetails;
   int unreadMessagesCount;
   
   // ValueNotifier<int> notifier = ValueNotifier(0);
@@ -15,6 +18,7 @@ class ChatModel {
     required this.receiverUsername,
     required this.updatedAt,
     required this.lastMessage,
+    required this.messageDetails,
     required this.unreadMessagesCount
   });
 
@@ -23,6 +27,7 @@ class ChatModel {
         receiverUsername: '',
         updatedAt: DateTime.now(),
         lastMessage: DateTime.now(),
+        messageDetails: '',
         unreadMessagesCount: 0
       );
   
@@ -35,6 +40,7 @@ class ChatModel {
       'receiverUsername': receiverUsername,
       'updatedAt': (updatedAt != null) ? updatedAt!.toUtc().toIso8601String() : DateTime.now().toUtc().toIso8601String(),
       'lastMessage': lastMessage.toUtc().toIso8601String(),
+      'messageDetails': messageDetails,
       'unreadMessagesCount': unreadMessagesCount
       };
   }
@@ -52,6 +58,7 @@ class ChatModel {
           receiverUsername: data['receiverUsername'],
           updatedAt: DateTime.parse(data['updatedAt']).toLocal(),  // temporary workaround
           lastMessage: DateTime.parse(data['lastMessage']).toLocal(),
+          messageDetails: data['messageDetails'],
           unreadMessagesCount: data['unreadMessagesCount']
           );
       // log(chat.toString());
@@ -62,8 +69,9 @@ class ChatModel {
     }
   }
   
-  void updateLastMessage(DateTime message) {
-    lastMessage = message;
+  void updateLastMessage(ChatMessageModel message) {
+    lastMessage = message.createdAt;
+    messageDetails = message.message;
   }
 
   void updateUnread() {

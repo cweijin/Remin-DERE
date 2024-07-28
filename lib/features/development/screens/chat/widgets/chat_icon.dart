@@ -1,10 +1,5 @@
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:remindere/data/repositories/authentication_repository/authentication_repository.dart';
-import 'package:remindere/features/development/screens/chat/controllers/chat_controller.dart';
-import 'package:remindere/features/development/screens/chat/models/chat_message_model.dart';
 import 'package:remindere/features/development/screens/chat/models/chat_model.dart';
 import 'package:remindere/utils/constants/colors.dart';
 import 'package:remindere/utils/constants/sizes.dart';
@@ -18,8 +13,6 @@ class ChatIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = ChatController.instance;
-    final authController = AuthenticationRepository.instance;
 
       return InkWell(
         onTap: () {
@@ -28,7 +21,10 @@ class ChatIcon extends StatelessWidget {
         child: ListTile(
           leading: const CircleAvatar(),
           title: Text(chat.receiverUsername!),
-          subtitle: Text(chat.isOpen? 'no messages yet' : "Testing message!"),  // need to change testing message
+          subtitle: Text(
+            chat.isOpen? 'no messages yet' : chat.messageDetails,
+            overflow: TextOverflow.ellipsis,
+          ),
           trailing: Column(
             children: [
               // for alignement

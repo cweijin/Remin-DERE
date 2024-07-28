@@ -22,6 +22,7 @@ class TaskManagementScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = TaskManagementController.instance;
+    final userController = UserController.instance;
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus!.unfocus,
       child: Scaffold(
@@ -344,10 +345,12 @@ class TaskManagementScreen extends StatelessWidget {
                 const SizedBox(height: RSizes.spaceBtwItems),
                 SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton(
+                  child: task.assignees.contains(userController.user.value.id) ? 
+                  ElevatedButton(
                     onPressed: () => controller.submitWork(task),
                     child: const Text('Submit'),
-                  ),
+                  ) :
+                  const SizedBox(), // cannot submit task if not assignee
                 ),
               ],
             ),
