@@ -46,20 +46,23 @@ class RTeamCard extends StatelessWidget {
               ),
               height: 200,
               width: 200,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    team.teamName,
-                    style: Theme.of(context).textTheme.headlineSmall,
-                    textAlign: TextAlign.center,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  team.id == localStorage.read("CurrentTeam")
-                      ? Text('(Selected)',
-                          style: Theme.of(context).textTheme.bodySmall)
-                      : const SizedBox(),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.all(RSizes.md),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      team.teamName,
+                      style: Theme.of(context).textTheme.headlineSmall,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    team.id == localStorage.read("CurrentTeam")
+                        ? Text('(Selected)',
+                            style: Theme.of(context).textTheme.bodySmall)
+                        : const SizedBox(),
+                  ],
+                ),
               ),
             ),
             Positioned(
@@ -73,10 +76,9 @@ class RTeamCard extends StatelessWidget {
               left: 0,
               bottom: 0,
               child: TextButton(
-                onPressed: () {
+                onPressed: () async {
                   controller.selectTeam(team.id);
-                  localStorage.write('CurrentTeamName', team.teamName);
-                  _showTeamDetails(context);
+                  await localStorage.write('CurrentTeamName', team.teamName);
                 },
                 child: const Text('Change'),
               ),
@@ -86,32 +88,5 @@ class RTeamCard extends StatelessWidget {
       ),
       const SizedBox(width: RSizes.spaceBtwItems),
     ]);
-  }
-
-  // display a pop up with event details
-  void _showTeamDetails(BuildContext context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext bc) {
-          return SizedBox(
-              height: MediaQuery.of(context).size.height *
-                  .60, // Task detail popup-box size
-              child: Padding(
-                  padding: const EdgeInsets.all(RSizes.borderRadiusMd),
-                  child: Column(children: [
-                    const Text(
-                      'Team Details',
-                      style: TextStyle(fontSize: RSizes.lg),
-                    ),
-                    Text(
-                      "Team name: ${team.teamName}",
-                      style: const TextStyle(fontSize: RSizes.md),
-                    ),
-                    Text(
-                      "Task member: ${team.teamMembers}",
-                      style: const TextStyle(fontSize: RSizes.md),
-                    ),
-                  ])));
-        });
   }
 }

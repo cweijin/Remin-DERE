@@ -19,10 +19,13 @@ void main() {
       dueDate: DateTime(2024, 8, 31),
       attachments: [],
       owner: '',
+      team: '',
+      status: TaskStatus.toDo,
     );
 
     repository.saveTaskDetails(model);
 
-    expect(await repository.fetchUserTaskList().then((value) => value[0]), model);
+    expect(
+        await repository.fetchUserTaskList().then((value) => value[0]), model);
   });
 }

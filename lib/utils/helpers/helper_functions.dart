@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:remindere/features/task_allocation/models/task_model.dart';
 import 'package:remindere/utils/formatters/formatter.dart';
 
 class RHelperFunctions {
@@ -55,6 +56,15 @@ class RHelperFunctions {
     url = url.substring(url.indexOf('Attachments') + 11, url.indexOf('?alt'));
 
     return url;
+  }
+
+  static String getTaskStatus(TaskStatus status) {
+    return switch (status) {
+      TaskStatus.toDo => 'To do',
+      TaskStatus.inProgress => 'In progress',
+      TaskStatus.completed => 'Completed',
+      TaskStatus.overdue => 'Overdue'
+    };
   }
 
   static void showSnackBar(String message) {

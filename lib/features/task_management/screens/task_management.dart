@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:remindere/common/styles/spacing_styles.dart';
@@ -23,6 +21,8 @@ class TaskManagementScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = TaskManagementController.instance;
     final userController = UserController.instance;
+    final bool isTaskOwner =
+        task.owner == UserController.instance.user.value.id;
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus!.unfocus,
       child: Scaffold(
@@ -36,8 +36,17 @@ class TaskManagementScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(task.taskName,
-                    style: Theme.of(context).textTheme.displayMedium),
+                Wrap(
+                  children: [
+                    Text(task.taskName,
+                        style: Theme.of(context).textTheme.displayMedium),
+                    isTaskOwner
+                        ? IconButton(
+                            onPressed: () => controller.deleteTask(task),
+                            icon: const Icon(Icons.delete_outline_rounded))
+                        : const SizedBox()
+                  ],
+                ),
                 Text('due ${RFormatter.formatDate(task.dueDate)}'),
                 const SizedBox(height: RSizes.spaceBtwSections),
                 const Divider(),
@@ -214,144 +223,424 @@ class TaskManagementScreen extends StatelessWidget {
                 const SizedBox(height: RSizes.spaceBtwSections),
                 const Divider(),
                 const SizedBox(height: RSizes.spaceBtwSections),
-                Text('Submission',
-                    style: Theme.of(context).textTheme.headlineLarge),
-                const SizedBox(height: RSizes.spaceBtwItems),
-                Text('Attachment',
-                    style: Theme.of(context).textTheme.headlineSmall),
-                const SizedBox(height: RSizes.spaceBtwItems),
-                Obx(
-                  () => controller.attachments.isEmpty
-                      ? const Center(child: Text('No attachment selected'))
-                      : SizedBox(
-                          height: 290,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: controller.attachments.length,
-                            itemBuilder: (_, index) {
-                              final file = controller.attachments[index];
-                              return RAttachmentCard(
-                                  fileUrl: '', fileName: file.name);
-                            },
-                          ),
-                        ),
-                ),
-                const SizedBox(height: RSizes.spaceBtwSections),
-                Text('Message',
-                    style: Theme.of(context).textTheme.headlineSmall),
-                const SizedBox(height: RSizes.spaceBtwItems),
-                StreamBuilder(
-                  stream: controller.getComment(task.id!, isPrivate: true),
-                  builder: (_, snapshot) {
-                    final response =
-                        RCloudHelperFunctions.checkMultiRecordState(
-                            snapshot: snapshot,
-                            nothingFound: const Center(
-                                child: Text('Leave your comment here')));
-
-                    if (response != null) {
-                      return response;
-                    }
-
-                    final models = snapshot.data!;
-
-                    return SizedBox(
-                      height: 200,
-                      child: ListView.separated(
-                        itemCount: models.length,
-                        itemBuilder: (_, index) {
-                          final comment = models[index];
-                          final ownerFuture =
-                              controller.user.fetchUsers([comment.ownerId]);
-                          return FutureBuilder(
-                            future: ownerFuture,
+                isTaskOwner
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('View Submission',
+                              style: Theme.of(context).textTheme.headlineLarge),
+                          const SizedBox(height: RSizes.spaceBtwSections),
+                          FutureBuilder(
+                            future: controller.user.fetchUsers(task.assignees),
                             builder: (_, snapshot) {
                               final response =
                                   RCloudHelperFunctions.checkMultiRecordState(
-                                snapshot: snapshot,
-                              );
+                                      snapshot: snapshot);
 
                               if (response != null) {
                                 return response;
                               }
 
-                              final owner = snapshot.data![0];
-                              final image = owner.profilePicture.isNotEmpty
-                                  ? NetworkImage(owner.profilePicture)
-                                  : const AssetImage(RImages.profile1)
-                                      as ImageProvider;
+                              final assignees = snapshot.data!;
 
-                              return ListTile(
-                                titleAlignment: ListTileTitleAlignment.center,
-                                leading: CircleAvatar(
-                                  backgroundImage: image,
-                                ),
-                                title: Text.rich(
-                                  TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: owner.fullName,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge,
+                              return SizedBox(
+                                height: 80,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: assignees.length,
+                                  itemBuilder: (_, index) {
+                                    final model = assignees[index];
+                                    final image = model.profilePicture.isEmpty
+                                        ? const AssetImage(RImages.profile1)
+                                        : NetworkImage(model.profilePicture)
+                                            as ImageProvider;
+
+                                    return Obx(
+                                      () => Container(
+                                        width: 80,
+                                        color:
+                                            model.id == controller.view.value.id
+                                                ? Colors.grey.withOpacity(0.2)
+                                                : Colors.transparent,
+                                        child: InkWell(
+                                          onTap: () =>
+                                              controller.selectView(model),
+                                          child: Column(
+                                            children: [
+                                              CircleAvatar(
+                                                backgroundImage: image,
+                                                radius: 30,
+                                              ),
+                                              Text(
+                                                assignees[index].firstName,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .labelSmall,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       ),
-                                      TextSpan(
-                                        text:
-                                            ' ${RHelperFunctions.getDuration(comment.createdAt)}',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelMedium,
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                          const SizedBox(height: RSizes.spaceBtwSections),
+                          Text('Attachment',
+                              style: Theme.of(context).textTheme.headlineSmall),
+                          const SizedBox(height: RSizes.spaceBtwItems),
+                          Obx(
+                            () => controller.view.value.id == ''
+                                ? const Center(
+                                    child: Text(
+                                        'Select a member to view attachment'),
+                                  )
+                                : FutureBuilder(
+                                    future: controller.getSubmission(
+                                        task.team, task.id!,
+                                        isOwner: true),
+                                    builder: (_, snapshot) {
+                                      if (!snapshot.hasData ||
+                                          snapshot.data == null ||
+                                          snapshot.data!.attachments.isEmpty) {
+                                        return const Center(
+                                            child:
+                                                Text('No attachment uploaded'));
+                                      }
+
+                                      final attachmentUrls =
+                                          snapshot.data!.attachments;
+
+                                      return SizedBox(
+                                        height: 290,
+                                        child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: attachmentUrls.length,
+                                          itemBuilder: (_, index) {
+                                            return RAttachmentCard(
+                                                fileUrl: attachmentUrls[index]);
+                                          },
+                                        ),
+                                      );
+                                    }),
+                          ),
+                          const SizedBox(height: RSizes.spaceBtwSections),
+                          Text('Message',
+                              style: Theme.of(context).textTheme.headlineSmall),
+                          const SizedBox(height: RSizes.spaceBtwItems),
+                          Obx(
+                            () => controller.view.value.id == ''
+                                ? const Center(
+                                    child:
+                                        Text('Select a member to view message'),
+                                  )
+                                : StreamBuilder(
+                                    stream: controller.getComment(task.id!,
+                                        isPrivate: true,
+                                        assigneeId: controller.view.value.id),
+                                    builder: (_, snapshot) {
+                                      final response = RCloudHelperFunctions
+                                          .checkMultiRecordState(
+                                              snapshot: snapshot,
+                                              nothingFound: const Center(
+                                                  child: Text(
+                                                      'Leave your message here')));
+
+                                      if (response != null) {
+                                        return response;
+                                      }
+
+                                      final models = snapshot.data!;
+
+                                      return SizedBox(
+                                        height: 200,
+                                        child: ListView.separated(
+                                          itemCount: models.length,
+                                          itemBuilder: (_, index) {
+                                            final comment = models[index];
+                                            final ownerFuture = controller.user
+                                                .fetchUsers([comment.ownerId]);
+                                            return FutureBuilder(
+                                              future: ownerFuture,
+                                              builder: (_, snapshot) {
+                                                final response =
+                                                    RCloudHelperFunctions
+                                                        .checkMultiRecordState(
+                                                  snapshot: snapshot,
+                                                );
+
+                                                if (response != null) {
+                                                  return response;
+                                                }
+
+                                                final owner = snapshot.data![0];
+                                                final image = owner
+                                                        .profilePicture
+                                                        .isNotEmpty
+                                                    ? NetworkImage(
+                                                        owner.profilePicture)
+                                                    : const AssetImage(
+                                                            RImages.profile1)
+                                                        as ImageProvider;
+
+                                                return ListTile(
+                                                  titleAlignment:
+                                                      ListTileTitleAlignment
+                                                          .center,
+                                                  leading: CircleAvatar(
+                                                    backgroundImage: image,
+                                                  ),
+                                                  title: Text.rich(
+                                                    TextSpan(
+                                                      children: [
+                                                        TextSpan(
+                                                          text: owner.fullName,
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .bodyLarge,
+                                                        ),
+                                                        TextSpan(
+                                                          text:
+                                                              ' ${RHelperFunctions.getDuration(comment.createdAt)}',
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .labelMedium,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                  subtitle:
+                                                      Text(comment.comment),
+                                                );
+                                              },
+                                            );
+                                          },
+                                          separatorBuilder: (_, index) =>
+                                              const Divider(),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                          ),
+                          Obx(
+                            () => controller.view.value.id == ''
+                                ? const SizedBox()
+                                : Column(
+                                    children: [
+                                      const SizedBox(
+                                          height: RSizes.spaceBtwItems),
+                                      TextField(
+                                        controller: controller.message,
+                                        maxLines: null,
+                                        decoration: InputDecoration(
+                                          border: const OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(0))),
+                                          hintText: 'Message...',
+                                          suffixIcon: IconButton(
+                                            onPressed: () {
+                                              controller.postComment(task.id!,
+                                                  isPrivate: true,
+                                                  isOwner: true);
+                                            },
+                                            icon: const Icon(Icons.send),
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),
-                                  overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: RSizes.spaceBtwSections),
+                          // SizedBox(
+                          //   width: double.infinity,
+                          //   child: OutlinedButton(
+                          //     onPressed: () {},
+                          //     child: const Text('Cancel Submission'),
+                          //   ),
+                          // ),
+                          // const SizedBox(height: RSizes.spaceBtwItems),
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: () => controller.markAsCompleted(task),
+                              child: const Text('Complete Task'),
+                            ),
+                          ),
+                        ],
+                      )
+                    : task.assignees.contains(userController.user.value.id)
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Submission',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineLarge),
+                              const SizedBox(height: RSizes.spaceBtwSections),
+                              Text('Attachment',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineSmall),
+                              const SizedBox(height: RSizes.spaceBtwItems),
+                              Obx(
+                                () => controller.attachments.isEmpty
+                                    ? const Center(
+                                        child: Text('No attachment selected'))
+                                    : SizedBox(
+                                        height: 290,
+                                        child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount:
+                                              controller.attachments.length,
+                                          itemBuilder: (_, index) {
+                                            final file =
+                                                controller.attachments[index];
+                                            return RAttachmentCard(
+                                                fileUrl: '',
+                                                fileName: file.name);
+                                          },
+                                        ),
+                                      ),
+                              ),
+                              const SizedBox(height: RSizes.spaceBtwSections),
+                              Text('Message',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineSmall),
+                              const SizedBox(height: RSizes.spaceBtwItems),
+                              StreamBuilder(
+                                stream: controller.getComment(task.id!,
+                                    isPrivate: true),
+                                builder: (_, snapshot) {
+                                  final response = RCloudHelperFunctions
+                                      .checkMultiRecordState(
+                                    snapshot: snapshot,
+                                    nothingFound: const Center(
+                                      child: Text('Leave your message here'),
+                                    ),
+                                  );
+
+                                  if (response != null) {
+                                    return response;
+                                  }
+
+                                  final models = snapshot.data!;
+
+                                  return SizedBox(
+                                    height: 200,
+                                    child: ListView.separated(
+                                      itemCount: models.length,
+                                      itemBuilder: (_, index) {
+                                        final comment = models[index];
+                                        final ownerFuture = controller.user
+                                            .fetchUsers([comment.ownerId]);
+                                        return FutureBuilder(
+                                          future: ownerFuture,
+                                          builder: (_, snapshot) {
+                                            final response =
+                                                RCloudHelperFunctions
+                                                    .checkMultiRecordState(
+                                              snapshot: snapshot,
+                                            );
+
+                                            if (response != null) {
+                                              return response;
+                                            }
+
+                                            final owner = snapshot.data![0];
+                                            final image =
+                                                owner.profilePicture.isNotEmpty
+                                                    ? NetworkImage(
+                                                        owner.profilePicture)
+                                                    : const AssetImage(
+                                                            RImages.profile1)
+                                                        as ImageProvider;
+
+                                            return ListTile(
+                                              titleAlignment:
+                                                  ListTileTitleAlignment.center,
+                                              leading: CircleAvatar(
+                                                backgroundImage: image,
+                                              ),
+                                              title: Text.rich(
+                                                TextSpan(
+                                                  children: [
+                                                    TextSpan(
+                                                      text: owner.fullName,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyLarge,
+                                                    ),
+                                                    TextSpan(
+                                                      text:
+                                                          ' ${RHelperFunctions.getDuration(comment.createdAt)}',
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .labelMedium,
+                                                    ),
+                                                  ],
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              subtitle: Text(comment.comment),
+                                            );
+                                          },
+                                        );
+                                      },
+                                      separatorBuilder: (_, index) =>
+                                          const Divider(),
+                                    ),
+                                  );
+                                },
+                              ),
+                              const SizedBox(height: RSizes.spaceBtwItems),
+                              TextField(
+                                controller: controller.message,
+                                maxLines: null,
+                                decoration: InputDecoration(
+                                  border: const OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(0))),
+                                  hintText: 'Message...',
+                                  suffixIcon: IconButton(
+                                    onPressed: () {
+                                      controller.postComment(
+                                        task.id!,
+                                        isPrivate: true,
+                                      );
+                                    },
+                                    icon: const Icon(Icons.send),
+                                  ),
                                 ),
-                                subtitle: Text(comment.comment),
-                              );
-                            },
-                          );
-                        },
-                        separatorBuilder: (_, index) => const Divider(),
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(height: RSizes.spaceBtwItems),
-                TextField(
-                  controller: controller.comment,
-                  maxLines: null,
-                  decoration: InputDecoration(
-                    border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(0))),
-                    hintText: 'Message...',
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        controller.postComment(task.id!, isPrivate: true);
-                      },
-                      icon: const Icon(Icons.send),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: RSizes.spaceBtwSections),
-                SizedBox(
-                  width: double.infinity,
-                  child: OutlinedButton(
-                    onPressed: () {
-                      controller.getSubmissionAttachments();
-                    },
-                    child: const Text('Upload Files'),
-                  ),
-                ),
-                const SizedBox(height: RSizes.spaceBtwItems),
-                SizedBox(
-                  width: double.infinity,
-                  child: task.assignees.contains(userController.user.value.id) ? 
-                  ElevatedButton(
-                    onPressed: () => controller.submitWork(task),
-                    child: const Text('Submit'),
-                  ) :
-                  const SizedBox(), // cannot submit task if not assignee
-                ),
+                              ),
+                              const SizedBox(height: RSizes.spaceBtwSections),
+                              SizedBox(
+                                width: double.infinity,
+                                child: OutlinedButton(
+                                  onPressed: () {
+                                    controller.getSubmissionAttachments();
+                                  },
+                                  child: const Text('Upload Files'),
+                                ),
+                              ),
+                              const SizedBox(height: RSizes.spaceBtwItems),
+                              SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  onPressed: () => controller.submitWork(task),
+                                  child: const Text('Submit'),
+                                ),
+                              ),
+                            ],
+                          )
+                        : const SizedBox(),
               ],
             ),
           ),

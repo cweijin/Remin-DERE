@@ -8,7 +8,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 import 'package:remindere/data/repositories/authentication_repository/authentication_repository.dart';
 import 'package:remindere/data/repositories/calendar_event_repository/task_repository.dart';
-import 'package:remindere/features/development/models/notification/notification_model.dart';
 import 'package:remindere/features/personalization/controllers/team_controller.dart';
 import 'package:remindere/features/personalization/models/user_model.dart';
 import 'package:remindere/features/task_allocation/models/task_model.dart';
@@ -103,15 +102,16 @@ class TaskAllocationController extends GetxController {
 
       // Save authenticated user data in Firebase Firestore
       final newTask = TaskModel(
-        taskName: taskName.text.trim(),
-        taskDescription: taskDescription.text.trim(),
-        assignees: multiSelectController.selectedOptions
-            .map((item) => item.value!.id)
-            .toList(),
-        dueDate: DateTime.parse(dueDate.text.trim()),
-        attachments: attachmentUrls,
-        owner: AuthenticationRepository.instance.authUser!.uid,
-      );
+          taskName: taskName.text.trim(),
+          taskDescription: taskDescription.text.trim(),
+          assignees: multiSelectController.selectedOptions
+              .map((item) => item.value!.id)
+              .toList(),
+          dueDate: DateTime.parse(dueDate.text.trim()),
+          attachments: attachmentUrls,
+          owner: AuthenticationRepository.instance.authUser!.uid,
+          team: deviceStorage.read('CurrentTeam') ?? '',
+          status: TaskStatus.toDo);
 
       await taskRepository.saveTaskDetails(newTask);
 

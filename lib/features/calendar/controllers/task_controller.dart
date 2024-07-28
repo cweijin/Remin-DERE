@@ -4,12 +4,12 @@ import 'package:remindere/data/repositories/calendar_event_repository/task_repos
 import 'package:remindere/features/task_allocation/models/task_model.dart';
 import 'package:remindere/utils/popups/loaders.dart';
 
-class CalendarTaskController extends GetxController {
+class TaskController extends GetxController {
   // data for taskview
-  static CalendarTaskController get instance => Get.find();
+  static TaskController get instance => Get.find();
   final taskRepository = Get.put(TaskRepository());
   RxBool refreshData = true.obs;
-  RxBool team = false.obs;  // checks if is team calendar
+  RxBool team = false.obs; // checks if is team calendar
 
   // data for calendar
   DateTime selectedDate = DateTime.now(); // TO tracking date
@@ -59,6 +59,16 @@ class CalendarTaskController extends GetxController {
     }
   }
 
+  // Fetch all user specific tasks for taskview.
+  Future<List<TaskModel>> getAllTeamTasks(String teamId) async {
+    try {
+      final tasks = await taskRepository.fetchTeamTaskList(teamId: teamId);
+      return tasks;
+    } catch (e) {
+      RLoaders.errorSnackBar(title: 'Task not found', message: e.toString());
+      return [];
+    }
+  }
 
   // Fetch team specific tasks with dueDate later than inputted datetime for taskview.
   Future<List<TaskModel>> getTeamTasks(DateTime dateTime) async {

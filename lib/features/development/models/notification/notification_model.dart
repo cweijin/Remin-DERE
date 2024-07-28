@@ -1,10 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-enum NotificationType { teamCreation, taskCreation, taskSubmission, none }
+enum NotificationType {
+  teamCreation,
+  taskCreation,
+  taskSubmission,
+  statusUpdate,
+  none
+}
 
 class NotificationModel {
   final String title;
-  final String team;
+  final String where;
   final DateTime timeCreated;
   final String createdBy;
   final NotificationType type;
@@ -12,7 +18,7 @@ class NotificationModel {
   // Constructor for UserModel
   NotificationModel({
     required this.title,
-    required this.team,
+    required this.where,
     required this.timeCreated,
     required this.createdBy,
     required this.type,
@@ -21,7 +27,7 @@ class NotificationModel {
   // Static function to create an empty notification model
   static NotificationModel empty() => NotificationModel(
         title: '',
-        team: '',
+        where: '',
         timeCreated: DateTime(0),
         createdBy: '',
         type: NotificationType.none,
@@ -31,13 +37,14 @@ class NotificationModel {
   Map<String, dynamic> toJSON() {
     return {
       'Title': title,
-      'Team': team,
+      'Where': where,
       'Time': timeCreated,
       'CreatedBy': createdBy,
       'Type': switch (type) {
         NotificationType.taskCreation => 'task',
         NotificationType.teamCreation => 'team',
         NotificationType.taskSubmission => 'submit',
+        NotificationType.statusUpdate => 'status',
         NotificationType.none => 'Invalid'
       }
     };
@@ -50,7 +57,7 @@ class NotificationModel {
       final data = document.data()!;
       return NotificationModel(
         title: data['Title'] ?? '',
-        team: data['Team'] ?? '',
+        where: data['Where'] ?? '',
         timeCreated: data['Time'].toDate() ?? DateTime.now(),
         createdBy: data['CreatedBy'] ?? '',
         type: data['Type'] == 'task'
@@ -59,7 +66,9 @@ class NotificationModel {
                 ? NotificationType.teamCreation
                 : data['Type'] == 'submit'
                     ? NotificationType.taskSubmission
-                    : NotificationType.none,
+                    : data['Type'] == 'status'
+                        ? NotificationType.statusUpdate
+                        : NotificationType.none,
       );
     } else {
       return NotificationModel.empty();

@@ -1,12 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:remindere/common/styles/spacing_styles.dart';
 import 'package:remindere/common/widgets/appbar/appbar.dart';
 import 'package:remindere/features/development/controllers/notification/notification_controller.dart';
 import 'package:remindere/features/development/models/notification/notification_model.dart';
-import 'package:remindere/features/personalization/models/user_model.dart';
 import 'package:remindere/utils/constants/image_strings.dart';
 import 'package:remindere/utils/helpers/cloud_helper_functions.dart';
 import 'package:remindere/utils/helpers/helper_functions.dart';
@@ -89,7 +86,7 @@ class NotificationScreen extends StatelessWidget {
                                       const TextSpan(
                                           text: ' assigned you a task in '),
                                       TextSpan(
-                                          text: '${notification.team}:',
+                                          text: '${notification.where}:',
                                           style: Theme.of(context)
                                               .textTheme
                                               .headlineSmall),
@@ -120,10 +117,28 @@ class NotificationScreen extends StatelessWidget {
                                       const TextSpan(
                                           text: ' submitted a task in '),
                                       TextSpan(
-                                          text: '${notification.team}:',
+                                          text: '${notification.where}:',
                                           style: Theme.of(context)
                                               .textTheme
                                               .headlineSmall),
+                                    ],
+                                  ),
+                                ),
+                              NotificationType.statusUpdate => Text.rich(
+                                  TextSpan(
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                          text: owner.firstName,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineSmall),
+                                      const TextSpan(text: ' marked '),
+                                      TextSpan(
+                                          text: notification.where,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineSmall),
+                                      const TextSpan(text: ' as:'),
                                     ],
                                   ),
                                 ),
